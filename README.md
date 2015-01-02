@@ -3,8 +3,8 @@
 [Polymer/docs](https://github.com/Polymer/docs)の私家版翻訳です。
 
 ### 進捗
-
- | 未 | articles/accessible-web-components.md |
+|----|--------------------------------------|
+| 未 | articles/accessible-web-components.md |
 | 未 | articles/communication.md |
 | 未 | articles/concatenating-web-components.md |
 | 未 | articles/distributing-components-with-bower.md |
