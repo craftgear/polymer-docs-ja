@@ -3,6 +3,7 @@
 [Polymer/docs](https://github.com/Polymer/docs)の私家版翻訳です。
 
 ### 進捗
+| 状態 | ファイル名 |
 |----|--------------------------------------|
 | 未 | articles/accessible-web-components.md |
 | 未 | articles/communication.md |
