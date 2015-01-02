@@ -1,0 +1,24 @@
+[
+  {
+    "dir": "components",
+    "org": "Polymer",
+    "repos": [
+      "code-explainer",
+      "component-download-button"
+    ]
+  },
+  {
+    "dir": "components",
+    "org": "GoogleWebComponents",
+    "repos": [
+      "google-youtube"
+    ]
+  },
+  {
+    "dir": "projects",
+    "org": "Polymer",
+    "repos": [
+      "polymer-tutorial"
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<template>
+  <img style="vertical-align: middle;"
+       src="http://lorempixel.com/32/32" alt="awesome icon">
+  Click Me
+</template>
+<script>
+// See the Polymer docs for an explanation of _currentScript
+// http://www.polymer-project.org/platform/html-imports.html#other-notes
+var owner = document._currentScript.ownerDocument;
+var tmpl = owner.querySelector('template');
+
+var IconButtonProto = Object.create(HTMLElement.prototype);
+IconButtonProto.createdCallback = function() {
+  this.appendChild(document.importNode(tmpl.content, true));
+};
+
+var IconButton = document.registerElement('icon-button', {
+  prototype: IconButtonProto
+});
+</script>

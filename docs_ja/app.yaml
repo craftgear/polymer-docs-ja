@@ -1,0 +1,195 @@
+application: polymer-project
+version: 2014-12-11
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+#default_expiration: "0s"
+
+libraries:
+- name: PIL
+  version: latest
+
+#inbound_services:
+#- warmup
+
+handlers:
+
+# Top-level URLs ---------------------------------------------------------------
+- url: /$
+  static_files: _site/index.html
+  upload: _site/index\.html
+  secure: always
+
+- url: /build/$
+  static_files: _site/build/index.html
+  upload: _site/build/index\.html
+
+- url: /build/(.*)
+  script: build.application
+
+# Short URLs -------------------------------------------------------------------
+# backward compatibility
+- url: /platform(\.min)?\.js
+  static_files: components/platform/platform.js
+  upload: components/platform/platform\.js
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+- url: /platform(\.min)?\.js.map
+  static_files: components/platform/platform.js.map
+  upload: components/platform/platform\.js.\map
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+# For webcomponents.js, serve both minified and non-minifed versions
+# Workaround for https://github.com/Polymer/docs/issues/823 -- always serve minified
+- url: /webcomponents(\.min|)?\.js
+  static_files: components/webcomponentsjs/webcomponents.min.js
+  upload: components/webcomponentsjs/webcomponents(\.min|)?.js
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+- url: /webcomponents(\.min|)\.js.map
+  static_files: components/webcomponentsjs/webcomponents\1.js.map
+  upload: components/webcomponentsjs/webcomponents(\.min)?\.js.\map
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+- url: /polymer(\.min)?\.html
+  static_files: components/polymer/polymer.html
+  upload: components/polymer/polymer\.html
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+- url: /polymer(\.min)?\.js
+  static_files: components/polymer/polymer.min.js
+  upload: components/polymer/polymer\.js
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+    
+- url: /polymer(\.min)?\.js\.map
+  static_files: components/polymer/polymer.js.map
+  upload: components/polymer/polymer\.js\.map
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+# /tools -----------------------------------------------------------------------
+- url: /tools/designer/$
+  static_files: polymer-all/projects/designer/index.html
+  upload: polymer-all/projects/designer/index.html
+  secure: always
+
+- url: /tools/designer/components/webcomponentsjs/webcomponents.js
+  static_files: components/webcomponentsjs/webcomponents.min.js
+  upload: components/webcomponentsjs/webcomponents.min.js
+
+- url: /tools/designer/components/polymer/polymer.html
+  static_files: components/polymer/polymer.html
+  upload: /tools/designer/components/polymer/polymer.html
+
+- url: /tools/designer/components/polymer/polymer.js
+  static_files: components/polymer/polymer.min.js
+  upload: /tools/designer/components/polymer/polymer.js
+
+- url: /tools/designer/(.*)
+  static_files: polymer-all/projects/designer/\1
+  upload: polymer-all/projects/designer/(.*)
+# -------------------
+
+# Topeka and other apps --------------------------------------------------------
+# /apps/topeka/...
+- url: /apps/(.+)/components/(.*)
+  static_files: components/\2
+  upload: components/(.+)
+
+# e.g. /apps/topeka/
+- url: /apps/(.+)/$
+  static_files: polymer-all/projects/\1/build.html
+  upload: polymer-all\/projects\/(.+)\/build.html
+  secure: always
+
+- url: /apps/(.+)/(.*)
+  static_files: polymer-all/projects/\1/\2
+  upload: polymer-all\/projects\/(core-sampler|paper-sampler|topeka)\/(.*)
+  secure: always
+# -------------------
+
+# tutorial ---------------------------------------------------------------------
+- url: /samples/tutorial/components/
+  static_dir: components
+# -------------------
+
+# Map raw paths with trailing "/" to an index.html file.
+- url: /(.*)/$
+  static_files: _site/\1/index.html
+  upload: _site/(.*)/index.html
+  secure: always
+
+- url: /polymer-all
+  static_dir: polymer-all
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+- url: /samples
+  static_dir: samples
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+# New mappings for Bower
+- url: /components/(marked|highlightjs)/(.*)
+  static_files: js/bower_components/\1/\2
+  upload: js/bower_components/(marked|highlightjs)/(.*)
+
+- url: /components
+  static_dir: components
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+# All other URLs map directly to their path in _site/.
+- url: /
+  static_dir: _site
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+  secure: always
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^(.*/)?.*\.bak$
+- ^(.*/)?node_modules/.*
+- ^(.*/)?third_party/closure/.*
+- ^scripts/.*
+- ^.*.md|markdown
+- ^.*.LICENSE
+
+# few extras to reduce number of files uploaded.
+- ^(.*/)?Makefile$
+- ^(.*/)?.*\.sublime-project
+- ^(.*/)?.*\.sublime-workspace
+- ^(.*/)?platform-dev/workbench/.*
+- ^(.*/)?(AUTHORS|LICENSE|PATENTS|COPYING|CONTRIBUTING|README)$
+- ^(.*/)?polymer-all/labs/dfreedm/core-icon-study/.*
+- ^(.*/)?polymer-all/labs/.* # don't upload all of labs
+- ^(.*/)?polymer-all/tools/doc/.*
+- ^(.*/)?polymer-all/tools/bind/.*
+- ^(.*/)?components/tools/.* # tool is already in /polymer-all
+- ^(.*/)?components/firebase-simple-login/firebase-simple-login-(java|objc)/.*
+- ^(.*/)?components/firebase-simple-login/lib/.*
+- ^(.*/)?components/code-mirror/codemirror-4.0/bin/.*
+- ^(.*/)?components/web-component-tester/.*
+- ^(.*/)?components/web-animations-(js|next)/test/.*
+- ^(.*/)?components/extern-generator/.*
+- ^(.*/)?components/polymer-expressions/third_party/.*
+- ^(.*/)?codereview.setting
+- ^(.*/)?doc_themes/.*
+- ^(.*/)?bower_components/.*/manifest.webapp
+- ^(.*/)?bower_components/font-awesome/less/.*
+- ^(.*/)?bower_components/.*/test/.*
