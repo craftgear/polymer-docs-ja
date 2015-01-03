@@ -23,65 +23,44 @@ title: Getting the code
 
 {% include toc.html %}
 
-## Installing {{site.project_title}} {#installing-polymer}
+## {{site.project_title}}のインストール {#installing-polymer}
 
-If you're ready to start your own project, you can install {{site.project_title}}
-in one of several ways:
+{{site.project_title}} をインストールする方法はいくつかあります。
 
+*   Bowerを使う。 **推奨**. Bowerはコンポーネント間の依存関係を管理してくれるので、コンポーネントをインストールする際に必要となる物を一緒にインストールしてくれます。Bowerはまたインストールされたコンポーネントの更新も行います。より詳しい情報は、[Bowerを使ってインストールする](#using-bower)を参照して下さい。
 
-*   Bower. **Recommended**. Bower manages dependencies, so installing a component
-    also installs any missing dependencies. Bower also handles updating
-    installed components. For more information, see [Installing with Bower](#using-bower).
+*   ZIPファイルをダウンロードする。 ZIPファイルには必要なものが全て含まれているので、解凍してすぐに使いはじめることができます。この方法は特別なツールを必要としません。しかし、コンポーネントの更新を管理する方法はありません。より詳しい情報は、[ZIPファイルからインストールする](#using-zip)を参照して下さい。
 
-*   ZIP file. Includes all dependencies, so you can unzip it and start using it
-    immediately. The ZIP file requires no extra tools, but doesn't provide a
-    built-in method for updating dependencies. For more information, see
-    [Installing from ZIP files](#using-zip).
+*   GitHubからインストールする。 GitHubからコンポーネントをcloneした場合、コンポーネント間の依存関係は全て自分で解決する必要があります。{{site.project_title}}を自分でハックしたい、あるいはプルリクエストを送信したい場合は、[gitを使って{{site.project_title}}をセットアップする](/resources/tooling-strategy.html#git)を参照して下さい。
 
-*   GitHub. When you clone a component from GitHub, you need to manage all of the dependencies
-    yourself. If you'd like to hack on the project or submit a pull request, see
-    [setting up {{site.project_title}} with git](/resources/tooling-strategy.html#git).
+BowerかZIPで {{site.project_title}} をインストールした場合、[Web Components polyfill library](/docs/start/platform.html)がインストールされています。このライブラリを使うことで、Web Componentsの仕様をネイティブサポートしていないブラウザでも {{site.project_title}} を使うことが可能になります。
 
-When you install {{site.project_title}} using Bower or the ZIP file, you get the 
-[Web Components polyfill library](/docs/start/platform.html). Using the polyfills 
-ensures that you can use {{site.project_title}} with browsers that don't support 
-the Web Components specifications natively.
+**注意:** CoreエレメントとPaperエレメントのインストールについての情報は、[エレメントを使う](/docs/start/using-elements.html)を参照して下さい。
 
-**Note:** For information about installing elements from the Core and Paper element 
-collection, see [Using elements](/docs/start/using-elements.html).
+**注意:** PolymerLabsのGitHubリポジトリは、たくさんのサポートされていないエレメントを含んでいます。それらは実験的なものであったり、廃止予定のものであったりします。特に、`polymer-elements` と `polymer-ui-elements` は以前の実装であり、現在はCoreエレメントとPaperエレメントに置き換えられました。
 
-**Note:** The PolymerLabs GitHub repo contains a number of unsupported elements that are either
-experimental or deprecated. In particular, the `polymer-elements` and `polymer-ui-elements`
-collections represent earlier work superseded by the {{site.project_title}} Core elements and
-Paper elements.
+## Bowerをつかって {#using-bower}をインストールする
 
-## Installing with Bower {#using-bower}
+**{{site.project_title}} {{site.latest_version}}の推奨インストール方法はBowerを使うことです。
+Bowerをインストールするには、[Bowerのウェブサイト](http://bower.io/)を参照して下さい。
 
-The recommended way to install **{{site.project_title}} {{site.latest_version}}**
-is through Bower. To install Bower, see the [Bower web site](http://bower.io/).
+エレメントを開発したり利用したりする際に、Bowerは依存関係を管理する手間を省きます。コンポーネントをインストールすると、Bowerが必要なコンポーネントもインストールします。
 
-Bower removes the hassle of dependency management when developing or consuming
-elements. When you install a component, Bower makes sure any dependencies are
-installed as well.
+### プロジェクトのセットアップ
 
-### Project setup
-
-If you haven't created a `bower.json` file for your application, run this
-command from the root of your project:
+まだ`bower.json`ファイルを作っていなければ、プロジェクトディレクトリ直下で次のコマンドを実行して下さい:
 
     bower init
 
-This generates a basic `bower.json` file. Some of the questions, like
-"What kind of modules do you expose," can be ignored by pressing Enter.
+これで素の`bower.json`ファイルが作られます。途中で聞かれる質問のうちいくつか、たとえば、"What kind of modules do you expose," といった質問はEnterキーを押すことでスキップできます。
 
-The next step is to install {{site.project_title}}:
+{{site.project_title}}をインストールする次のステップは以下のコマンドを実行することです:
 
     bower install --save Polymer/polymer
 
-Bower adds a `bower_components/` folder in the root of your project and
-fills it with {{site.project_title}} and its dependencies.
+Bowerは`bower_components/` フォルダをプロジェクトディレクトリ直下に追加し、その中に{{site.project_title}}とその関連ファイルを配置します。
 
-**Tip:** `--save` adds the item as a dependency in *your* app's bower.json:
+**ヒント:** `--save` オプションはインストールするコンポーネントを`bower.json`の`dependencies`に追加します。:
 ```
 {
   "name": "my-project",
@@ -93,56 +72,42 @@ fills it with {{site.project_title}} and its dependencies.
 ```
 {: .alert .alert-success }
 
-#### Updating packages {#updatebower}
+#### パッケージの更新 {#updatebower}
 
-When a new version of {{site.project_title}} is available, run `bower update`
-in your app directory to update your copy:
+新しいバージョンの{{site.project_title}}が利用可能になったら、`bower update`を実行することで、インストールされた{{site.project_title}}を更新できます。:
 
     bower update
 
-This updates all packages in `bower_components/`.
+このコマンドは`bower_components/`にあるすべてのパッケージを更新します。
 
-## Installing from ZIP files {#using-zip}
+## ZIPファイルからインストールする {#using-zip}
 
-To download {{site.project_title}} as a ZIP file, click the **GET POLYMER** button
-then click **Download ZIP**.
+{{site.project_title}}をZIPファイルとしてダウンロードするには、下の **GET POLYMER** ボタンをクリックし、次に **Download ZIP**ボタンをクリックして下さい。
 
 <component-download-button org="Polymer" component="polymer" label="GET POLYMER">
 </component-download-button>
 
-When you download {{site.project_title}} as a ZIP file, you get all of 
-the dependencies bundled into a single archive. It's a great way to get 
-started because you don't need to install any additional tools.
+{{site.project_title}}をZIPファイルとしてダウンロードした場合、必要なファイルはすべてアーカイブ内に含まれています。他に何もツールが必要ないので、始めるには良い方法です。
 
-Expand the ZIP file in your project directory to create a `bower_components` folder.
+`bower_components`フォルダを作るにはプロジェクトディレクトリ直下でZIPファイルを解凍して下さい。
 
 ![](/images/zip-file-contents.png)
 
-If you download multiple component sets as ZIP files, you'll usually end up with
-multiple copies of some dependencies. You'll need to merge the contents of the
-ZIP files.
+複数のコンポーネントを別々のZIPファイルとしてダウンロードした場合、依存関係にあるファイルのコピーを複数持つことになります。その場合、ZIPファイルの中身をまとめる必要があります。
 
-Unlike Bower, the ZIP file doesn't provide a built-in method
-for updating dependencies. You can manually update components with a new ZIP
-file.
+Bowerとは異なり、ZIPファイルでのインストールには依存関係にあるファイルを更新するツールは用意されていません。コンポーネントをZIPファイルでダウンロードし、手動で更新する必要があります。
 
-## Using git {#git}
+## gitを使って{{site.project_title}}をセットアップする {#git}
 
-Because there are a number of dependencies we suggest you install
-{{site.project_title}} with Bower instead of git. If you'd like to hack on
-the project or submit a pull request check out our guide on
-[setting up {{site.project_title}} with git](/resources/tooling-strategy.html#git).
+たくさんの依存関係があるため、{{site.project_title}}のインストールにはgitではなくBowerをおすすめしています。{{site.project_title}}をハックしたい場合や、プルリクエストを送りたい場合は、[setting up {{site.project_title}} with git](/resources/tooling-strategy.html#git)にあるガイドを参照して下さい。
 
-## Next steps {#nextsteps}
+## 次のステップ {#nextsteps}
 
-Now that you've installed {{site.project_title}} it's time to learn the core
-concepts. In the next section we'll get you up and running on creating elements
-using {{site.project_title}}. Continue on to:
+さて、{{site.project_title}}のインストールが完了しました。これで基本を学ぶ準備はできています。次のセクションでは{{site.project_title}}を使って、エレメントを作る方法をご紹介します。
+引き続き、
 
 <a href="/docs/start/creatingelements.html">
-  <paper-button raised><core-icon icon="arrow-forward" ></core-icon>Polymer in 10 minutes</paper-button>
-</a>
+  <paper-button raised><core-icon icon="arrow-forward" ></core-icon>10分でわかるPolymer</paper-button>
+</a>をお読み下さい。
 
-If you'd rather skip ahead, check out the
-[tutorial](/docs/start/tutorial/intro.html), or skip to the
-[API developer guide](/docs/polymer/polymer.html).
+さらに先に進みたい場合は、[tutorial](/docs/start/tutorial/intro.html)をご覧いただくか、[APIデベロッパーガイド](/docs/polymer/polymer.html)をご覧ください。

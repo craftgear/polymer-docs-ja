@@ -3,6 +3,9 @@
 [Polymer/docs](https://github.com/Polymer/docs)の私家版翻訳です。
 
 ### 進捗
+
+1/54 完了
+
 | 状態 | ファイル名 |
 |----|--------------------------------------|
 | 未 | articles/accessible-web-components.md |
@@ -38,7 +41,7 @@
 | 未 | docs/start/creatingelements.md |
 | 未 | docs/start/customelements.md |
 | 未 | docs/start/everything.md |
-| 未 | docs/start/getting-the-code.md |
+| 完 | docs/start/getting-the-code.md |
 | 未 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
 | 未 | docs/start/tutorial/intro.md |
