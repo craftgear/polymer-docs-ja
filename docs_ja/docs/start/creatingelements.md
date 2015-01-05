@@ -2,7 +2,7 @@
 layout: default
 type: start
 shortname: Start
-title: Polymer in 10 minutes 
+title: 10分でわかるPolymer
 subtitle: Creating elements
 ---
 
@@ -19,10 +19,11 @@ and make it even easier to build complex, web component-based applications:
 - [Property observation](/docs/polymer/polymer.html#observeprops)
 
 
-## Setup {#basics}
+## セットアップ {#basics}
 
-### 1. Install {{site.project_title}} {#install}
+### 1. {{site.project_title}}のインストール {#install}
 
+{{site.project_title}}の最新バージョンを[コードを入手する](/docs/start/getting-the-code.html)
 Install the latest version of {{site.project_title}} as described in 
 [Getting the code](/docs/start/getting-the-code.html).
 

@@ -2,7 +2,7 @@
 layout: default
 type: start
 shortname: Start
-title: Getting the code
+title: コードを入手する
 ---
 
 <style>

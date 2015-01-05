@@ -2,6 +2,15 @@
 
 [Polymer/docs](https://github.com/Polymer/docs)の私家版翻訳です。
 
+### ドキュメントを読むには
+セットアップ作業後ローカルでhttpサーバを立ち上げる必要があります。
+
+セットアップについては[オリジナルのREADME.md](./original/README.md)に書いてあります。
+
+セットアップ完了後 ``_site``ディレクトリをルートにしてhttpサーバを立ち上げて、ブラウザでアクセスするとドキュメントが読めるようになります。
+
+ローカルhttpサーバはpythonのSimpleHTTPServerが便利です。
+
 ### 進捗
 
 1/54 完了
@@ -38,7 +47,7 @@
 | 未 | docs/polymer/styling.md |
 | 未 | docs/polymer/template.md |
 | 未 | docs/polymer/touch.md |
-| 未 | docs/start/creatingelements.md |
+| 進 | docs/start/creatingelements.md |
 | 未 | docs/start/customelements.md |
 | 未 | docs/start/everything.md |
 | 完 | docs/start/getting-the-code.md |
