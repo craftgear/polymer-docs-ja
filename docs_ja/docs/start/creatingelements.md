@@ -23,25 +23,22 @@ and make it even easier to build complex, web component-based applications:
 
 ### 1. {{site.project_title}}のインストール {#install}
 
-{{site.project_title}}の最新バージョンを[コードを入手する](/docs/start/getting-the-code.html)
-Install the latest version of {{site.project_title}} as described in 
-[Getting the code](/docs/start/getting-the-code.html).
+{{site.project_title}} の最新バージョンを[コードを入手する](/docs/start/getting-the-code.html)に書いてあるとおりにインストールします。
 
-If you want to play with {{site.project_title}} without installing anything, 
-skip to [Using {{site.project_title}}'s features](#features). You can run and 
-edit the samples online using [Plunker](http://plnkr.co/).
+なにもインストールせずに {{site.project_title}} に触ってみたいなら、[{{site.project_title}}の機能を利用する](#features)に進んで下さい。[Plunker](http://plnkr.co/)を使ってオンラインでサンプルを試すことができます。
 
-### 2. Build a {{site.project_title}} element {#createpolyel}
+### 2. {{site.project_title}}エレメントを作る {#createpolyel}
+{{site.project_title}}はカスタムタグを作るのに便利な機能を提供します。Polymerの機能を使って作ったカスタムタグのことを、我々は"{{site.project_title}}エレメント"と呼んでいます。
+見た目は普通のDOMエレメントですが、中身は双方向データバインディングを始めとした便利な[{{site.project_title}} マジック](/docs/polymer/polymer.html)がぎっしり詰まっています。
+そのおかげで複雑なコンポーネントを少ないコードで簡単に作ることができます。
 
-{{site.project_title}} provides extra goodies for creating declarative, souped-up custom elements. We call these "{{site.project_title}} elements". From the outside they look just like any other DOM element, but inside they're filled with handy features like two-way data binding and other bits of [{{site.project_title}} magic](/docs/polymer/polymer.html). These features make it easy to build complex components with much less code.
+新しいエレメントを作るには、
 
-To create a new element:
+1. [{{site.project_title}} コア](/docs/polymer/polymer.html) (`polymer.html`) を読み込みます。
+2. `<polymer-element>` タグを用いて、エレメントを宣言します。
 
-1. Load the [{{site.project_title}} core](/docs/polymer/polymer.html) (`polymer.html`).
-2. Declare your custom element using `<polymer-element>`.
-
-In the following example, we define a new element named `<my-element>`, save
-it to a file `elements/my-element.html`, and use an HTML Import to load the `polymer.html` dependency.
+以降の例では、`<my-element>`という名前の新しいエレメントを作り、`elements/my-element.html`というファイルに保存します。
+そして HTML Import で必要となる`polymer.html`を読み込みます。
 
 **my-element.html**
 
@@ -53,13 +50,13 @@ it to a file `elements/my-element.html`, and use an HTML Import to load the `pol
       </template>
     </polymer-element>
 
-Two items to notice:
+ここで注目すべき点は2つあります:
 
-* The `name` attribute is required and **must** contain a "-". It specifies the name of the HTML tag you'll instantiate in markup (in this case `<my-element>`).
+* `name`属性は必須であり、**必ず**"-"を含まなければなりません。name属性によってマークアップの際に指定するHTMLタグの名前が決まります。
 
-* The `noscript` attribute indicates that this is a simple element that doesn't include any script. An element declared with `noscript` is registered automatically.
+* `noscript` 属性はこのエレメントがスクリプトを含まないということを示しています。`noscript`属性を持つエレメンtのは自動的に登録されます。
 
-#### Reusing other elements {#reuse}
+#### 他のエレメントを再利用する {#reuse}
 
 By composing simple elements together we can build richer, more complex components. To reuse other elements in your `<polymer-element>`, install the element in your app:
 
