@@ -58,11 +58,12 @@ and make it even easier to build complex, web component-based applications:
 
 #### 他のエレメントを再利用する {#reuse}
 
-By composing simple elements together we can build richer, more complex components. To reuse other elements in your `<polymer-element>`, install the element in your app:
+単純なエレメントを組み合わせることで、より表現力に富んだ複雑なエレメントを作ることができます。
+`<polymer-element>`内で他のエレメントを再利用するには、まず対象のエレメントをインストールします:
 
     bower install Polymer/core-ajax
 
-and include an import that loads the new dependency in `my-element.html`:
+次に`my-element.html`内に、必要なファイルを読み込むimport指示を追加します。
 
 {%raw%}
     <link rel="import" href="../bower_components/polymer/polymer.html">
@@ -77,12 +78,12 @@ and include an import that loads the new dependency in `my-element.html`:
     </polymer-element>
 {%endraw%}
 
-### 3. Create an app {#creatapp}
+### 3. アプリケーションを作る {#creatapp}
 
-Lastly, create an `index.html` that imports your new element. Remember to include `webcomponents.min.js`
-to load polyfills for the native APIs.
+最後に`index.html`ファイルを作り、そこに今作った新しいエレメントを読み込みます。
+polyfillを提供する`webcomponents.min.js`を読み込むのを忘れないようにして下さい。
 
-Here's the full example:
+最終的に次のようなファイルが出来上がります:
 
     <!DOCTYPE html>
     <html>
@@ -98,10 +99,10 @@ Here's the full example:
       </body>
     </html>
 
-**Note:** You must run your app from a web server for the [HTML Imports](/platform/html-imports.html) to work properly. They cannot be loaded from `file://` due to the browser's security restrictions.
+**注意:** [HTML Imports](/platform/html-imports.html)を正しく機能させるには、ウェブサーバ上でアプリケーションを実行する必要があります。ブラウザのセキュリティ制限のため、`file://`プロトコルでは動作しません。
 {: .alert .alert-info }
 
-Your final directory structure should look something like this:
+最終的なディレクトリ構造は以下のようになります:
 
     yourapp/
       bower_components/
@@ -111,26 +112,26 @@ Your final directory structure should look something like this:
         my-element.html
       index.html
 
-Now that you've got the basic setup, it's time to start using the features!
+さて、これで準備は整いました。いよいよPolymerの機能を使ってみましょう。
 
-## Using {{site.project_title}}'s features {#features}
+## {{site.project_title}}の機能を使う {#features}
 
-{{site.project_title}} provides a number of sugaring APIs for authoring
-web components. Below are a few of the concepts. Consult the [API reference](/docs/polymer/polymer.html) for
-detailed information on each of these features.
+{{site.project_title}}はweb componentsを作るための便利なAPIを提供します。以下に概要を示しますが、詳しいことは[APIリファレンス](/docs/polymer/polymer.html)を参照して下さい。
 
-### Add properties and methods {#propertiesmethods}
+### 属性とメソッドを追加する {#propertiesmethods}
 
-When you're creating a new element, you'll often need to expose a [public API](/docs/polymer/polymer.html#published-properties) so users can configure it. To define a public API, include a `<script>` tag that calls the `{{site.project_title}}(...)` constructor.  The `{{site.project_title}}(...)` constructor is a convenience wrapper for [`document.registerElement`](/platform/custom-elements.html#documentregister), but also endows the element with special features like data binding and event mapping. The {{site.project_title}} constructor takes as an argument an object that defines your element's prototype.
+新しいエレメントを作る際には、多くの場合[公開 API](/docs/polymer/polymer.html#published-properties)をユーザが設定できるようにする必要があります。
+公開APIを定義するには`{{site.project_title}}(...)`コンストラクタを呼ぶ`<script>`タグを含めます。
+`{{site.project_title}}(...)`コンストラクタは[`document.registerElement`](/platform/custom-elements.html#documentregister)のラッパーです。それと同時にエレメントに特別な機能、データバインディングやイベントマッピングなど、を授けます。{{site.project_title}}コンストラクタはエレメントのプロトタイプオブジェクトを引数に取ります。
 
 {% include samples/proto-element.html %}
 
-### Adding lifecycle methods
+### ライフサイクルメソッドの追加
 
-[Lifecycle callbacks](/docs/polymer/polymer.html#lifecyclemethods) are special methods you can define on your element which fire when the element goes through important transitions.
-
-When a custom element has been registered it calls its `created()` callback (if one has been defined). When {{site.project_title}} finishes its initialization, the `ready()` method is called.
-The `ready` callback is a great place to do constructor-like initialization work.
+[ライフサイクルコールバック](/docs/polymer/polymer.html#lifecyclemethods) は特別なメソッドです。これらのメソッドをエレメントに定義することで、エレメントの状態が変わった時にイベントを発行することができます。
+カスタムエレメントが登録されると、そのエレメントの`created()`コールバック関数が（もし定義されていれば）呼ばれます。
+{{site.project_title}} がエレメントの初期化を終了すると、今度は`ready()`メソッドが呼ばれます。
+`ready`コールバック関数はコンストラクタでするような初期化作業をするのに最適な場所です。
 
 {% include samples/ready-element.html %}
 
