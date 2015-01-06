@@ -13,7 +13,7 @@
 
 ### 進捗
 
-1/54 完了
+2/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -47,13 +47,13 @@
 | 未 | docs/polymer/styling.md |
 | 未 | docs/polymer/template.md |
 | 未 | docs/polymer/touch.md |
-| 進 | docs/start/creatingelements.md |
+| 完 | docs/start/creatingelements.md |
 | 未 | docs/start/customelements.md |
 | 未 | docs/start/everything.md |
 | 完 | docs/start/getting-the-code.md |
 | 未 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
-| 未 | docs/start/tutorial/intro.md |
+| 進 | docs/start/tutorial/intro.md |
 | 未 | docs/start/tutorial/step-1.md |
 | 未 | docs/start/tutorial/step-2.md |
 | 未 | docs/start/tutorial/step-3.md |

@@ -2,8 +2,8 @@
 layout: default
 type: start
 shortname: Start
-title: Getting the starter project
-subtitle: Your first Polymer application
+title: プロジェクトを始めよう
+subtitle: はじめてのPolymerアプリケーション
 ---
 
 <style>
