@@ -135,78 +135,74 @@ polyfillを提供する`webcomponents.min.js`を読み込むのを忘れない�
 
 {% include samples/ready-element.html %}
 
-Learn more about all of the [lifecycle callbacks](/docs/polymer/polymer.html#lifecyclemethods).
+[ライフサイクルコールバック](/docs/polymer/polymer.html#lifecyclemethods)でより詳しい情報を参照できます。
 
-### Declarative data binding
+### 宣言的なデータバインディング
 
-Data binding is a great way to quickly propagate changes in your element and reduce boilerplate code. You can bind properties in your component using the "double-mustache" syntax (`{%raw%}{{}}{%endraw%}`). The `{%raw%}{{}}{%endraw%}` is replaced by the value of the property referenced between the brackets.
+データバインディングはエレメントの変化を素早く伝え、お決まりのコードを減らす素晴らしい方法です。
+"二重ひげ"書式(`{%raw%}{{}}{%endraw%}`)を使ってコンポーネントのプロパティをバインドすることができます。`{%raw%}{{}}{%endraw%}`で記述されたところは参照先のプロパティの値によって置き換えられます。
 
 {% include samples/name-tag.html %}
 
-Note: {{site.project_title}}'s data-binding is powered under the covers by a sub-library called [TemplateBinding](/docs/polymer/template.html), designed for other libraries to build on top of.
+注意: {{site.project_title}}のデータバインディングは、[テンプレートバインディング](/docs/polymer/template.html)というサブライブラリによって実現されています。このサブライブラリは他のライブラリから利用することを目的として作られています。
+    
 {: .alert .alert-info}
 
-#### Binding to markup
+#### マークアップにバインドする
 
-You can use binding expressions in most HTML markup, except for tag names themselves. In the following example, we create a new property on our component named `color` whose value is bound to the value of the `color` style applied to the custom element. Bindings ensure that any time a property like `color` is changed, the new value will be propagated to all binding points.
+バインディングはタグ名そのものを除いたほとんどのHTMLマークアップで利用できます。以降の例では先ほど作ったコンポーネントに`color`という新しいプロパティを追加し、その値をカスタムエレメントの`color`スタイルにバインドします。このバインディングによって、`color`プロパティが変わるたびに、その値がすべてのバインド先に確実に伝えられます。
 
 {% include samples/fav-color.html %}
 
-#### Binding between components and built-in elements {#bindingtobuiltin}
+#### コンポーネントと組み込みエレメントの間でのバインディング {#bindingtobuiltin}
 
-You can use bindings with built-in elements just like you would with Polymer elements. This is a great way to leverage existing APIs to build complex components. The following example demonstrates binding component properties to attributes of native input elements.
+バインディングはPolymerエレメント同様に組み込みエレメントにも使えます。これは既存のAPIを活用して複雑なコンポーネントを作る素晴らしい方法です。次の例ではコンポーネントのプロパティをINPUT要素の属性にバインドしています。
 
 {% include samples/age-slider.html %}
 
-**Note:** Giving `age` an initial value of `25` gives {{site.project_title}}
-a hint that this property is an integer.
+**注意：** `age`の初期値に`25`を与えることで、{{site.project_title}}にこの属性が整数値であることを暗に示しています
+
 {: .alert alert-info}
 
-In this example, `nameChanged()` defines a property changed watcher. {{site.project_title}} will then call this method any time the `name` property is updated. Read more about [changed watchers](/docs/polymer/polymer.html#change-watchers).
+この例では`nameChanged()`がプロパティの変更を監視しています。{{site.project_title}}は`name`プロパティが変更されるたびにこのメソッドを呼び出します。より詳しくは[変更監視](/docs/polymer/polymer.html#change-watchers)を参照して下さい。
 
-### Publishing properties {#publishing}
+### プロパティを公開する {#publishing}
 
-Published properties can be used to define an element's "public API". {{site.project_title}}
-establishes two-way data binding for published properties and provides access
-to the property's value using `{%raw%}{{}}{%endraw%}`.
+プロパティを公開するとエレメントの"パブリックAPI"を定義できます。{{site.project_title}}は公開されたプロパティに対して双方向データバインディングと`{%raw%}{{}}{%endraw%}`を用いた値へのアクセスを提供します。
 
-_Publish_ a property by listing it in the `attributes` attribute in your `<polymer-element>`. Properties declared this way are initially `null`. To provide a more appropriate default value, include the same property name directly in your prototype.
+プロパティを_公開_するには`<polymer-element>`内の`attributes`属性にプロパティの名前を追加します。この方法で宣言されたプロパティは`null`で初期化されます。より適切なデフォルト値を与えるには、prototypeに直接同じプロパティ名を含めます。
 
-The following example defines two data-bound properties on the element, `owner` and `color`,
-and gives them default values:
+次の例では`owner`と`color`の二つのプロパティに対してデータバインディングを行い、デフォルト値を与えています。
 
 {% include samples/color-picker.html %}
 
-In this example the user overrides the defaults for `owner` and `color`
-by configuring the element with initial attribute values (e.g. `<color-picker owner="Scott" color="blue">`).
+この例ではユーザーがindex.htmlファイルでカスタムタグを呼び出す際に、属性値を設定することで、`owner`と`color`のデフォルト値を上書きしています。(例 `<color-picker owner="Scott" color="blue">`)
 
-**Note**: When binding  a property that takes a type other than String, it's important to [hint a property's type](/docs/polymer/polymer.html#attrhinting). {{site.project_title}} relies on this information to correctly serialize and de-serialize values.
+**注意**: 文字列以外の値を取るプロパティをバインドする際には、[プロパティの型を示す](/docs/polymer/polymer.html#attrhinting)ことが重要です。{{site.project_title}}は値のシリアライズとデシリアライズを行う際にこの情報に依存します。
 {: .alert .alert-success }
 
-[Learn more about published properties](/docs/polymer/polymer.html#published-properties).
+より詳しくは[プロパティの公開についてさらに学ぶ](/docs/polymer/polymer.html#published-properties)を参照して下さい。
 
-### Automatic node finding
+### 自動的なノードの発見
 
-The use of the `id` attribute has traditionally been discouraged as an anti-pattern because the document requires element IDs to be unique. Shadow DOM, on the other hand, is a self-contained document-like subtree; IDs in that subtree do not interact with IDs in other trees. This means the use of IDs in Shadow DOM is not only permissible, it's actually encouraged. Each {{site.project_title}} element generates a map of IDs to node references in the element's template. This map is accessible as `$` on the element and can be used to quickly select the node you wish to work with.
+`id`属性の利用は従来アンチパターンとして避けるべきものとされてきました。なぜならドキュメント内でIDはユニークでなければならないからです。一方Shadow DOMはそれ自体がドキュメントのような自己完結したツリー構造であり、そのサブツリー内におけるIDは他のサブツリーのIDとは干渉しません。すなわち、Shadow DOM内でのIDの利用は差支えがないだけでなく、むしろ推奨されます。個々の{{site.project_title}}エレメントはIDとエレメントのテンプレート内ノードを対応させた地図を作ります。この地図には`$`を使ってエレメントからアクセスすることができ、操作対象のノードを素早く選択することができます。
 
 {% include samples/editable-color-picker.html %}
 
-[Learn more about automatic node finding](/docs/polymer/polymer.html#automatic-node-finding)
+より詳しくは[自動的なノードの発見についてより詳しく学ぶ](/docs/polymer/polymer.html#automatic-node-finding)を参照して下さい。
 
-## Next steps {#nextsteps}
+## 次のステップ {#nextsteps}
 
-Now that you know how to create your own elements, follow the 
-[tutorial](/docs/start/tutorial/intro.html) to create your first 
-{{site.project_title}} app, or dive deeper and read up on 
-[{{site.project_title}}'s core API](/docs/polymer/polymer.html). 
-Continue on to:
+さてこれでエレメントの作り方がわかりました。つづいて[チュートリアル](/docs/start/tutorial/intro.html)で初めてのアプリケーションを作るか、[{{site.project_title}}コアAPI]を読んでより深くPolymerについて理解して下さい。
+
+いずれかに続く:
 
 <a href="/docs/polymer/polymer.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>API developer guide</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>API デベロッパーガイド</paper-button>
 </a>
 
 <a href="/docs/start/tutorial/intro.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Your first {{site.project_title}} app</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>はじめての {{site.project_title}} アプリケーション</paper-button>
 </a>
 
 
