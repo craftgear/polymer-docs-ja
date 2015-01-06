@@ -8,15 +8,13 @@ subtitle: Creating elements
 
 {% include toc.html %}
 
-{{site.project_title}} makes it simple to create web components, declaratively.
-Custom elements are defined using our custom element,  `<polymer-element>`, and can leverage
-{{site.project_title}}'s special features. These features reduce boilerplate
-and make it even easier to build complex, web component-based applications:
+{{site.project_title}}を使うとweb componentを宣言的かつ簡単に作ることができます。
+カスタムエレメントは`<polymer-element>`というカスタムエレメントを使って定義し、{{site.project_title}}の各種機能を活用することができます。これによって決まりきったコードを減らし、複雑なweb componentsベースのアプリケーションを容易に作ることができます。
 
-- [Two-way data binding](/docs/polymer/databinding.html)
-- [Declarative event handling](/docs/polymer/polymer.html#declarative-event-mapping)
-- [Declarative inheritance](/docs/polymer/polymer.html#extending-other-elements)
-- [Property observation](/docs/polymer/polymer.html#observeprops)
+- [双方向データバインディング](/docs/polymer/databinding.html)
+- [宣言的イベントハンドリング](/docs/polymer/polymer.html#declarative-event-mapping)
+- [宣言的継承](/docs/polymer/polymer.html#extending-other-elements)
+- [プロパティの監視](/docs/polymer/polymer.html#observeprops)
 
 
 ## セットアップ {#basics}
