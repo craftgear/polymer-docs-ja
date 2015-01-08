@@ -32,8 +32,7 @@ subtitle: はじめてのPolymerアプリケーション
 }
 </style>
 
-
-In this tutorial, you'll build a small {{site.project_title}} application -- a very basic client for a social networking service. The end result will look like this:
+このチュートリアルでは小さな{{site.project_title}}アプリケーションを作ります。基本的な機能を備えたSNSサービスのクライアントです。完成版は以下のようになります。
 
 <figure layout vertical center>
   <a href="/apps/polymer-tutorial/finished/" layout horizontal class="unquote-link">
@@ -44,23 +43,23 @@ In this tutorial, you'll build a small {{site.project_title}} application -- a v
   </figcaption>
 </figure>
 
-This project will introduce you to most of the key concepts in working with {{site.project_title}}. Don't worry if you don't understand everything. Each of the concepts presented here is described in detail in the {{site.project_title}} documentation.
+このプロジェクトを通じて、{{site.project_title}}を使う上で重要なコンセプトのほとんどをご紹介します。一度にすべてを理解できなくとも心配しないで下さい。ここで紹介するコンセプトは{{site.project_title}}のドキュメントで詳しく解説されています。
 
-## Before you start: getting the starter project
+## 始める前に：プロジェクトのひな形をダウンロードする
 
-To get started, download the starter project. This starter project includes all of the {{site.project_title}} libraries and dependencies you'll need to get started.
+まずはプロジェクトのひな形をダウンロードしましょう。ひな形にはこれから必要になる全ての{{site.project_title}}ライブラリと依存関係にあるライブラリが含まれています。
 
 <p layout horizontal center-justified>
   <a href="https://github.com/Polymer/polymer-tutorial/archive/master.zip">
-    <paper-button id="download-button" raised onclick="downloadStarter()"><core-icon icon="file-download"></core-icon>Download Starter Project</paper-button>
+    <paper-button id="download-button" raised onclick="downloadStarter()"><core-icon icon="file-download"></core-icon>プロジェクトのひな形をダウンロードする</paper-button>
   </a>
 </p>
 
-Unzip the starter project somewhere on your local drive.
+ダウンロードしたファイルを解凍します。
 
-The starter includes an initial version of the project you'll be working with. It also includes incremental versions of the project so you can check your work along the way.
+ひな形には初期バージョンと、段階に応じたバージョンのプロジェクトが含まれています。作業を進めるに従って各バージョンと比較することができるようになっています。
 
-While you're working, you'll need a basic HTTP server to serve your pages. If you have Python installed, you can run one of the following commands in the top level of the starter project.
+チュートリアルを進めるにはページを表示するための基本的なHTTPサーバが必要になります。Pythonがインストールされていれば、プロジェクトのルートで以下のコマンドを実行して下さい。
 
 Python 2.x:
 
@@ -70,21 +69,19 @@ Python 3.x:
 
     python -m http.server
 
-Test out the web server by loading the finished version of the project. For example:
+最終バージョンをみるには、次のようにします。
 
 -  [http://localhost:8000/finished/](http://localhost:8000/finished/)
 
-URLs in this tutorial assume your local server is listening on port 8000.
-If you're using a different port, substitute the port you're using.
+このチュートリアルではローカルサーバが8000番ポートで動いているものとします。別のポート番号でサーバを動かしている場合は適宜読み替えて下さい。
 
-**Note:** On Windows, Python's simple HTTP server may not provide the correct MIME type for SVG images.
-If the images don't render, try a different web server.
+*注意:** WindowsではPythonのsimple HTTP サーバがSVG画像に対して適切なMIMEタイプを付加しないかもしれません。画像が表示されない場合は別のHTTPサーバを試して下さい。
 {: .alert .alert-info }
 
 
 <div horizontal layout end-justified class="stepnav">
 <a href="/docs/start/tutorial/step-1.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Step 1: Creating the app structure</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Step 1: アプリケーションの構造を作る</paper-button>
 </a>
 </div>
 
