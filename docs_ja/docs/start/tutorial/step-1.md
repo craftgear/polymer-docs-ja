@@ -2,8 +2,8 @@
 layout: default
 type: start
 shortname: Start
-title: "Step 1: Creating the app structure"
-subtitle: Your first Polymer application
+title: "Step 1: アプリケーションの構造を作る"
+subtitle: はじめてのPolymerアプリケーション
 ---
 
 <link rel="import" href="/elements/side-by-side.html">
@@ -12,19 +12,19 @@ subtitle: Your first Polymer application
 
 {% include toc.html %}
 
-## Step 1: Creating the app structure
+## Step 1: アプリケーションの構造を作る
 
-In this step, you'll use some pre-built Polymer elements to create the basic application structure, with a toolbar and tabs.
+このステップでは予め用意されたPolymerエレメントを用いて、タブとツールバーを備えた基本的なアプリケーションの構造を作ります。
 
-In this step, you'll learn about:
+このステップで学ぶことは次のとおりです:
 
--   Using HTML imports.
--   Using {{site.project_title}} elements with standard HTML, CSS and JavaScript.
+-   HTML importを使う
+-   HTML/CSS/Javascriptと組み合わせて {{site.project_title}} エレメントを使う
 
-### Edit index.html
+### index.htmlを編集する
 
-
-Go to the `starter` directory and open the `index.html` file in your favorite editor. The starting file looks like this:
+`starter`ディレクトリに移動し、エディタで`index.html`ファイルを開きます。　
+初期状態のファイルは次のようになっています:
 
 <side-by-side>
 <pre>
@@ -54,15 +54,11 @@ Go to the `starter` directory and open the `index.html` file in your favorite ed
 </aside>
 </side-by-side>
 
-**Note:** The `font-roboto` import loads the `RobotoDraft` font using the
-[Google Fonts API](https://developers.google.com/fonts/). If you're working
-offline or cannot access the Google Fonts API for any reason, this can block
-rendering of the web page. If you experience this problem, comment out the
-import for `font-roboto`.
+**注意:** `font-roboto` import の行は、[Google Fonts API](https://developers.google.com/fonts/)を用いて `RobotoDraft`フォントを読み込みます。オフラインで作業をしていたり、GoogleAPIにアクセスできなかったりすると、この行がページが表示されるのを妨げることがあります。この問題に遭遇した場合は、この行をコメントアウトして下さい。
 {: .alert .alert-info }
 
 
-Skipping over the styles for now, at the end of the file you'll find something new:
+スタイル定義はひとまず飛ばします。ファイルの最後に見慣れないものがあります:
 
 <side-by-side>
 <pre>
@@ -73,11 +69,9 @@ Skipping over the styles for now, at the end of the file you'll find something n
 ...
 </pre>
 <aside>
-  <h4>Key information</h4>
+  <h4>ポイント</h4>
   <ul>
-    <li>The <code>unresolved</code> attribute on the <code>&lt;body></code> element is used to prevent a flash of unstyled content
-        (FOUC) on browsers that lack native support for custom elements. For details, see the
-        <a href="/docs/polymer/styling.html#fouc-prevention">Polymer styling reference</a>.</li>
+    <li><code>&lt;body></code>タグの<code>unresolved</code>属性はスタイルが適用される前の要素が一瞬表示されるのを防ぎます。この現象はカスタムエレメントをネイティブサポートしていないブラウザで起こります。より詳しくは <a href="/docs/polymer/styling.html#fouc-prevention">Polymer スタイルレファレンス</a>を参照して下さい。</li>
   </ul>
 </aside>
 </side-by-side>
@@ -86,7 +80,7 @@ Skipping over the styles for now, at the end of the file you'll find something n
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add HTML import links to import the `<core-header-panel>`, `<core-toolbar>`, and `<paper-tabs>` elements:
+`<core-header-panel>`と`<core-toolbar`、および`<paper-tabs>`をインポートするため、HTML imports 行を追加します:
 
 <side-by-side>
 <pre>
@@ -105,15 +99,13 @@ Add HTML import links to import the `<core-header-panel>`, `<core-toolbar>`, and
 &lt;style>
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
       <li>
-        Polymer uses <a href="/platform/html-imports.html">HTML imports</a> to load components.
-        HTML imports provide dependency management, ensuring that your elements and all of their dependencies are loaded
-        before you use them.
+        Polymerはコンポーネントを読み込むのに<a href="/platform/html-imports.html">HTML imports</a> を使います。HTML importsは依存性の管理を提供し、エレメントとその依存先が利用に先立って全て読み込まれることを保証します。
       </li>
       <li>
-        Throughout this tutorial, the code you need to add appears in <code><strong class="highlight nocode">bold black text</strong></code>.
+        このチュートリアルを通じて、あなたが追加する必要のあるコードは<code><strong class="highlight nocode">黒い太文字</strong></code>で表示されます。
       </li>
     </ul>
   </aside>
@@ -123,7 +115,7 @@ Add HTML import links to import the `<core-header-panel>`, `<core-toolbar>`, and
   <core-icon icon="polymer"></core-icon>
 </div>
 
-To add a toolbar, add the following code inside the `<body>` tag.
+ツールバーを追加します。`<body>`タグ内に以下のコードを追加して下さい。
 
 <side-by-side>
 <pre>
@@ -137,17 +129,13 @@ To add a toolbar, add the following code inside the `<body>` tag.
 &lt;/core-header-panel></strong>
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
 
     <ul>
-      <li>The
-          <code><a href="/docs/elements/core-elements.html#core-header-panel">&lt;core-header-panel&gt;</a></code>
-          element is a simple container that holds a
-          header (in this case a <code>&lt;core-toolbar></code> element), and some content. By
-          default, the header stays at the top of the screen, but it can also be
-          set to scroll with the content.</li>
-      <li>The <code><a href="/docs/elements/core-elements.html#core-toolbar">&lt;core-toolbar></a></code> element serves
-          as a container for tabs, menu buttons, and other controls.</li>
+      <li>
+          <code><a href="/docs/elements/core-elements.html#core-header-panel">&lt;core-header-panel&gt;</a></code>エレメントはヘッダ（この例では<code>&lt;core-toolbar></code>エレメント）やその他の要素を保持するシンプルなコンテナです。デフォルトではヘッダはページ上部に常に表示されますが、コンテンツと一緒にスクロールさせることもできます。
+          </li>
+      <li><code><a href="/docs/elements/core-elements.html#core-toolbar">&lt;core-toolbar></a></code>エレメントはタブ、メニューボタン、その他コントロールのコンテナとして働きます。</li>
     </ul>
   </aside>
 </side-by-side>
@@ -156,13 +144,9 @@ To add a toolbar, add the following code inside the `<body>` tag.
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add the tabs.
+タブを追加します。
 
-The application will use tabs for navigating between two different views,
-a list of all messages and a list of favorites. The
-<code><a href="/docs/elements/paper-elements.html#paper-tabs">&lt;paper-tabs&gt;</a></code>
-element works much like a `<select>` element, but it's styled as a set of
-tabs.
+このアプリケーションでは二つの異なるビューを切り替えるのにタブを使います。各々のタブにはメッセージ一覧とお気に入り一覧が表示されます。<code><a href="/docs/elements/paper-elements.html#paper-tabs">&lt;paper-tabs&gt;</a></code>エレメントは`<select>`エレメントのように振る舞いますが、一組のタブとして表示されます。
 
 <side-by-side>
 <pre>
@@ -178,21 +162,16 @@ tabs.
 ...
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
       <li>
-        <code>&lt;paper-tabs></code> identifies the selected child by its name
-        value or its index value.
-      </li>
+        <code>&lt;paper-tabs></code> は選択状態のタブをname属性の値か、インデックスで識別します。      </li>
       <li>
-        <code>selected="all"</code> chooses the first tab as the initially selected tab.
+        <code>selected="all"</code> 属性は、最初のタブを選択状態にします。
       </li>
-      <li>In this case, the children are <code>&lt;paper-tab></code> elements, which provide
-         styling and the "ink ripple" animation when you touch a tab.
-      </li>
+      <li>この例では、子要素は<code>&lt;paper-tab></code>エレメントです。このエレメントはタブにスタイルと、タブが選択された時の"ink ripple"アニメーションを追加します。      </li>
       <li>
-        <code>self-end</code> is a
-        <a href="/docs/polymer/layout-attrs.html">layout attribute</a>.
+        <code>self-end</code> は Polymerの<a href="/docs/polymer/layout-attrs.html">レイアウト属性</a>です。
       </li>
 
     </ul>
@@ -203,7 +182,7 @@ tabs.
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add styles for the new elements. Add the following CSS rules inside the `<style>` element.
+新しい要素にスタイルを適用します。以下のCSSルールを`<style>`タグ内に追加して下さい。
 
 <side-by-side>
 <pre>
@@ -233,15 +212,12 @@ core-toolbar {
 }</strong>
 </pre>
 <aside>
-  <h4>Key information</h4>
+  <h4>ポイント</h4>
   <ul>
-    <li>The <code>&lt;core-header-panel&gt;</code> is a generic element that can be used as either a
-        full-page layout or for a card with a toolbar. To use it as a full-page, scrollable container,
-        set its height explicitly. </li>
-    <li>Here, the height is set to 100%. This works because the existing style rules ensure that its
-        parent elements,
-        <code>&lt;html&gt;</code> and <code>&lt;body&gt;</code>, take up 100% of the viewport height.</li>
-    <li>The <code>overflow</code> and <code>-webkit-overflow-scrolling</code> properties ensure that
+    <li><code>&lt;core-header-panel&gt;</code> はレイアウト用の汎用要素で、ページ全体を覆ったり、ツールバーの一部として使ったりできます。core-header-panelをページ全体を覆うスクロール可能なコンテナとして使うには、高さを明示的に指定します。</li>
+    <li>ここでは高さを100%に設定しています。この指定が意味を持つのは、親要素の<code>&lt;html&gt;</code> タグと <code>&lt;body&gt;</code>タグが100%の高さを占めることがすでにCSSで指定されているからです。
+    </li>
+    <li> <code>overflow</code> プロパティと <code>-webkit-overflow-scrolling</code> プロパティはタッチパネル搭載機器でスクロールがproperties ensure that
         scrolling works smoothly on touch devices, especially iOS.</li>
     <li>The <code>#tabs</code> selector selects the <code>&lt;paper-tabs&gt;</code> element. The toolbar adds a default margin on its children, to space controls appropriately. The tabs don't need this extra spacing.</li>
     <li>The <code>user-select</code> properties prevent the user from accidentally selecting the tab text.</li>

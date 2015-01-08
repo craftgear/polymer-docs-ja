@@ -4,7 +4,7 @@ type: start
 navgroup: docs
 shortname: Start
 title: "Step 2: Creating your own element"
-subtitle: Your first Polymer application 
+subtitle: はじめてのPolymerアプリケーション
 ---
 
 <link rel="import" href="/elements/side-by-side.html">

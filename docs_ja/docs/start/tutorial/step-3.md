@@ -3,7 +3,7 @@ layout: default
 type: start
 shortname: Start
 title: "Step 3: Using data binding"
-subtitle: Your first Polymer application
+subtitle: はじめてのPolymerアプリケーション
 ---
 
 <link rel="import" href="/elements/side-by-side.html">

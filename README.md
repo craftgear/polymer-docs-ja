@@ -53,8 +53,8 @@
 | 完 | docs/start/getting-the-code.md |
 | 未 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
-| 進 | docs/start/tutorial/intro.md |
-| 未 | docs/start/tutorial/step-1.md |
+| 完 | docs/start/tutorial/intro.md |
+| 進 | docs/start/tutorial/step-1.md |
 | 未 | docs/start/tutorial/step-2.md |
 | 未 | docs/start/tutorial/step-3.md |
 | 未 | docs/start/tutorial/step-4.md |
