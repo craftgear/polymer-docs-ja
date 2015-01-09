@@ -13,7 +13,7 @@
 
 ### 進捗
 
-3/54 完了
+4/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -54,8 +54,8 @@
 | 未 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
 | 完 | docs/start/tutorial/intro.md |
-| 進 | docs/start/tutorial/step-1.md |
-| 未 | docs/start/tutorial/step-2.md |
+| 完 | docs/start/tutorial/step-1.md |
+| 進 | docs/start/tutorial/step-2.md |
 | 未 | docs/start/tutorial/step-3.md |
 | 未 | docs/start/tutorial/step-4.md |
 | 未 | docs/start/usingelements.md |
