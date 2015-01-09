@@ -3,7 +3,7 @@ layout: default
 type: start
 navgroup: docs
 shortname: Start
-title: "Step 2: Creating your own element"
+title: "Step 2: 独自エレメントを作る"
 subtitle: はじめてのPolymerアプリケーション
 ---
 
@@ -14,7 +14,8 @@ subtitle: はじめてのPolymerアプリケーション
 {% include toc.html %}
 
 
-## Step 2: Your own element
+## Step 2: あなただけのエレメント
+
 
 Now that you have a basic application structure, you can start building a card element to display a post. The finished card includes space for a profile picture, name, favorite button, and a content area.
 

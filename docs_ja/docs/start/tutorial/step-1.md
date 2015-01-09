@@ -217,10 +217,11 @@ core-toolbar {
     <li><code>&lt;core-header-panel&gt;</code> はレイアウト用の汎用要素で、ページ全体を覆ったり、ツールバーの一部として使ったりできます。core-header-panelをページ全体を覆うスクロール可能なコンテナとして使うには、高さを明示的に指定します。</li>
     <li>ここでは高さを100%に設定しています。この指定が意味を持つのは、親要素の<code>&lt;html&gt;</code> タグと <code>&lt;body&gt;</code>タグが100%の高さを占めることがすでにCSSで指定されているからです。
     </li>
-    <li> <code>overflow</code> プロパティと <code>-webkit-overflow-scrolling</code> プロパティはタッチパネル搭載機器でスクロールがproperties ensure that
-        scrolling works smoothly on touch devices, especially iOS.</li>
-    <li>The <code>#tabs</code> selector selects the <code>&lt;paper-tabs&gt;</code> element. The toolbar adds a default margin on its children, to space controls appropriately. The tabs don't need this extra spacing.</li>
-    <li>The <code>user-select</code> properties prevent the user from accidentally selecting the tab text.</li>
+    <li> <code>overflow</code> プロパティと <code>-webkit-overflow-scrolling</code> プロパティはタッチパネル搭載機器、特にiOS搭載機器でスクロールがスムーズに動くようにします。
+    </li>
+    <li><code>#tabs</code>セレクタは<code>&lt;paper-tabs&gt;</code>エレメントのスタイルを指定します。core-toolbarは子要素を適切に配置するため、デフォルトマージンを設定します。そのためpaper-tabsには余白は必要ありません。
+    </li>
+    <li><code>user-select</code>プロパティはユーザが誤ってタブのテキストを選択してしまうことを防ぎます。</li>
   </ul>
 </aside>
 </side-by-side>
@@ -229,9 +230,7 @@ core-toolbar {
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add a `<script>` tag near the end of the file to handle the tab switching
-    event.
-
+`<script>`タグをファイルの最後の方に追加し、タブの切り替えイベントを処理できるようにします。
 
 <side-by-side>
 <pre>
@@ -245,48 +244,43 @@ Add a `<script>` tag near the end of the file to handle the tab switching
 </strong>&lt;/body>
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
       <li>
-        The <code>&lt;paper-tabs></code> element fires a <code>core-select</code> event when you select a
-        tab. You can interact with the element just like a built-in element.
+        <code>&lt;paper-tabs&gt;</code>エレメントは、タブが選択されると<code>core-select</code>イベントを発行します。ビルトインエレメントと同様に扱うことができます。
       </li>
       <li>
-        Right now there's nothing to switch; you'll finish hooking it up later.
+        今のところ切り替えるものは何もありません。後ほど処理を追加します。
       </li>
     </ul>
   </aside>
 </side-by-side>
 
 
-Save the file and open the project in your browser (for example, [http://localhost:8000/starter/](http://localhost:8000/starter/)). You have a Polymer app!
+ファイルを保存し、ブラウザでプロジェクトページ（例えば、[http://localhost:8000/starter/](http://localhost:8000/starter/)）を開いて下さい。Polymerアプリケーションが表示されます。
 
 
 <div layout vertical center>
   <img class="sample" src="/images/tutorial/step-1.png">
 </div>
 
-**Note:** If you have the console open, you'll notice that you get two `core-select`
-events each time you switch tabs &mdash; one for the previously-selected tab and one
-for the newly-selected tab. The `<paper-tabs>` element inherits this behavior from
-<code><a href="/docs/elements/core-elements.html#core-selector">&lt;core-selector&gt;</a></code>, which supports
-both single and multiple selections.
+**注意:** コンソールを開いていると、タブを切り替えるたびに`core-select`イベントが二回発行されるのに気がつくと思います。&mdash; 一つはもともと選択されていたタブからのイベントで、もうひとつは新しく選択されたタブからのイベントです。`<paper-tabs>`エレメントは、複数選択もサポートする<code><a href="/docs/elements/core-elements.html#core-selector">&lt;core-selector&gt;</a></code>からこの振る舞いを継承しています。
 {: .alert .alert-info }
 
-If something isn't working, check your work against the `index.html` file in the `step-1` folder:
+うまく動かない時は `step-1` フォルダにある `index.html` ファイルと付き合わせて違いを探して下さい:
 
 -   [`index.html`](https://github.com/Polymer/polymer-tutorial/blob/master/step-1/index.html)
 
-In this step, you used HTML imports to import custom elements, and used them to create a simple app layout.
+このステップではカスタムエレメントをインポートするのにHTML importsを使い、インポートしたカスタムエレメントを簡単なアプリケーションのレイアウトを作るのに利用しました。
 
-**Explore:** Can you use other children inside the `<paper-tabs>`? Try an image or a text span.
+**やってみよう:** `<paper-tabs>`に他の子要素を追加できるでしょうか？imageやspanを追加してみましょう。
 {: .alert .alert-info }
 
 <div layout horizontal justified class="stepnav">
 <a href="/docs/start/tutorial/intro.html">
-  <paper-button><core-icon icon="arrow-back"></core-icon>Getting Started</paper-button>
+  <paper-button><core-icon icon="arrow-back"></core-icon>プロジェクトを始めよう</paper-button>
 </a>
 <a href="/docs/start/tutorial/step-2.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Step 2: Creating your own element</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Step 2: 独自エレメントを作る</paper-button>
 </a>
 </div>
