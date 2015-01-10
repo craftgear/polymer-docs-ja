@@ -16,14 +16,13 @@ subtitle: はじめてのPolymerアプリケーション
 
 ## Step 2: あなただけのエレメント
 
-
-Now that you have a basic application structure, you can start building a card element to display a post. The finished card includes space for a profile picture, name, favorite button, and a content area.
+さて、基本的なアプリケーションの構造は完成しました。次は記事を表示するカードエレメントを作る番です。完成したエレメントはプロフィール画像、名前、お気に入りボタン、およびコンテンツエリアを含みます。
 
 <div layout vertical center>
   <img class="sample" src="/images/tutorial/card.png">
 </div>
 
-In this step, you'll create a `<post-card>` element that controls the layout and styling of its children, so you can create a card like the one above using simple markup like this:
+このステップでは、`<post-card>`エレメントを作ります。このエレメントは子要素のスタイルとレイアウトをコントローします。上の画像にあるようなカードを、次のようなシンプルなマークアップで作ることができるようになります:
  
     <post-card>
       <img src="profile-picture.png">
@@ -31,22 +30,21 @@ In this step, you'll create a `<post-card>` element that controls the layout and
       <p>Something really profound about code.</p>
     </post-card>
 
-In this step, you'll learn about:
+このステップで学ぶことは次のとおりです:
 
--   Creating a custom element using Polymer.
--   Working with shadow DOM.
+-   Polymerの機能を使ってカスタムエレメントを作る
+-   shadow DOMを利用する
 
 <aside class="alert alert-info">
-<p><b>Learn more:</b>Shadow DOM provides you a way to add a local DOM tree
-inside a DOM element, with local styles and markup that are decoupled from the rest of the web page.</p>
-<p>To learn more about shadow DOM, see the <a href="/platform/shadow-dom.html">
-Shadow DOM polyfill docs</a>.</p>
+<p><b>さらに詳しく:</b>Shadow DOMはDOM要素内にローカルなDOMツリーを追加する機能を提供します。ローカルDOMツリーはウェブページからは切り離され、ローカルなスタイルとマークアップを持ちます。
+</p>
+<p>shadow DOMについてより詳しく学ぶには、  <a href="/platform/shadow-dom.html">
+Shadow DOM polyfill ドキュメント</a>を参照して下さい。</p>
 </aside>
 
-### Edit post-card.html
+### post-card.html ファイルを編集する
 
-Open `post-card.html` in your editor. This file contains the skeleton of a    
-custom element, starting with some imports:
+`post-card.html`をエディタで開きます。このファイルにはカスタムエレメントのひな形が用意されています。まずはインポートから始めましょう:
 
 <side-by-side>
 <pre>
@@ -57,17 +55,16 @@ custom element, starting with some imports:
 ...
 </pre>
 <aside>
-<h4>Key information</h4>
+<h4>ポイント</h4>
 
 <ul>
-<li>As in the previous step, <code>&lt;link rel="import"&gt;</code> is used to import
-    elements the <code>post-card</code> element relies on.</li>
+<li>前回と同じように、<code>&lt;link rel="import"&gt;</code>を使って <code>post-card</code> が必要とするエレメントをインポートします。</li>
 
 </ul>
 </aside>
 </side-by-side>
 
-Next is the definition of the element itself:
+次はエレメントそのものの定義です:
 
 <side-by-side>
 <pre>
@@ -93,27 +90,28 @@ Next is the definition of the element itself:
   ...
 </pre>
 <aside>
-<h4>Key information</h4>
+<h4>ポイント</h4>
 
-<ul><li>The <code>&lt;polymer-element&gt;</code> element is how you define a new custom 
-    element in Polymer. In this case, you're creating an element called 
-    "post-card". </li>
-<li>The <code>&lt;template&gt;</code> defines the element's internal DOM structure, or <em>shadow DOM</em>. This is where 
-    you'll add markup for your custom element.</li>
-<li>Used inside a shadow DOM tree, the <code>:host</code> pseudo-class matches the element that <em>hosts</em> 
-    the tree. In this case, it matches the <code>&lt;post-card&gt;</code> element.</li>
-<li>Ordinary selectors used inside the shadow DOM are 
-    <em>scoped</em> to the shadow DOM. The <code>.card-header</code> here only matches elements in this element's shadow DOM.</li>
+<ul><li>
+    <code>&lt;polymer-element&gt;</code>エレメントを使うのが、Polymerを使って新しいカスタムエレメントを作る方法です。この例では "post-card" という名前のエレメントを作ります。
+    </li>
+<li>
+The <code>&lt;template&gt;</code> はエレメント内部のDOM構造すなわち<em>shadow DOM</em>を定義します。ここがカスタムエレメントのマークアップを記述する場所です。
+    </li>
+<li>
+shadow DOM ツリー内部で、<code>:host</code>仮想クラスを呼び出すと、<em>このツリーを含んでいるエレメント</em>を指定します。この例では<code>&lt;post-card&gt;</code>エレメントになります。
+    </li>
+<li>
+shadow DOM内で通常のセレクタを呼び出すと、そのセレクタはshadow DOM内に<em>限って</em>有効になります。<code>.card-header</code>というクラス指定は、このカスタムエレメントのshadow DOM内でのみ有効です。
+    </li>
 </ul>
 </aside>
 </side-by-side>
 
-**Note:** The `<polymer-element>` tag can include only one `<template>` tag as a _direct_ descendant.
-This tag defines the shadow DOM for the element. Other `<template>` tags may be nested inside the outer
-template tag.
+**注意:** `<polymer-element>`タグ内 _直下_ には、`<template>`タグをひとつだけ含めることができます。このタグは要素のshadow DOMを定義します。一番外側の`<template>`タグ内に複数の`<template>`タグを含めることができます。 
 {: .alert .alert-info }
 
-At the end of the element definition is a `<script>` tag:
+エレメント定義の最後は`<script>`タグです:
 
 <side-by-side>
 <pre>
@@ -124,40 +122,33 @@ At the end of the element definition is a `<script>` tag:
 &lt;/polymer-element>
 </pre>
 <aside>
-<h4>Key information</h4>
+<h4>ポイント</h4>
 <ul>
-<li>The <code>Polymer</code> call at the end of the file <em>registers</em> the element so 
-    it's recognized by the browser. You'll do more with this in a later 
-    step as well.</li>
+<li>ファイル最後にある<code>Polymer</code>の呼び出しは、エレメントを<em>登録</em>し、ブラウザから認識できるようにします。この後のステップで更に詳しく見ていきます。 </li>
 </ul>
 </aside>
 </side-by-side>
 
 
 <aside class="alert alert-info">
-<p><b>Learn More:</b>
-When you create an instance of <code>&lt;post-card&gt;</code>, the contents from its  
-shadow DOM <code>&lt;template&gt;</code> are inserted as the element's <em>shadow root</em>. These elements are 
-rendered in the browser, but are not included in the element's
-<code>children</code> collection.</p>
-<p>By default, any children added by the user don't render. For example:</p>
+<p><b>さらに詳しく:</b>
+<code>&lt;post-card&gt;</code>のインスタンスを作ると、shadow DOMの<code>&lt;template&gt;</code>がエレメントの<em>shadow root</em>として挿入されます。このエレメントはブラウザ上で表示されますが、エレメントの<code>children</code>コレクションはその限りではありません。
+
+<p>デフォルトでは、ユーザによってカスタムタグ内に追加された子要素は表示されません。例えば:</p>
 
 <pre>&lt;post-card&gt;&lt;h3&gt;Hello!&lt;/h3&gt;&lt;/post-card&gt;</pre>
 
-<p>Creates a <code>&lt;post-card&gt;</code> with a single <code>&lt;h3&gt;</code> element as a child.
-To render the <code>&lt;h3&gt;</code> inside your <code>&lt;post-card&gt;</code>, you need to add an
-<em>insertion point</em>, which tells the browser where to render children in
-the shadow DOM tree.</p>
+<p>このマークアップは、一つの<code>&lt;h3&gt;</code>タグを含んだ<code>&lt;post-card&gt;</code>エレメントを作りますが、<code>&lt;post-card&gt;</code>内の<code>&lt;h3&gt;</code>を表示するには、<em>insertion point</em>をテンプレートに追加する必要があります。insertion pointはshadow DOM内のどこに子要素を表示するのかをブラウザに指示します。
+</p>
 </aside>
 
 <div class="divider" layout horizontal center center-justified>
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Create the card structure.
+カードの構造を作ります。
 
-Find the `CARD CONTENTS GO HERE` comment and replace it with the `<div>` and
-`<content>` tags shown below.
+`CARD CONTENTS GO HERE`というコメントを見つけて下さい。このコメントを、以下に示すように`<div>`タグと`<content>`タグで置き換えます。
 
 <side-by-side>
 <pre>
@@ -170,40 +161,30 @@ Find the `CARD CONTENTS GO HERE` comment and replace it with the `<div>` and
 &lt;content>&lt;/content></strong>
 </pre>
   <aside>
-  <h4>Key information</h4>
+  <h4>ポイント</h4>
     <ul>
-    <li>The <code>layout horizontal center</code> attributes are Polymer shorthand to
-    create a flexbox layout. </li>
-    <li>The three <code>&lt;content&gt;</code> elements create <em>insertion points</em>. <br />
-    (The shadow DOM spec calls this process of selecting nodes
-    <em>distribution</em>).</li>
-    <li>Any <code>&lt;img&gt;</code> children match the first <code>&lt;content&gt;</code> tag and are inserted
-    here.</li>
-    <li>The second <code>&lt;content&gt;</code> tag selects any <code>h2</code> children.</li>
-    <li>The final <code>&lt;content&gt;</code> tag, with no <code>select</code> attribute, selects any
-    nodes that haven't already been inserted. (This is probably the most
-    common form of <code>&lt;content&gt;</code> element.)</li>
+    <li><code>layout horizontal center</code>属性はflexboxレイアウトをつくためのPolymerのショートカットです。 </li>
+    <li>3つの <code>&lt;content&gt;</code> エレメントは<em>insertion points</em>を作ります。 <br />
+    (shadow DOM 仕様ではこのプロセスをselecting nodes<em>distribution</em>と呼びます)</li>
+    <li>子要素の<code>&lt;img&gt;</code>タグは最初の <code>&lt;content&gt;</code> タグの位置に挿入されます。</li>
+    <li>二番目の <code>&lt;content&gt;</code> タグの位置には子要素の <code>h2</code> タグが挿入されます。</li>
+    <li>最後の <code>&lt;content&gt;</code> タグには <code>select</code> 属性が無いため、残りの要素が全部個々に挿入されます。(おそらくこれがもっとも一般的な <code>&lt;content&gt;</code> エレメントの使われ方でしょう。)</li>
     </ul>
   </aside>
 </side-by-side>
 
-**Selecting content**: The `select` attribute on a `content` element accepts a [limited set of 
-CSS selectors](http://w3c.github.io/webcomponents/spec/shadow/#satisfying-matching-criteria). 
-You can only select direct children of the host node, not descendents. 
+**コンテンツの選択について**: `content`エレメントの`select` 属性には[限られたCSSセレクタ](http://w3c.github.io/webcomponents/spec/shadow/#satisfying-matching-criteria)のみ指定可能です。親ノード直下のエレメントのみ選択可能です。
 {: .alert .alert-info }
 
 <div class="divider" layout horizontal center center-justified>
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Style the imported content.
+インポートしたコンテンツのスタイルを設定します。
 
-There are a number of new CSS selectors to work with. The `post-card.html` 
-file already includes a `:host` selector, discussed earlier, to style the 
-top-level `<post-card>` element. 
+たくさんの新しいCSSセレクタが出てきます。`post-card.html`ファイルには先ほど説明したとおり、すでに`:host`セレクタがあります。`:host`セレクタはトップレベルの`<post-card>`エレメントを装飾します。
 
-To style the children added using the `<content>` element, add the 
-following CSS inside the `<style>` tag after the existing rules:
+`<content>`エレメントに追加された子要素を装飾するには、次に示すCSSコードを`<style>`タグの既存のルールの後に追加して下さい。
 
 <side-by-side>
 <pre>.card-header {
@@ -224,32 +205,25 @@ polyfill-next-selector { content: '.card-header img'; }
 &lt;/style>
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
-      <li>The <code>::content</code> pseudo element selects an insertion point (created by 
-      a <code>&lt;content&gt;</code> tag).  
-      Here, <code>::content h2</code> selects any <code>h2</code> that's distributed through an
-      insertion point.</li>
-      <li>For browsers that don't support shadow DOM natively the<br />
-      <code>polyfill-next-selector</code> rule tells the shadow DOM polyfill how to
-      transform the <code>::content</code> rule into a non-shadow DOM rule. For 
-      example, without shadow DOM, <code>post-card h2</code> matches any <code>&lt;h2&gt;</code> element
-      inside the card.</li>
+      <li> <code>::content</code> 仮想セレクタで、<code>&lt;content&gt;</code>タグで作られた挿入ポイントを示します。
+      この例では、<code>::content h2</code>のスタイルが、挿入ポイント内にあるすべての<code>h2</code>に適用されます。
+      </li>
+      <li>shadow DOMをネイティブサポートしていないブラウザのために、<br/> <code>polyfill-next-selector</code>ルールがshadow DOM polyfillに<code>::content</code>ルールをshadow DOMではないルールに変換する方法を指定します。例えば、<code>post-card h2</code>はカード内のすべての<code>&lt;h2&gt;</code>にマッチします。 </li>
     </ul>
   </aside>
 </side-by-side>
 
-**Note:** 
-You can't style the insertion point itself, so the 
-<code>::content</code> pseudo element is always used with a descendent selector.
+**注意:** 
+挿入ポイントそのものを装飾することはできません。したがって<code>::content</code>仮想セレクタは常に子要素のセレクタと共に利用されます。
 {: .alert .alert-info }
 
-### Edit index.html
+### index.htmlを編集する
 
-Import the new element into `index.html`.
+新しいエレメントを`index.html`にインポートしましょう。
 
-Save the `post-card.html` file and open `index.html` in your editor. Add 
-the import for `post-card.html` after your existing imports:
+`post-card.html`を保存し、`index.html`をエディタで開きます。既存のインポートの後に、`post-card.html`のインポート指示を追加します。
 
 <side-by-side>
 <pre>
@@ -260,9 +234,9 @@ the import for `post-card.html` after your existing imports:
 ...
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
-      <li>This makes the <code>&lt;post-card&gt;</code> element available for use in <code>index.html</code>.</li>
+      <li>これで<code>index.html</code>内で<code>&lt;post-card&gt;</code>エレメントが使えるようになります。</li>
     </ul>
   </aside>
 </side-by-side>
@@ -271,8 +245,7 @@ the import for `post-card.html` after your existing imports:
   <core-icon icon="polymer"></core-icon>
 </div> 
 
-Add a `<post-card>` element to `index.html` directly after the    
-`<core-toolbar>` element:
+`<post-card>`エレメントを`index.html`の`<core-toolbar>`の直後に追加します:
 
 <side-by-side>
 <pre>
@@ -290,42 +263,40 @@ Add a `<post-card>` element to `index.html` directly after the
 ...
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
-      <li>The child elements you specify here are <em>distributed</em> into the 
-          <code>&lt;post-card&gt;</code> element's insertion points.</li>
+      <li>ここでpost-cardタグ内に追加された子要素は、<code>&lt;post-card&gt;</code>内の挿入ポイントに<em>配置</em>されます。</li>
     </ul>
   </aside>
 </side-by-side>
 
-### Test your work
+### ここまでの成果をみる
 
-Save your changes and reload the page. Your application should now look like this:
+変更を保存しページを再読み込みして下さい。今やあなたのアプリケーションは次の画像のようになっているはずです:
 
 <div layout vertical center>
   <img class="sample" src="/images/tutorial/step-2.png">
 </div>
 
-The card still needs a favorite button, but it's starting to take shape. 
+カードにはまだお気に入りボタンを追加する必要があります。しかし形はできてきました。
 
-If something isn't working, check your work against the files in the `step-2` folder:
+もしうまく動かない場合は、`step-2`フォルダにあるファイルと自分のファイルを比較してみてください。
+
 
 -   [`post-card.html`](https://github.com/Polymer/polymer-tutorial/blob/master/step-2/post-card.html)
 -   [`index.html`](https://github.com/Polymer/polymer-tutorial/blob/master/step-2/index.html)
 
 
-**Explore:** Play around with the insertion points to get a feeling for how 
-they work. Does anything change if you reorder the `<post-card>`'s children in 
-`index.html`? What if you include multiple images, or add plain text? You can 
-also try swapping the two `select=` attributes in `post-card.html`.
+**やってみよう:** 挿入ポイントの動作をより良く理解するために色々と試してみましょう。
+`<post-card>`の子要素の順番を入れ替えるとなにか変わるでしょうか？複数のイメージタグを追加したら？あるいはテキストならどうでしょう？`post-card.html`の`select=`属性を入れ替えてみるのもいいかもしれません。
 {: .alert .alert-info }
 
 
 <div layout horizontal justified class="stepnav">
 <a href="/docs/start/tutorial/step-1.html">
-  <paper-button><core-icon icon="arrow-back"></core-icon>Step 1: Creating the app structure</paper-button>
+  <paper-button><core-icon icon="arrow-back"></core-icon>Step 1: アプリケーションの構造を作る</paper-button>
 </a>
 <a href="/docs/start/tutorial/step-3.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Step 3: Using data binding</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Step 3: データバインディングを利用する</paper-button>
 </a>
 </div>
