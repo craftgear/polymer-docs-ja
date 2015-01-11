@@ -2,7 +2,7 @@
 layout: default
 type: start
 shortname: Start
-title: "Step 4: Finishing touches"
+title: "Step 4: 最後の仕上げ"
 subtitle: はじめてのPolymerアプリケーション
 ---
 

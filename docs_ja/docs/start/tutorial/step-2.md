@@ -278,7 +278,7 @@ polyfill-next-selector { content: '.card-header img'; }
   <img class="sample" src="/images/tutorial/step-2.png">
 </div>
 
-カードにはまだお気に入りボタンを追加する必要があります。しかし形はできてきました。
+カードにはまだお気に入りボタンを追加する必要があります。しかしアプリケーションは形になり始めました。
 
 もしうまく動かない場合は、`step-2`フォルダにあるファイルと自分のファイルを比較してみてください。
 
