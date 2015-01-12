@@ -24,21 +24,19 @@ subtitle: はじめてのPolymerアプリケーション
 }
 </style>
 
-## Step 4: Finishing touches
+## Step 4: 最後の仕上げ
 
-In this section, you'll finish up the app by adding a favorite button to the cards and connecting the tabs to the `<post-list>` control.
+このセクションでは、カードにお気に入りボタンを追加し、タブを`<post-list>`コントロールに接続してアプリケーションを完成させます。
 
-In this section you'll learn about:
+このセクションで学ぶことは次のとおりです:
 
--   Declarative event handling.
--   Adding properties and methods to the element's prototype.
--   Automatic node finding.
+-   宣言的なイベントハンドリング
+-   プロパティとメソッドをエレメントのprototypeに追加
+-   自動ノード検索
 
-### Edit post-card.html
+### post-card.htmlを編集する
 
-Open `post-card.html` in your editor and add the
-<code><a href="/docs/elements/core-elements.html#core-icon-button">&lt;core-icon-button></a></code>
-element:
+`post-card.html`をエディタで開き、<code><a href="/docs/elements/core-elements.html#core-icon-button">&lt;core-icon-button></a></code>エレメントを追加します。
 
 <side-by-side>
 <pre>
@@ -56,15 +54,11 @@ element:
 &lt;content>&lt;/content>
 </pre>
 <aside>
-  <h4>Key information</h4>
+  <h4>ポイント</h4>
   <ul>
-    <li>As the name implies, <code>&lt;core-icon-button&gt;</code> creates a button with an
-    embedded icon. {{site.project_title}} includes several sets of
-    scalable icons.</li>
-    <li>The <code>icon="favorite"</code> attribute selects the heart icon from the
-    default icon set.</li>
-    <li>The <code>on-tap=</code><wbr><code>"{%raw%}{{favoriteTapped}}{%endraw%}"</code> attribute specifies a method to call
-    on the <code>post-card</code> element when the button is tapped.</li>
+    <li>名前からわかるとおり、<code>&lt;core-icon-button&gt;</code>はアイコン付きのボタンを作ります。{{site.project_title}}には拡大可能なアイコンのセットがいくつかあります。</li>
+    <li><code>icon="favorite"</code> 属性はデフォルトのアイコンセットからハートアイコンを選びます。</li>
+    <li><code>on-tap=</code><code>"{%raw%}{{favoriteTapped}}{%endraw%}"</code> 属性は、ボタンがタップされた時に<code>post-card</code>エレメントが呼び出すメソッドを指定します。</li>
   </ul>
 </aside>
 </side-by-side>
@@ -73,8 +67,7 @@ element:
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add the `favorite` property and `favoriteTapped` method to the element's
-prototype.
+`favorite`プロパティと`favoriteTapped`メソッドをエレメントのprototypeに追加します。
 
 <side-by-side>
 <pre>
@@ -95,30 +88,22 @@ Polymer({
 </pre>
   <aside>
     <ul>
-      <li>The <code>publish</code> object is another way to specify published properties,
-      like the <code>attributes</code> attribute shown in Step 3. Here the
-      <code>favorite</code> property defaults to <code>false</code>, and it <em>reflects</em>, meaning
-      the <code>favorite</code> attribute is updated in the DOM whenever the property value
-      changes.</li>
-      <li>The <code>favoriteTapped</code> event toggles the state of the <code>favorite</code>
-      property (<code>this.favorite</code>), and also fires a custom event, using the
-      built in <code>fire</code> method. (<code>fire</code> is one of several utility methods
-      {{site.project_title}} adds to the prototype of every custom element.)</li>
+      <li><code>publish</code>オブジェクトは公開するプロパティを指定するもうひとつの方法です。ステップ3で見た<code>attributes</code>属性のように、 <code>favorite</code>プロパティのデフォルト値は<code>false</code>に設定され、DOMに<em>反映</em>されます。すなわち、<code>favorite</code>プロパティが更新されると、DOM内の<code>favorite</code>属性もまた更新されます。
+      </li>
+      <li><code>favoriteTapped</code> イベントは<code>favorite</code>プロパティ(<code>this.favorite</code>)の状態を切り替えます。また同時に、<code>fire</code>メソッドに実装されたカスタムイベントを発行します。(<code>fire</code>は{{site.project_title}}がすべてのカスタムエレメントのprototypeに追加するユーティリティメソッドのうちの一つです)</li>
     </ul>
   </aside>
 </side-by-side>
 
-The net result of these changes is that when the favorite button is
-tapped, the favorite property is updated and its corresponding attribute
-is set or unset.
+この変更の結果、お気に入りボタンがタップされると、favoriteプロパティが更新され、対応するfavorite属性も更新されます。
 
-Right now, there's no visual indication that the button is pressed.
+現在のところ、ボタンが押されたことを示す視覚効果は何もありません。
 
 <div class="divider" layout horizontal center center-justified>
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add the following CSS to style the favorite button:
+ボタンのスタイルを変更するため、以下のCSSルールを追加します:
 
 <side-by-side>
 <pre><strong class="highlight nocode">
@@ -135,9 +120,8 @@ core-icon-button {
 </pre>
   <aside>
     <ul>
-      <li>The <code>color</code> property sets the fill color on the icon.</li>
-      <li>The <code>:host([favorite])</code> <code>core-icon-button</code> selector sets the
-      fill color when the <code>favorite</code> attribute is set on the custom element.</li>
+      <li><code>color</code> プロパティはアイコンの塗りつぶし色を設定します。</li>
+      <li><code>:host([favorite])</code> <code>core-icon-button</code> セレクタはカスタムエレメントの<code>favorite</code>属性が設定された時の塗りつぶし食を設定します。</li>
     </ul>
   </aside>
 </side-by-side>
@@ -146,15 +130,14 @@ core-icon-button {
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Save `post-card.html`.
+`post-card.html`を保存して下さい。
 
-At this point, you can reload the page and your favorite buttons should
-work, but there are still a few steps left to finish the app.
+この時点で、ページを再読み込みするとお気に入りボタンが動くようになっているはずです。
+しかし、アプリケーションを完成させるにはまだ少し作業が残っています。
 
-### Edit index.html
+### index.htmlを編集する
 
-Open `index.html` and update the tab event handler to switch views in
-`<post-list>` when the user switches tabs:
+`index.html`を開き、ユーザがタブを切り替えた時に、タブイベントハンドラで`<post-list>`のビューを切り替えるようにします:
 
 <pre>
 &lt;script>
@@ -167,14 +150,13 @@ tabs.addEventListener('core-select', function() {
 &lt;/script>
 </pre>
 
-Save `index.html`.
+`index.html`を保存して下さい。
 
-### Edit post-list.html
+### post-list.htmlを編集する
 
-Open `post-list.html` in your editor.
+`post-list.html`をエディタで開きます。
 
-Update the template that creates the `<post-card>` elements to wire up the
-favorites:
+`<post-card>`を作るテンプレートを更新し、お気に入り状態を反映するようにします:
 
 <side-by-side>
   {% raw %}
@@ -194,29 +176,21 @@ favorites:
   {% endraw %}
   <aside>
     <ul>
-      <li><code>favorite=<wbr>"{%raw%}{{post.favorite}}{%endraw%}"</code> binds the
-      card's <code>favorite</code> value to the
-      value in the array owned by the <code>&lt;post-service&gt;</code>.</li>
-      <li>The <code>on-favorite-tap</code> attribute sets up a handler for the
-      <code>favorite-tap</code> event fired by the <code>&lt;post-card&gt;</code>.</li>
-      <li>The <code>hidden?=</code><wbr><code>"{%raw%}{{}}{%endraw%}"</code> expression is special syntax for a boolean
-      attribute, which sets the attribute if the binding expression
-      evaluates to true. </li>
+      <li><code>favorite=<wbr>"{%raw%}{{post.favorite}}{%endraw%}"</code> はカードの<code>favorite</code>の値を<code>&lt;post-service&gt;</code>にある配列の値と結びつけます。</li>
+      <li><code>on-favorite-tap</code> 属性は、<code>&lt;post-card&gt;</code>によって発行された<code>favorite-tap</code>イベントのイベントハンドラを設定します。</li>
+      <li><code>hidden?=</code><wbr><code>"{%raw%}{{}}{%endraw%}"</code> はブーリアン属性用の特別な書式で、属性の値に設定された式が真の場合に、属性を有効にします。</li>
     </ul>
   </aside>
 </side-by-side>
 
-The binding expression for `hidden` actually does the work of switching
-between the All and Favorites tabs. The `hidden` attribute is a
-standard HTML5 attribute. The default {{site.project_title}} style sheet includes
-a rule to style `hidden` as `display: none` for those browsers that don't support
-`hidden` natively.
+`hidden`に設定された式は、すべてのカードとお気に入りのカードを切り替える役割を果たします。
+`hidden`属性はHTML5の標準属性です。`hidden`をネイティブサポートしないブラウザのために、{{site.project_title}}のデフォルトスタイルシートは`hidden`を`display:none`に設定するルールを含んでいます。
 
 <div class="divider" layout horizontal center center-justified>
   <core-icon icon="polymer"></core-icon>
 </div>
 
-Add an event handler for the `favorite-tap` event to `post-list.html`:
+`post-list.html`の`favorite-tap`イベントにイベントハンドラを設定します:
 
 <side-by-side>
 <pre>
@@ -230,28 +204,21 @@ Add an event handler for the `favorite-tap` event to `post-list.html`:
 </strong>&lt;/script>
 </pre>
   <aside>
-    <h4>Key information</h4>
+    <h4>ポイント</h4>
     <ul>
-      <li><code>sender<wbr>.templateInstance<wbr>.model</code> is a reference to the model data used
-      to construct a template instance. In this case, it includes the <code>post</code>
-      object used to create a <code>&lt;post-card&gt;</code>, so you can retrieve its ID and
-      <code>favorite</code> value.</li>
-      <li><code>this.$.service</code> returns a reference to the <code>&lt;post-service&gt;</code> element.
-      Every element in a custom element's shadow DOM that has an <code>id</code>
-      attribute is added to the <code>this.$</code> dictionary. This is called
-      <a href="/docs/polymer/polymer.html#automatic-node-finding">automatic node finding</a>.</li>
-      <li>If this was a real social networking service, the <code>setFavorite</code> method
-      would persist the change to the server. As is, it doesn't do anything
-      other than log a console message.</li>
+      <li><code>sender<wbr>.templateInstance<wbr>.model</code> は テンプレートインスタンスを作るときに使われたデータへの参照です。この例では、<code>&lt;post-card&gt;</code>を作る際に使われた<code>post</code>オブジェクトを指します。したがって、postのIDと<code>favorite</code>の値を取得できます。</li>
+      <li><code>this.$.service</code> は<code>&lt;post-service&gt;</code>エレメントの参照を返します。カスタムエレメントのshadow DOM内にあるすべてのエレメントは<code>id</code>属性を持ち、この<code>id</code>は<code>this.$</code>に格納されています。これは<a href="/docs/polymer/polymer.html#automatic-node-finding">自動ノード検索</a>と呼ばれています。
+      </li>
+      <li>もしこれが本物のSNSなら、<code>setFavorite</code>メソッドはサーバに変更を保存するでしょう。見ての通りこの例ではコンソールにメッセージを表示する以外何もしません。</li>
     </ul>
   </aside>
 </side-by-side>
 
-### Finished!
+### ついに完成!
 
-Save `post-list.html` and refresh your page.
+`post-list.html`を保存し、ページを再読み込みしてしてください。
 
-That's it &mdash; you're done! With a bit of luck, your application looks like this:
+これで完成です、お疲れ様でした！運が良ければあなたのアプリケーションは次の画像のようにあっているでしょう:
 
 <figure layout vertical center>
   <a href="/apps/polymer-tutorial/finished/" class="unquote-link">
@@ -262,22 +229,22 @@ That's it &mdash; you're done! With a bit of luck, your application looks like t
   </figcaption>
 </figure>
 
-If your project doesn't look quite right, check your work against the files in the `finished` directory:
+もしどこかおかしいところがあるなら、`finish`ディレクトリにあるファイルと自分のファイルを比較してみてください:
 
 -   [`post-card.html`](https://github.com/Polymer/polymer-tutorial/blob/master/finished/post-card.html)
 -   [`post-list.html`](https://github.com/Polymer/polymer-tutorial/blob/master/finished/post-list.html)
 -   [`index.html`](https://github.com/Polymer/polymer-tutorial/blob/master/finished/index.html)
 
-### Start your next project
+### 新たなプロジェクトを始める
 
-Ready to start a project of your own? Install some {{site.project_title}} components and get to work!
+新しいプロジェクトを始める準備はいいですか？{{site.project_title}}コンポーネントをインストールして早速仕事にとりかかりましょう！
 
 <div layout horizontal justified class="stepnav">
 <a href="/docs/start/tutorial/step-3.html">
-  <paper-button><core-icon icon="arrow-back"></core-icon>Step 3: Using data binding</paper-button>
+  <paper-button><core-icon icon="arrow-back"></core-icon>Step 3: データバインディングを利用する</paper-button>
 </a>
 <a href="/docs/start/getting-the-code.html#installing-components">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Installing components</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>コンポーネントをインストールする</paper-button>
 </a>
 </div>
 

@@ -13,7 +13,7 @@
 
 ### 進捗
 
-5/54 完了
+7/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -49,15 +49,15 @@
 | 未 | docs/polymer/touch.md |
 | 完 | docs/start/creatingelements.md |
 | 未 | docs/start/customelements.md |
-| 未 | docs/start/everything.md |
+| 進 | docs/start/everything.md |
 | 完 | docs/start/getting-the-code.md |
 | 未 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
 | 完 | docs/start/tutorial/intro.md |
 | 完 | docs/start/tutorial/step-1.md |
 | 完 | docs/start/tutorial/step-2.md |
-| 進 | docs/start/tutorial/step-3.md |
-| 未 | docs/start/tutorial/step-4.md |
+| 完 | docs/start/tutorial/step-3.md |
+| 完 | docs/start/tutorial/step-4.md |
 | 未 | docs/start/usingelements.md |
 | 未 | platform/custom-elements.md |
 | 未 | platform/html-imports.md |
