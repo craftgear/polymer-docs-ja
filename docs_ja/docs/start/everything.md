@@ -2,45 +2,47 @@
 layout: default
 type: start
 shortname: Start
-title: Understanding Polymer
-subtitle: The concepts and layering
+title: Polymerを理解する
+subtitle: そのコンセプトと階層構造
 ---
 
 {% include toc.html %}
 
-{{site.project_title}} isn't like other frameworks or libraries you might have used before. To fully understand what it is, you'll need to understand {{site.project_title}}'s world-view and take a quick tour through its three conceptual layers.
+{{site.project_title}} はあなたが使ったことのあるどのライブラリやフレームワークとも異なっています。Polymerを完全に理解するには、{{site.project_title}}の世界観を理解する必要があります。Polymerの世界を形作る3つの概念的な階層をたどる小旅行に参加して下さい。
 
-## Everything is an Element: The {{site.project_title}} world-view {#everythingis}
+## すべてがエレメントになる: {{site.project_title}} の世界観 {#everythingis}
 
-The philosophy that "_Everything is an element_" is core to understanding {{site.project_title}}.
+"_すべてがエレメントになる_"という原理が{{site.project_title}}を理解する鍵になります。
 
-Ever since the beginning of the web, browsers have shipped with a default set of elements. Most of them, like `<div>`, didn't do very much. But some elements are quite powerful. Consider the humble `<select>`. We take it for granted, but it's actually pretty impressive:
+Webの誕生からこの方、ブラウザはデフォルトのエレメントを備えて世に送り出されてきました。ほとんどのエレメントは、例えば`<div>`のように、大したことはしませんが、いくつかのエレメントはかなり多機能です。おなじみの`<select>`を思い出して下さい。このエレメントはあって当たり前のように思われますが、実際はかなりすごいことをやっているのです:
 
-- **Functional**. The browser already knows what to do with a `<select>` element. When it encounters `<select>` in markup it creates an interactive control for the user.
-- **Reusable**. The `<select>` element is a reusable package of functionality that you don’t have to implement yourself.
-- **Interoperable**. Every JavaScript library knows how to interact with DOM elements.
-- **Encapsulated**. It keeps its internals all tucked away, so including one won't break the rest of your page.
-- **Configurable**. You can configure its behavior with HTML attributes, without using any script.
-- **Programmable**. If you grab the element from the DOM it also has methods and properties for things that don't make sense in markup.
-- **Event Generator**. It dispatches events to let you know when something interesting happens.
-- **Composable**. Not only can you include a `<select>` inside of most other kinds of element, its behavior can also change depending on which things you put inside of it.
+`<select>`エレメントは、
 
-Elements are pretty great. They're the building blocks of the web. Unfortunately, as web apps got more complex, we collectively outgrew the basic set of elements that ships in browsers. Our solution was to replace markup with gobs of script. In that shift, we've lost the elegance of the element.
+- **機能的です**. ブラウザは`<select>`エレメントをどう扱えばよいかすでにわかっています。ブラウザがHTML内に`<select>`エレメントを見つけると、ユーザが操作可能なコントロールを作成します。
+- **再利用可能です**. `<select>`エレメントは再利用可能な機能の集合です。いちから`<select>`エレメントと同じものを作る必要はありません。 
+- **相互運用が可能です**. すべてのJavaScriptライブラリはDOMエレメントの操作方法を知っています。
+- **カプセル化されています**. 内部構造は隠されて見えません。そのため、この要素がページの他の部分を動かなくすることはありません。
+- **設定可能です**. スクリプトを書くことなく、HTML属性を使って振る舞いを変更することができます。
+- **プログラムで操作可能です**. DOMからこのエレメントを取得すると、HTMLでは意味のないメソッドやプロパティと言ったものも備えています。
+- **イベントを発生させます**. なにか起こったことを知らせるイベントを発行します。
+- **組み合わせ可能です**. 他のエレメント内部に`<select>`を入れるだけでなく、`<select>`内部に入れるものによって振る舞いを変更できます。
 
-{{site.project_title}} returns to our roots. We think the answer is not gobs of script, but rather to build more powerful elements. A set of powerful new technologies called Web Components makes this possible.
+エレメントはかなり素晴らしいものです。エレメントはWebを構成する積み木です。残念なことに、Webアプリケーションが複雑になるにつれて、我々は皆ブラウザに備え付けの基本的なエレメントだけでは追いつかなくなってきました。その結果、たくさんのスクリプトでマークアップを置き換えることでしのいできました。この過程で、我々はエレメントの持つ優雅さを失ってしまったのです。
 
-That brings us back to the world-view of {{site.project_title}}: _Everything is an element_
+{{site.project_title}} は基本に立ち返ります。我々はたくさんのスクリプトではなく、より強力なエレメントを作ることが正しい方法だと考えます。Web Componentsという新しい技術セットがこれを可能にしました。
 
-When we say "element", we mean a real element, with all of the great properties of a built-in element. And why limit elements to UI? Some of the properties of elements are UI-specific, but most of them aren’t. Elements can serve as a generic package for reusable functionality.
+ここで思い出されるのが{{site.project_title}}の世界観である _すべてがエレメントになる_ です。
 
-The world looks different when you take this view. You take a few low-level elements, put them together, and make a larger, more powerful element with its internals safely encapsulated. You can take those elements and build even bigger and better elements. Before you know it, you'll arrive at an entirely encapsulated, reusable _app_.
+"エレメント"という言葉が意味するのは、デフォルトのエレメントの素晴らしいプロパティをすべて備えた本当のエレメントです。それに、考えてみて下さい、エレメントをユーザインターフェイスだけに限定する理由はありますか？エレメントのプロパティのうちいくつかはUIに特化したものですが、多くはそうではありません。エレメントは再利用可能な機能の普遍的なパッケージとして存在しうるのです。
 
-In the old world, script was your concrete, and the solution to most of your problems was to use gobs of it. In the new world, elements are your bricks; script is like mortar. Select the bricks that fit your needs most closely and use only a judicious amount of mortar to hold them together. This is what we mean when we say _everything is an element_.
+この視点で見ると、世界は違って見えます。基本的なエレメントを組み合わせて、その複雑さを見せることなく、より大きく強力なエレメントを作れます。さらに自分で作ったエレメントを組み合わせてより大きくより強力なエレメントを作ることもできるのです。それとは気づかずに完全にカプセル化された再利用可能な _アプリケーション_ が完成していることでしょう。
+
+今までの世界では、スクリプトが建物を立てる際のコンクリートの役目を果たしていました。たくさんのコンクリートを使うことが問題解決の方法でした。新しい世界ではエレメントがレンガの役割を果たします。スクリプトはモルタルのようなものです。必要な形に最も近いレンガを選び、少しのモルタルでそれらをつなぎ合わせす。それが、我々の言う、_すべてがエレメントになる_ の意味することなのです。
 
 
-## Layers of {{site.project_title}}
+## {{site.project_title}}の階層構造
 
-There are three conceptual layers to {{site.project_title}}:
+{{site.project_title}}には3つの概念的な階層構造があります:
 
 1. **[Web components](/docs/start/platform.html)**: {{site.project_title}} is built on 
 the Web Components standards. Not all browsers support these features yet, so 
