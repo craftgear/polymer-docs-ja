@@ -3,12 +3,12 @@ layout: default
 type: start
 shortname: Start
 title: Polymerを理解する
-subtitle: そのコンセプトと階層構造
+subtitle: そのコンセプトと構成要素
 ---
 
 {% include toc.html %}
 
-{{site.project_title}} はあなたが使ったことのあるどのライブラリやフレームワークとも異なっています。Polymerを完全に理解するには、{{site.project_title}}の世界観を理解する必要があります。Polymerの世界を形作る3つの概念的な階層をたどる小旅行に参加して下さい。
+{{site.project_title}} はあなたが使ったことのあるどのライブラリやフレームワークとも異なっています。Polymerを完全に理解するには、{{site.project_title}}の世界観を理解する必要があります。Polymerの世界を形作る3つの要素を簡単に見てみましょう。
 
 ## すべてがエレメントになる: {{site.project_title}} の世界観 {#everythingis}
 
@@ -37,43 +37,33 @@ Webの誕生からこの方、ブラウザはデフォルトのエレメント�
 
 この視点で見ると、世界は違って見えます。基本的なエレメントを組み合わせて、その複雑さを見せることなく、より大きく強力なエレメントを作れます。さらに自分で作ったエレメントを組み合わせてより大きくより強力なエレメントを作ることもできるのです。それとは気づかずに完全にカプセル化された再利用可能な _アプリケーション_ が完成していることでしょう。
 
-今までの世界では、スクリプトが建物を立てる際のコンクリートの役目を果たしていました。たくさんのコンクリートを使うことが問題解決の方法でした。新しい世界ではエレメントがレンガの役割を果たします。スクリプトはモルタルのようなものです。必要な形に最も近いレンガを選び、少しのモルタルでそれらをつなぎ合わせす。それが、我々の言う、_すべてがエレメントになる_ の意味することなのです。
+今までの世界では、スクリプトが建物を建てる際のコンクリートの役目を果たしていました。たくさんのコンクリートを使うことが問題解決の方法でした。新しい世界ではエレメントがレンガの役割を果たします。スクリプトはモルタルのようなものです。必要な形に最も近いレンガを選び、少しのモルタルでそれらをつなぎ合わせす。それが、我々の言う、_すべてがエレメントになる_ の意味することなのです。
 
 
-## {{site.project_title}}の階層構造
+## {{site.project_title}}を形作る要素
 
-{{site.project_title}}には3つの概念的な階層構造があります:
+{{site.project_title}}には3つの要素があります:
 
-1. **[Web components](/docs/start/platform.html)**: {{site.project_title}} is built on 
-the Web Components standards. Not all browsers support these features yet, so 
-the [web components polyfill layer](/docs/start/platform.html) fills the gaps, 
-implementing the APIs in JavaScript. At runtime, {{site.project_title}} automatically 
-picks the fastest path -- native implementation or JavaScript.
+1. **[Web components](/docs/start/platform.html)**: {{site.project_title}}はWeb Components標準に基づいて作られています。まだすべてのブラウザがこの仕様をサポートしているわけではありません。そのため、[web components polyfill layer](/docs/start/platform.html) がそのギャップを埋めて、APIをJavaScriptで実装しています。実行時には {{site.project_title}} は自動的に最も速い方法を取ります。すなわち、ネイティブサポートがあればそれを、なければJavaSciptを代わりに使います。
 
-1. **[The {{site.project_title}} library](/docs/start/creatingelements.html)**: The {{site.project_title}}
-library provides a declarative syntax that makes it simpler to define custom elements.  
-And it adds features like two-way data binding, property observation, and gesture 
-support help you build powerful, reusable elements.
+1. **[The {{site.project_title}} library](/docs/start/creatingelements.html)**: {{site.project_title}} ライブラリはカスタムエレメントを定義するのをより簡単にするために宣言的な書式を提供します。さらに、双方向データバインディング、プロパティ監視、ジェスチャーサポートなどの機能も追加します。これによってより強力で再利用可能なエレメントを作れるようになります。
 
-1. **[Elements](/docs/start/usingelements.html)**: The Core and Paper element sets 
-form a comprehensive set of UI and non-UI elements that you can use right out of the box. 
-These elements depend on the {{site.project_title}} library, but are separate and optional.
-You can use the elements without using {{site.project_title}} directly, or you can use
-{{site.project_title}} to create your own elements and not use the Core or Paper elements at all.
-You can mix and match the Core and Paper elements with other elements, including 
-built-in elements and other custom elements.
+1. **[Elements](/docs/start/usingelements.html)**: CoreエレメントとPaperエレメントは、すぐに使えるUI要素と非UI要素の包括的なセットです。これらのエレメントは{{site.project_title}}ライブラリに依存していますが、{{site.project_title}}ライブラリとは別のもので、必須ではありません。{{site.project_title}}を直接使うことなくこれらのエレメントを利用できます。あるいはこれらのエレメントを利用せずに、{{site.project_title}}を使って独自のエレメントを作ることもできます。
+CoreエレメントとPaperエレメントを、デフォルトのHTMLエレメントや他のカスタムエレメントと混ぜあわせたり組み合わせたりすることができます。
 
-## Next steps {#nextsteps}
+## 次のステップ {#nextsteps}
 
-Now that you've got the basic concepts of {{site.project_title}}, it's time to
-start digging in a bit more. Continue on to:
+さて、これで{{site.project_title}}の基本的なコンセプトを理解していただけたものと思います。
+次はより詳しく見て行きましょう。引き続き
 
 <a href="/platform/custom-elements.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>About custom elements</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>カスタムエレメントとはなにか</paper-button>
 </a>
 
-Or jump straight to:
+を読むか、あるいは
 
 <a href="/docs/polymer/polymer.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>API developer guide</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>APIデベロッパーガイド</paper-button>
 </a>
+
+へ進んで下さい。
