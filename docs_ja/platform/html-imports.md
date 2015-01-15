@@ -1,9 +1,9 @@
 ---
 layout: default
-title: About HTML imports
+title: HTML importsについて
 type: start
 shortname: Platform
-subtitle: Include HTML documents in other HTML documents.
+subtitle: HTMLドキュメントを他のHTMLドキュメントで読み込む
 
 feature:
   spec: https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html
@@ -16,16 +16,15 @@ links:
 
 {% include toc.html %}
 
-## Why HTML Imports?
+## なぜHTML Importsが必要なのか?
 
-HTML Imports let you include and reuse HTML documents in other HTML documents,
-just as `<script>` tags let you include external Javascript in their pages.
-In particular, imports let you include
-custom element definitions from external URLs.
+HTML ImportsはHTMLドキュメントを他のHTMLドキュメントに含めて再利用できるようにします。
+ちょうど`<script>`タグが外部JavaScriptファイルをページ内に読み込むのと同じです。
+特に外部URLからカスタムエレメントを読み込むことができます。
 
-## Basic usage
+## 基本的な使い方
 
-For HTML imports use the `import` relation on a standard `<link>` tag, for example:
+HTML Importsを使うには、標準の`<link>`タグに`import`を指定します。例えば次のようになります:
 
     <link rel="import" href="my-custom-element.html">
 

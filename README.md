@@ -13,7 +13,7 @@
 
 ### 進捗
 
-11/54 完了
+12/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -60,12 +60,12 @@
 | 完 | docs/start/tutorial/step-4.md |
 | 未 | docs/start/usingelements.md |
 | 完 | platform/custom-elements.md |
-| 進 | platform/html-imports.md |
+| 完 | platform/html-imports.md |
 | 未 | platform/mdv/observejs.md |
 | 未 | platform/mutation-observers.md |
 | 未 | platform/pointer-events.md |
 | 完 | platform/shadow-dom.md |
-| 未 | platform/web-animations.md |
+| 進 | platform/web-animations.md |
 | 未 | resources/changelog.md |
 | 未 | resources/compatibility.md |
 | 未 | resources/faq.md |
