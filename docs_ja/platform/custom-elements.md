@@ -1,14 +1,14 @@
 ---
 layout: default
-title: About custom elements
+title: カスタムエレメントとはなにか 
 type: start
 shortname: Platform
-subtitle: Define and use new types of DOM elements in a document.
+subtitle: 新しいDOM要素を定義し、利用する
 
 feature:
   spec: https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html
   code: https://github.com/Polymer/webcomponentsjs
-  summary: Enables authors to define and use new types of DOM elements in a document.
+  summary: 新しいDOM要素を定義し、利用できるようになります 
 
 links:
 - "Custom Elements - defining new elements in HTML": http://www.html5rocks.com/en/tutorials/webcomponents/customelements/
@@ -16,67 +16,54 @@ links:
 
 {% include toc.html %}
 
-## Introduction
+## はじめに
 
-If HTML were reinvented tomorrow, it would provide more features
-and greater capability than today.
-For example, if HTML provided `<camera>`, `<carousel>`, and `<tabs>` elements,
-imagine the efficiency and ease of building a photo booth app.
+もしHTMLが明日再発明されたとしたら、より多くの機能を備え、できることが飛躍的に多くなっているでしょう。
+例えば、HTMLに`<camera>`,`<carousel>`,`<tabs>`といったエレメントがあったら、証明写真アプリを作るのがどれほど簡単になるか、想像してみて下さい。
 
-Fortunately, Custom Elements pave a path to {{site.project_title}}'s
-"[Everything is an element](/docs/start/everything.html#everythingis)"
-philosophy.
-Embracing this philosophy means a web app becomes a collection of well-defined,
-reusable components.
+幸いなことに、カスタムエレメントは{{site.project_title}}の"[すべてがエレメントになる](/docs/start/everything.html#everythingis)"という考えを可能にします。この考え方を理解すると、ウェブアプリケーションははっきり定義され、再利用可能なコンポーネントの集合になります。
 
-## What are Custom Elements?
+## カスタムエレメントとはなにか?
 
-Custom Elements let you define your own element types with custom tag names.
-You associate JavaScript code with the custom tags and
-use them as you would any standard tag.
-For example, after registering a special kind of button called `super-button`,
-you use it like this:
+カスタムエレメントはカスタムタグ名を持つ新しいエレメントを定義することを可能にします。
+JavaScriptとカスタムタグを組み合わせて、それらを標準のタグと同じように使います。
+例えば、`super-button`という特殊なボタンを登録したあとで、次のようにしてそのボタンを利用します:
 
     <super-button></super-button>
 
-As with any element, Custom Element instances can also be created in JavaScript.
+他のエレメントと同様に、カスタムエレメントもJavaScript内でインスタンス化することができます。
 
     var s = document.createElement('super-button');
     s.innerHTML = "I'm super!";
 
-**Custom Elements are true elements.**
-You can use standard DOM methods on Custom Elements,
-access their properties, attach event listeners, and style them using CSS
-just as easily as any `div` or `span`.
+**カスタムエレメントは本物のエレメントです**
+`div`や`span`と同様に、カスタムエレメントでは、標準のDOMメソッドを使い、プロパティにアクセスし、イベントリスナを登録し、CSSでスタイルを装飾することができます。
 
-### Why Custom Elements?
+### なぜカスタムエレメントなのか?
 
-Custom Elements have many advantages. They:
+カスタムエレメントには次に上げるようなたくさんの利点があります:
 
-- Reduce the amount of code you have to write.
-- Express the function of the code.
-- Encapsulate internal details.
-- Implement APIs per element type.
-- Increase productivity by letting you reuse elements.
-- Use inheritance to create element tags based on other tags.
+- コードを書く量を減らします
+- コードが何をするのかはっきりと示します
+- 内部構造を隠蔽します
+- エレメントの型ごとにAPIを実装します
+- エレメントを再利用することで生産性を高めます
+- 他のタグを継承した新しいエレメントタグを作ります
 
-## What are {{site.project_title}} elements?
+## {{site.project_title}}エレメントとはなにか?
 
-{{site.project_title}} lets you
-create Custom Elements declaratively and provides special features, such as
-two-way data binding, declarative event handling,
-declarative inheritance, and more.
+{{site.project_title}}はカスタムエレメントを宣言的に作ることを可能にし、双方向データバインディングや、宣言的イベントハンドリング、宣言的継承などの特別な機能を追加します。
 
-## Defining and registering a Custom Element
 
-The Custom Elements specification defines a programmatic way to
-define a Custom Element, using `document.registerElement`.
+## カスタムエレメントの定義と登録
+
+カスタムエレメント仕様には、`document.registerElement`を用いてプログラム的にカスタムエレメントを定義する方法がさだめられています。
 
     var myTag = document.registerElement('my-tag');
 
-However, you don't call `registerElement` directly when using Polymer.
+しかし、Polymerを使えば、`registerElement` を直接呼び出すことはありません。
 
-Use the `<polymer-element>` tag to define a {{site.project_title}} element.
+`<polymer-element>`タグを使い、{{site.project_title}}エレメントを定義します。
 
     <polymer-element name="hello-tag">
       <template>
@@ -87,36 +74,32 @@ Use the `<polymer-element>` tag to define a {{site.project_title}} element.
       </script>
     </polymer-element> 
 
-The `<template>` tag defines UI for the element,
-and the `Polymer()` method within the `<script>` tag registers the element.
+`<template>`タグはエレメントのUIを定義します。
+そして`script`タグ内の`Polymer()`メソッドでこのエレメントを登録します。
 
-**Note: Custom element names must always contain a dash (-).**
+**注意: カスタムエレメントの名前にはダッシュ(-)を含める必要があります**
 
-For more information on defining custom elements with {{site.project_title}},
-see [Element declaration](https://www.polymer-project.org/docs/polymer/polymer.html#element-declaration).
+{{site.project_title}}を使ったカスタムエレメントの作成についてさらに詳しく学ぶには
+[エレメントの宣言](https://www.polymer-project.org/docs/polymer/polymer.html#element-declaration) を参照して下さい。
 
-## Instantiating a {{site.project_title}} element
+##  {{site.project_title}} エレメントのインスタンスを作る
 
-After registration, you can construct an instance of an element either
-imperatively using `document.createElement` or declaratively as follows:
+登録が終わったら、`document.createElement`を使ってプログラム的にエレメントを作るか、次のようにして宣言的にエレメントを作ることができます:
 
     <hello-tag></hello-tag>
 
-If you used `extends` to create a {{site.project_title}} element that derives
-from an existing DOM element
-(something other than `HTMLElement`), use the `is` syntax:
+もし既存のDOMエレメント(`HTMLElement`以外の)から派生した{{site.project_title}}エレメントを作るのに`extends`を使っていたら、`is` 書式を使います:
 
     <button is="count-button"></button>
 
-## Extending existing elements
+## 既存のエレメントを拡張する
 
-A {{site.project_title}} element can extend another element by using the `extends` attribute
-in the definition.
-The parent’s properties and methods are inherited by the child element and data-bound.
-The child element can override the parent's methods.
+{{site.project_title}}エレメントは、定義で`extends`属性を使うことで他のエレメントを拡張できます。
+親のプロパティとメソッドは子に引き継がれ、データバインドされます。
+子エレメントは親エレメントのメソッドをオーバーライドすることができます。
 
-You can extend regular DOM elements such as `button` and `div` as well as Custom Elements.
-Here's an example of extending a button:
+カスタムエレメントだけでなく、`button`や`div`といった標準のDOMエレメントを拡張できます。
+次にボタンを拡張する例を示します:
 
     <polymer-element name="count-button" extends="button"
                      on-click="increment">
@@ -132,26 +115,26 @@ Here's an example of extending a button:
       </script>
     </polymer-element>
 
-For more information and examples, refer to
-[Extending other elements](https://www.polymer-project.org/docs/polymer/polymer.html#extending-other-elements)
+より詳しい内容と例については、[他のエレメントを拡張する](https://www.polymer-project.org/docs/polymer/polymer.html#extending-other-elements) を参照して下さい。
 
-## Types of elements {#elementtypes}
+## エレメントのタイプ {#elementtypes}
 
-You can divide elements into two categories
-based on their use and behavior:
+エレメントはその用途と振る舞いによって二つのカテゴリに分けられます。
 
-- UI elements, which render UI to the screen.
-- Non-UI elements, which provide other utilities. 
+- UIエレメントはUIをスクリーンに表示します
+- 非UIエレメントはそれ以外の機能を提供します
 
-You can use {{site.project_title}} to create both UI and non-UI elements.
+{{site.project_title}}を使ってUIエレメントも非UIエレメントも作ることができます。
 
-###  UI elements {#uielements}
+###  UIエレメント {#uielements}
 
+`<select>`や`<core-selectgor>`といったエレメントは _UIエレメント_　です。
+これらのエレメントはUIを表示するので、ページ上で確認できます。
 Elements like `<select>` and `<core-selector>` are _UI elements_.
 They render UI and are visible on the page.
-A few other examples are [`<core-collapse>`](/components/core-docs/index.html#core-collapse),
+他には [`<core-collapse>`](/components/core-docs/index.html#core-collapse),
 [`<core-toolbar>`](/components/core-docs/index.html#core-toolbar),
-and [`<paper-tabs>`](/components/paper-docs/index.html#paper-tabs):
+, [`<paper-tabs>`](/components/paper-docs/index.html#paper-tabs)といった例があります:
 
     <paper-tabs selected="0">
       <paper-tab>One</paper-tab>
@@ -162,16 +145,16 @@ and [`<paper-tabs>`](/components/paper-docs/index.html#paper-tabs):
 <!-- 
 <iframe src="/components/paper-tabs/demo.html" style="border:none;height:80px;width:100%;"></iframe> -->
 
-### Non-UI elements {#nonuielements}
+### 非UIエレメント {#nonuielements}
 
-Non-UI elements _**don't**_ render anything to the screen.
-That may seem strange, but there are plenty of examples already in HTML:
-`<script>`, `<style>`, and `<meta>` to name a few.
-These elements serve a purpose and do their useful work without rendering UI.
+非UIエレメントはスクリーン上に _**何も表示しません**_
+これは奇妙に感じられるかもしれませんが、すでにたくさんの例がHTMLにあります:
+2,3例を上げると`<script>`, `<style>`, `<meta>` などがそうです。
+これらのエレメントはUIを表示することなくその役割を果たしています。
 
-Non-UI elements provide utility behind the scenes.
-For example, the `<core-ajax>` tag lets you make XHR requests from markup.
-Feed it some configuration attributes and listen for a response:
+非UIエレメントは縁の下の力持ちです。
+例えば、`<core-ajax>`タグはマークアップからXHRリクエストを実行可能にします。
+次のように、属性にいくつかの設定をし、結果を受け取ります:
 
     <core-ajax url="http://gdata.youtube.com/feeds/api/videos/" auto
                params='{"alt":"json", "q":"chrome"}' handleAs="json"></core-ajax>
@@ -182,27 +165,23 @@ Feed it some configuration attributes and listen for a response:
       });
     </script>
 
-Non-UI elements like this one reduce the amount of boilerplate code you have to write.
-They perform their task, get out of your way,
-and hide the details of a complex API like `XMLHttpRequest`.
+このように非UIエレメントはお決まりのコードを書く量を減らしてくれます。`XMLHttpRequest`のような、複雑なAPIの呼び出しを隠し、見えないところで仕事をこなしてくれるのです。
 
-## Resources
+## リソース
 
 - [Custom Elements](http://www.html5rocks.com/en/tutorials/webcomponents/customelements/)
-  &mdash; An article by Eric Bidelman on HTML5 ROCKS.
+  &mdash; HTML5 RocksにあるEric Bidelmanによるカスタムエレメントの解説記事
 - [Webcomponents.org](http://webcomponents.org/)
-  &mdash; A website dedicated to discussing Web Components, an emerging standard, which includes Custom Elements.
-- [W3C Specification](http://w3c.github.io/webcomponents/spec/custom/) &mdash; The Web Components specification.
-- [Custom Elements](http://customelements.io/) &mdash; A gallery of Web Components.
-- [GitHub repo](https://github.com/Polymer/webcomponentsjs) &mdash; The custom
-  elements repository.
+  &mdash; カスタムエレメントを含むWeb Componentsについて議論するための専用ウェブサイト
+- [W3C Specification](http://w3c.github.io/webcomponents/spec/custom/) &mdash;Web Components 仕様
+- [Custom Elements](http://customelements.io/) &mdash; Web Componentsのギャラリー
+- [GitHub repo](https://github.com/Polymer/webcomponentsjs) &mdash; カスタムエレメントのリポジトリ
 
-## Next steps {#nextsteps}
+## 次のステップ {#nextsteps}
 
-Learn more about shadow DOM, another building block of the Polymer library,
-or read more about the Polymer core APIs.
+Polymerライブラリのもうひとつの構成要素であるshadow DOMについて、あるいはPolymerコアAPIについて、より詳しく学びましょう
 
 <a href="/platform/shadow-dom.html">
    <paper-button raised><core-icon icon="arrow-forward"></core-icon>Shadow DOM</paper-button>
 <a href="/docs/polymer/polymer.html">
-   <paper-button raised><core-icon icon="arrow-forward"></core-icon>API Developer Guide</paper-button>
+   <paper-button raised><core-icon icon="arrow-forward"></core-icon>APIデベロッパーガイド</paper-button>

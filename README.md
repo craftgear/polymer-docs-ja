@@ -13,7 +13,7 @@
 
 ### 進捗
 
-7/54 完了
+10/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -48,8 +48,8 @@
 | 未 | docs/polymer/template.md |
 | 未 | docs/polymer/touch.md |
 | 完 | docs/start/creatingelements.md |
-| 未 | docs/start/customelements.md |
-| 進 | docs/start/everything.md |
+| 完 | docs/start/customelements.md |
+| 完 | docs/start/everything.md |
 | 完 | docs/start/getting-the-code.md |
 | 未 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
@@ -59,12 +59,12 @@
 | 完 | docs/start/tutorial/step-3.md |
 | 完 | docs/start/tutorial/step-4.md |
 | 未 | docs/start/usingelements.md |
-| 未 | platform/custom-elements.md |
+| 完 | platform/custom-elements.md |
 | 未 | platform/html-imports.md |
 | 未 | platform/mdv/observejs.md |
 | 未 | platform/mutation-observers.md |
 | 未 | platform/pointer-events.md |
-| 未 | platform/shadow-dom.md |
+| 進 | platform/shadow-dom.md |
 | 未 | platform/web-animations.md |
 | 未 | resources/changelog.md |
 | 未 | resources/compatibility.md |
