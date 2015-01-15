@@ -1,9 +1,9 @@
 ---
 layout: default
-title: About shadow DOM
+title: shadow DOMについて
 type: start
 shortname: Platform
-subtitle: Define local DOM trees and control composition.
+subtitle: ローカルDOMを定義し、要素の合成を行う
 
 feature:
   spec: https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html
@@ -24,17 +24,14 @@ links:
 
 {% include toc.html %}
 
-## Why Shadow DOM?
+## なぜShadow DOMが必要なのか?
 
-Shadow DOM separates content from presentation thereby
-eliminating naming conflicts and improving code expression.
+shadow DOMはコンテンツとその表示のされ方を分離します。それによって名前の衝突を無くし、コードを読みやすくします。
 
-## Basic usage
+## 基本的な使用方法
 
-The Shadow DOM spec provides a programmatic method `createShadowRoot`
-for adding a shadow DOM subtree to an element.
-When you define a {{site.project_title}} element,
-you can specify the contents of the element's shadow DOM using a `<template>` tag:
+shadow DOM仕様では、shadow DOMサブツリーをエレメントに追加するのに、`createShadowRoot`というプログラム的な方法がさだめられています。
+{{site.project_title}}エレメントを作るときには、エレメントのshadow DOMに含まれる部分を`<template>`タグを使って指定することができます:
 
     <polymer-element name="my-custom-element" noscript>
       <template>
@@ -44,30 +41,28 @@ you can specify the contents of the element's shadow DOM using a `<template>` ta
       </template>
     </polymer-element>
 
-The `span`, `content`, and `footer` elements are encapsulated within
-the custom element and hidden from the rest of the page.
+`span`, `content`, `footer`の各エレメントはこのカスタムエレメント内に閉じ込められ、ページの他の部分からは見えなくなります。
 
-## Shadow DOM subtrees
+## Shadow DOMサブツリーについて
 
-Shadow DOM allows a single node to express three subtrees: _light DOM_, _shadow DOM_, and _composed DOM_.
+shadow DOMを使うことで一つのノードに3つのサブツリーが含まれることになります。
+3つのサブツリーとは、 _light DOM_, _shadow DOM_, _composed DOM_ のことです。
 
-Together, the light DOM and shadow DOM are referred to as the _logical DOM_. Developers interact with the logical DOM. The browser uses the composed DOM to render the pixels on the screen.
+light DOMとshadow DOMを合わせて _logical DOM_ と呼びます。開発者がlogical DOMを操作する一方で、ブラウザはcomposed DOMを画面上に描画します。
 
 **Light DOM**
 
-The user of your custom element supplies the light DOM:
+あなたの作ったカスタムエレメントを呼び出す際に付け足すのが light DOM です:
 
     <my-custom-element>
       <q>Hello World</q> <!-- part of my-custom-element's light DOM -->
     </my-custom-element>
 
-The light DOM of `<my-custom-element>` is visible to the end-user of the
-element as a normal subtree. The end-user can access `.childNodes`, `.children`, `.innerHTML`, or any other property or method that gives information about a node's subtree.
+`<my-custom-element>`の light DOM は通常のサブツリーとして、カスタムエレメントをタグとして記述するエンドユーザに見えます。エンドユーザはサブツリーについての情報を得るため、`.childNodes`, `.children`, `.innerHTML`やその他のプロパティやメソッドにアクセスできます。
 
 **Shadow DOM**
 
-`<my-custom-element>` may define a shadow DOM by attaching a shadow root to
-itself.
+`<my-custom-element>`にはshadow DOMが定義されているかもしれません。shadow DOMはshadow root をエレメントに追加します。
 
     #document-fragment
       <polymer-element name="my-custom-element" noscript>
@@ -79,24 +74,21 @@ itself.
         </template>
       </polymer-element>
 
-Shadow DOM is internal to the element and hidden from the end-user.
-Shadow DOM nodes are not children of `<my-custom-element>`.
+shadow DOMはエレメントの内側にあり、エンドユーザからは見えません。shadow DOMノードは`<my-custom-element>`の子要素ではありません。
 
-**Note:** Shadow roots are represented as a `#document-fragment` in DevTools.
+**注意:** shadow rootはChromeのDevToolsでは`#document-fragment`と表示されます。
 {: .alert .alert-info }
 
-**Composed (rendered) DOM**
+**Composed (表示される) DOM**
 
-The composed DOM is what the browser actually renders. For rendering, the light
-DOM is distributed into the shadow DOM to produce the composed DOM. The final output
-looks something like this:
+composed DOMはブラウザが実際に表示するものです。表示の際に、light DOMはshadow DOM内に配置され、composed DOMとなります。最終的な出力は次のようになります:
 
     <my-custom-element>
       <span>People say: <q>Hello World</q></span>
       <footer>sometimes</footer>
     </my-custom-element>
 
-Nodes in light DOM or shadow DOM express parent and sibling relationships that match their respective tree structures; the relationships that exist in the composed tree are not expressed anywhere in DOM. So, while the `<span>` in the final composed tree is a child of `<my-custom-element>` and the parent of `<q>`, it is actually a child of the shadow root and `<q>` is a child of `<my-custom-element>`. The two nodes are unrelated but
-Shadow DOM renders them as if they are. In this way, the user can manipulate light DOM or shadow DOM directly as regular DOM subtrees, and let the system take care of keeping the render tree synchronized.
+light DOMとshadow DOMのノードはそれぞれのツリー構造にあった親子・兄弟関係に収まります。ブラウザが表示するツリーには、それらの関係は存在しません。そのため、`<span>`が、表示されるツリー構造では`<my-custom-element>`の子要素であり、`<q>`の親要素であっても、実際には`<span>`はshadow rootの子要素であり、`<q>`は`<my-custome-element>`の子要素です。
+この二つの要素は無関係ですが、shadow DOM はそれらが関係あるかのように表示します。ユーザは通常のDOMサブツリーのようにlight DOMやshadow DOMを操作することができます。その変化に応じて、表示されるツリーをシステムが変更します。
 
 {% include other-resources.html %}
