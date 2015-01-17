@@ -13,7 +13,7 @@
 
 ### 進捗
 
-12/54 完了
+13/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -65,7 +65,7 @@
 | 未 | platform/mutation-observers.md |
 | 未 | platform/pointer-events.md |
 | 完 | platform/shadow-dom.md |
-| 進 | platform/web-animations.md |
+| 完 | platform/web-animations.md |
 | 未 | resources/changelog.md |
 | 未 | resources/compatibility.md |
 | 未 | resources/faq.md |
