@@ -13,7 +13,7 @@
 
 ### 進捗
 
-13/54 完了
+16/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -51,7 +51,7 @@
 | 完 | docs/start/customelements.md |
 | 完 | docs/start/everything.md |
 | 完 | docs/start/getting-the-code.md |
-| 未 | docs/start/platform.md |
+| 完 | docs/start/platform.md |
 | 未 | docs/start/reusableelements.md |
 | 完 | docs/start/tutorial/intro.md |
 | 完 | docs/start/tutorial/step-1.md |
