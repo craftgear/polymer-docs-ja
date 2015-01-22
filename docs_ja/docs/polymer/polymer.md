@@ -2,18 +2,18 @@
 layout: default
 type: guide
 shortname: Docs
-title: API developer guide
+title: APIデベロッパーガイド 
 subtitle: Guide
 ---
 
 {% include toc.html %}
 
-The {{site.project_title}} _core_ provides a thin layer of API on top of web components.
-It expresses {{site.project_title}}'s opinion, provides the extra sugaring that all {{site.project_title}} elements use, and is meant to help make developing web components much easier.
+{{site.project_title}} _core_ はWebComponentsの上に薄いAPIのレイヤを提供します。
+このAPIレイヤは{{site.project_title}}の流儀をはっきり示すとともに、すべての{{site.project_title}}エレメントが使う追加機能を提供し、WebComponentsの開発をより容易にすることを意図しています。
 
-## Element declaration
+## エレメントの宣言
 
-At the heart of {{site.project_title}} are [Custom Elements](/platform/custom-elements.html). Thus, it should be no surprise that defining a {{site.project_title}} element is similar to the way you define a standard Custom Element. The major difference is that {{site.project_title}} elements are created declaratively using `<polymer-element>`.
+{{site.project_title}}の心臓部分は [Custom Elements](/platform/custom-elements.html) です。したがって、標準のカスタムエレメントを定義するのと同じようなやり方で{{site.project_title}}のエレメントを定義するのは何ら不思議ではありません。大きな違いは{{site.project_title}}エレメントは`<polymer-element>`タグを使って宣言的に作られるということです。
 
     <polymer-element name="tag-name" constructor="TagName">
       <template>
@@ -26,71 +26,65 @@ At the heart of {{site.project_title}} are [Custom Elements](/platform/custom-el
       </script>
     </polymer-element>
 
-The element declaration includes:
+エレメントの宣言には以下のものが含まれます:
 
--   The `name` attribute specifies the name of the new custom element.
--   The optional `<template>` element defines HTML content that is
-    cloned into the shadow DOM of each instance of the element.
--   An inline script that _registers_ the element by calling the
-    the `Polymer` method and passing in the element's prototype.
-    Registering the element allows it be recognized as a custom element
-    by the browser.
+-   `name`属性には新しいカスタムエレメントの名前を指定します。
+-   `<template>`エレメントは、カスタムエレメントの各インスタンスにShadowDOMとしてコピーされるHTMLを定義します。`<template>`エレメントは必須ではありません。
+-   インラインスクリプトは`Polymer`メソッドを呼ぶことでカスタムエレメントを _登録_ し、エレメントのprototypeを渡します。カスタムエレメントを登録すると、そのエレメントはブラウザからタグとして認識されるようになります。
 
-**Note:** When the `<polymer-element>` declaration includes both `<template>` and `<script>`
-elements, the `<template>` element **must come first.**
+**注意:** `<polymer-element>`の宣言が、`<template>`と`<script>`エレメントの両方を含んでいるときは、`<template>`エレメントが **先に来なければなりません**
 {: .alert .alert-info }
 
-### Attributes
+### 属性
 
-{{site.project_title}} reserves special attributes to be used on `<polymer-element>`:
+{{site.project_title}}は特別な属性を`<polymer-element>`で使うために予約しています:
 
 <table class="table responsive-table attributes-table">
   <tr>
-    <th>Attribute</th><th>Required?</th><th>Description</th>
+    <th>属性名</th><th>必須かどうか</th><th>説明</th>
   </tr>
   <tr>
-    <td><code>name</code></td><td><b>required</b></td><td>Name for the custom element. Requires a "-".</td>
+    <td><code>name</code></td><td><b>必須</b></td><td>カスタムエレメントの名前、"-"を含む必要がある。
   </tr>
   <tr>
-    <td><code>attributes</code></td><td>optional</td><td>Used to <a href="#published-properties">publish properties</a>.</td>
+    <td><code>attributes</code></td><td>オプション</td><td><a href="#published-properties">公開プロパティ</a>を設定するのに使う。</td>
   </tr>
   <tr>
-    <td><code>extends</code></td><td>optional</td><td>Used to <a href="#extending-other-elements">extend other elements</a>.</td>
+    <td><code>extends</code></td><td>オプション</td><td><a href="#extending-other-elements">他のエレメントを拡張する</a>のに使う。</td>
   </tr>
   <tr>
-    <td><code>noscript</code></td><td>optional</td><td>For simple elements that don't need to call <code>Polymer()</code>. See <a href="#altregistration">Element registration</a>.</td>
+    <td><code>noscript</code></td><td>オプション</td><td><code>Polymer()</code>を呼ぶ必要のない簡単なエレメントの場合に指定する。<a href="#altregistration">エレメントの登録</a>を参照のこと。</td>
   </tr>
   <tr>
-    <td><code>constructor</code></td><td>optional</td><td>The name of the constructor to put on the global object. Allows users to create instances of your element using the <code>new</code> operator (e.g. <code>var tagName = new TagName()</code>).</td>
+    <td><code>constructor</code></td><td>オプション</td><td>グローバルオブジェクトに登録されるコンストラクタの名前。ユーザが<code>new</code>を使ってカスタムエレメントを作成できるようにする。 (例：<code>var tagName = new TagName()</code>).</td>
   </tr>
 </table>
 
-#### Default attributes {#defaultattrs}
+#### デフォルトの属性 {#defaultattrs}
 
-Other attributes you declare on `<polymer-element>` will automatically be included
-on each instance of the element. For example:
+`<polymer-element>`に記述したその他の属性は自動的にエレメントの各インスタンスに含まれます。例えば:
 
     <polymer-element name="tag-name" class="active" mycustomattr>
       <template>...</template>
       <script>Polymer();</script>
     </polymer-element>
 
-When an instance of `<tag-name>` is created, it contains `class="active" mycustomattr`
-as default attributes:
+`<tag-name>`のインスタンスが作られると、`class="active" mycustomattr`がデフォルトで含まれています:
 
     <tag-name class="active" mycustomattr></tag-name>
 
-#### Attribute case sensitivity {#attrcase}
+#### 属性の大文字小文字 Attribute case sensitivity {#attrcase}
 
-It's worth noting that the HTML parser considers attribute names *case insensitive*. Property names in JavaScript are however *case sensitive*.
+HTMLパーサは属性の名前の *大文字小文字を区別しない* ことは気に留めておきましょう。しかし、JavaScriptにおけるプロパティ名は *大文字小文字を区別します* 。
 
-This means that attributes can be written any way that you like, but if you look at an element's attribute list, the names will always be lowercase. Polymer is aware of this and will attempt to match the attributes to properties carefully. For example, this should work as expected:
+これが意味するところは、属性は好きなように名前をつけられるものの、エレメントの属性リストを見ると属性名は常に小文字になっているということです。Polymerはこのことに配慮して、属性とプロパティを注意深く対応させようとします。例えば、次の例では:
 
     <name-tag nameColor="blue" name="Blue Name"></name-tag>
 
-The fact that the `nameColor` attribute is actually lowercase in DOM can generally just be ignored.
 
-This also means that any of the below examples will also work:
+`nameColor`が実はDOMにおいてすべて小文字であるという事実は一般的に無視して構いません。
+
+これはまた、以下のどの例も同じように動くことを意味します:
 
     <name-tag NaMeCoLoR="blue" name="Blue Name"></name-tag>
     <name-tag NAMECOLOR="red" name="Red Name"></name-tag>
@@ -98,46 +92,41 @@ This also means that any of the below examples will also work:
 
 
 
-### Element registration {#altregistration}
+### エレメントの登録 {#altregistration}
 
-The `Polymer` method is used to register an element:
+エレメントを登録するには`Polymer`メソッドを使います:
 
 <pre>
 Polymer([ <em class="nocode">tag-name</em>, ] [<em class="nocode">prototype</em>]);
 </pre>
 
-Where:
+引数の意味は次のとおりです:
 
-*   _tag-name_ matches the `name` attribute in the `<polymer-element>` tag.
-    _tag-name_ is optional **unless the `<script>` tag that calls `Polymer`
-    is placed outside the `<polymer-element>` tag.**
+*   _tag-name_ は`<polymer-element>`タグの`name`属性と一致します。** _tag-name_ は必須ではありませんが、`Polymer`メソッドを呼び出す`<script>`タグが`<polymer-element>`タグの外側にある場合は必須です。**
 
-*   _prototype_ is the prototype for the new element.
- 	See [Adding public properties and methods](#propertiesmethods).
-    _prototype_ is always optional.
+*   _prototype_ は新しいエレメントのプロトタイプです。
+ 	詳しくは [公開メソッドとプロパティを追加する](#propertiesmethods)を参照して下さい。
+    _prototype_ は必須ではありません。
 
-The simplest way to invoke `Polymer` is to place an inline script inside
-your `<polymer-element>` tag:
+`Polymer`メソッドを呼び出す最も簡単な方法は`<polymer-element>`タグの中でインラインスクリプトとして配置することです:
 
     <polymer-element name="simple-tag">
       <template> ... </template>
       <script>Polymer();</script>
     </polymer-element>
 
-**Note:** When the `<polymer-element>` declaration includes both `<template>` and `<script>`
-elements, the `<template>` element **must come first.**
+**注意:** `<polymer-element>`が`<template>`と`<script>`の両方を含む場合は、`<template>`が**必ず先でなくてはなりません。**
 {: .alert .alert-info }
 
-There are several alternatives to registering an element in an an inline script:
+インラインスクリプトでエレメントを登録する方法には他にも何種類かあります:
 
--   [Separating script from markup](#separatescript).
--   [Registering imperatively](#imperativeregister) using JavaScript.
+-   [スクリプトをマークアップから分離する](#separatescript).
+-   JavaScriptを使って[プログラムでエレメントを登録する](#imperativeregister)
 
-#### Separating script from markup {#separatescript}
+#### スクリプトをマークアップから分離する {#separatescript}
 
-For convenient decoupling of script and markup, you don't have to inline your script.
-{{site.project_title}} elements can be created by referencing an external script
-which calls `Polymer`:
+スクリプトとマークアップを分離することで、スクリプトをインラインで書く必要はなくなります。
+{{site.project_title}}エレメントは`Polymer`を呼び出す外部スクリプトを参照することでも作成できます:
 
     <!-- 1. Script referenced inside the element definition. -->
     <polymer-element name="tag-name">
@@ -151,14 +140,12 @@ which calls `Polymer`:
       <template>...</template>
     </polymer-element>
 
-In case #2, where the script is invoked before the `<polymer-element>` tag,
-the call to `Polymer` **must include the tag name**:
+#2の例ではスクリプトが`<polymer-element>`タグの前で呼び出されているため、`Polymer`メソッドの引数に**タグ名を必ず渡す必要があります**:
 
     // tagname.js
     Polymer('tag-name', ... );
 
-For elements that don't require custom properties or methods, you can
-use the `noscript` attribute:
+独自のプロパティやメソッドを必要としないエレメントでは、`noscript`属性を指定出来ます:
 
     <!-- 3. No script -->
     <polymer-element name="tag-name" constructor="TagName" noscript>
@@ -167,15 +154,11 @@ use the `noscript` attribute:
       </template>
     </polymer-element>
 
-The `noscript` attribute is equivalent to including:
+`noscript`属性は以下の処理と同じ意味になります:
 
-    <script>
-    Polymer();
-    </script>
+#### プログラムでエレメントを登録する {#imperativeregister}
 
-#### Registering imperatively {#imperativeregister}
-
-Elements can be registered in pure JavaScript like this:
+エレメントはJavaScriptのみで次のようにして登録することも出来ます:
 
     <script>
       Polymer('name-tag', {nameColor: 'red'});
@@ -193,23 +176,20 @@ Elements can be registered in pure JavaScript like this:
 
     <name-tag name="John"></name-tag>
 
-You need to add the `<polymer-element>` to the document so that the
-Custom Elements polyfill picks it up.
+カスタムエレメントpolyfillが認識できるようにするため、`<polymer-element>`をドキュメントに追加する必要があります。
 
-**Important:** Since the `Polymer` call here is outside the `<polymer-element>`,
-it must include the tag name argument.
+**重要:** この例では`Polymer`メソッドの呼び出しが`<polymer-element>`の外側のため、タグ名を引数に渡す必要があります。
 {: .alert .alert-error }
 
-### Adding public properties and methods {#propertiesmethods}
+### 公開プロパティとメソッドを追加する {#propertiesmethods}
 
-To define methods and properties on your element, pass a prototype object to `Polymer()`:
+自前のエレメントにメソッドとプロパティを定義するには、プロトタイプオブジェクトを`Polymer()`メソッドに渡します:
 
 <pre>
 Polymer([ <em class="nocode">tag-name</em>, ] <em class="nocode">prototype</em>);
 </pre>
 
-The following example defines a property `message`, a property `greeting`
-using an ES5 getter, and a method `foo`:
+次の例は`message`プロパティと、ES5のgetterを使った`greeting`プロパティ、それに`foo`メソッドを定義しています:
 
     <polymer-element name="tag-name">
       <template>{{greeting}}</template>
@@ -224,24 +204,23 @@ using an ES5 getter, and a method `foo`:
       </script>
     </polymer-element>
 
-**Note:** `this` references the custom element itself inside a {{site.project_title}} element. For example, `this.localName == 'tag-name'`.
+**注意:** `this`が指し示すのは{{site.project_title}}エレメント内にあるカスタムエレメントそのものです。例えば `this.localName`は`tag-name`と等しくなります。
 {: .alert .alert-info }
 
-#### Custom element prototype chain
+#### カスタムエレメントのプロトタイプチェーン
 
-{{site.project_title}} assembles a custom element's prototype chain. The chain includes:
+{{site.project_title}} はカスタムエレメントのプロトタイプチェーンを組み立てます。これには次のものが含まれます:
 
--   The prototype object passed to the `Polymer` method.
--   A {{site.project_title}} base prototype that adds a set of built-in methods and properties (see [Built-in element methods](#builtin)).
--   A prototype object for the native DOM object that the custom element extends (by default, `HTMLElement`).
+-   `Polymer`メソッドに渡されたプロタイプオブジェクト
+-   組み込みメソッドやプロパティを追加する{{site.project_title}}のベースプロトタイプ。([Built-in element methods](#builtin)参照のこと)
+-   カスタムエレメントが継承したネイティブDOMエレメントのプロトタイプオブジェクト。(デフォルトでは `HTMLElement`)
 
-Avoid defining a property or method with the same name as a native DOM property or method, such as `id`, `children`,
-`focus`, `title` and `hidden`; the results are unpredictable.
+`id`や`children`, `focus`, `title`, `hidden`といったネイティブDOMの持つプロパティやメソッドと同じ名前のプロパティやメソッドを定義するのは避けて下さい。
+どのような結果になるか予想がつきません。
 
-### Adding private or static variables {#static}
+### プライベート変数やスタティック変数を追加する {#static}
 
-If you need private state within an element, wrap your script using standard
-techniques like anonymous self-calling functions:
+エレメント内部で状態を保持する必要があるなら、自己呼び出しの無名関数といった標準的なテクニックを使ってスクリプトをラップして下さい:
 
     <polymer-element name="tag-name">
       <template>...</template>
@@ -260,18 +239,14 @@ techniques like anonymous self-calling functions:
 
 
 
-### Supporting global variables {#global}
+### グローバル変数をサポートする {#global}
 
-There are times when you may want to define properties of an application globally,
-and then make them available inside all of your elements. For example:
+すべてのエレメントから参照できるグローバルプロパティをアプリケーションで定義したいと思うことがあるかもしれません。例えば:
 
-- A single easing curve for all animations.
-- Information about the currently logged-in user that you consider "global".
+- すべてのアニメーションで使うイージングカーブ
+- 現在ログインしているユーザーの情報
 
-To achieve this, you can use the [MonoState Pattern](http://c2.com/cgi/wiki?MonostatePattern).
-When defining a {{site.project_title}} element, define a closure that closes over the variables
-in question, and then provide accessors on the object's prototype or copy them over to individual
-instances in the `ready` callback.
+これを実現するには、[MonoState Pattern](http://c2.com/cgi/wiki?MonostatePattern)を利用できます。{{site.project_title}}エレメントを定義する際に、グローバルにしたい変数を含むクロージャーを定義し、オブジェクトのプロトタイプにアクセッサメソッドを定義するか、`ready`コールバック関数を使ってこのクロージャを個々のインスタンスにコピーします。
 
     <polymer-element name="app-globals">
       <script>
@@ -291,8 +266,7 @@ instances in the `ready` callback.
       </script>
     </polymer-element>
 
-Then use the `<app-globals>` element as you would any other. You can access its properties
-using {{site.project_title}} data binding or plain JavaScript:
+次に`<app-globals>`エレメントを他のエレメント共に使います。すると、{{site.project_title}}のデータバインディングを使うか、JavaScriptを使って、`<app-global>`エレメントのプロパティにアクセスできるようになります:
 
     <polymer-element name="my-component">
       <template>
@@ -309,7 +283,7 @@ using {{site.project_title}} data binding or plain JavaScript:
       </script>
     </polymer-element>
 
-A slight tweak of this approach lets you configure the value of the globals externally:
+この方法にちょっとした工夫をすることで、グローバル変数の値を外部で設定できるようになります:
 
     <polymer-element name="app-globals" attributes="values">
       <script>
@@ -330,15 +304,13 @@ A slight tweak of this approach lets you configure the value of the globals exte
     </polymer-element>
 
 
-The main page configures the globals by passing attributes:
+次のようにこのエレメントの呼び出し時に属性を渡すことでグローバル変数の値を設定できます:
 
     <app-globals firstname="Addy" lastname="Osmani"></app-globals>
 
-This second version of `app-globals` has a slightly different API than
-the first. The global variables are properties of the `values` object instead of
-direct properties of `app-globals`. Setting values using attributes imposes two
-limitations: the values must be strings, and the variable names are lowercase.
-(See [Attribute case sensitivity](#attrcase) for more information.)
+`app-globals`のこの2つ目の例は最初の例とは少し違ったAPIになっています。グローバル変数は`app-globals`の直接のプロパティではなく、`values`オブジェクトのプロパティになっています。
+属性を使って値を設定する方法には二つの制限があります:値は文字列でなくてはならず、変数名は小文字でなければなりません。
+(詳しくは[属性名の大文字小文字](#attrcase)を参照して下さい。)
 
 To use this `<app-globals>` element with the previous `<my-component>` example,
 you'd need to update the paths that refer to the global variables (for example

@@ -13,7 +13,7 @@
 
 ### 進捗
 
-16/54 完了
+14/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -42,7 +42,7 @@
 | 未 | docs/polymer/helpers.md |
 | 未 | docs/polymer/layout-attrs.md |
 | 未 | docs/polymer/node_bind.md |
-| 未 | docs/polymer/polymer.md |
+| 進 | docs/polymer/polymer.md |
 | 未 | docs/polymer/runtime-config.md |
 | 未 | docs/polymer/styling.md |
 | 未 | docs/polymer/template.md |
