@@ -3,13 +3,23 @@
 [Polymer/docs](https://github.com/Polymer/docs)の私家版翻訳です。
 
 ### ドキュメントを読むには
-セットアップ作業後ローカルでhttpサーバを立ち上げる必要があります。
 
-セットアップについては[オリジナルのREADME.md](./docs_ja/README.md)に書いてあります。
+ビルド作業が必要です。
 
-セットアップ完了後 ``_site``ディレクトリをルートにしてhttpサーバを立ち上げて、ブラウザでアクセスするとドキュメントが読めるようになります。
+```
 
-ローカルhttpサーバはpythonのSimpleHTTPServerが便利です。
+git clone git@github.com:craftgear/polymer-docs-ja.git
+cd polymer-docs-ja/docs_ja
+bundle install
+npm install
+grunt docs
+cd _site
+pythom -m SimpleHTTPServer
+
+```
+ブラウザで http://localhost:8000/docs/start/getting-the-code.html を開く
+
+jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って下さい。
 
 ### 進捗
 
