@@ -44,7 +44,7 @@ subtitle: Guide
     <th>属性名</th><th>必須かどうか</th><th>説明</th>
   </tr>
   <tr>
-    <td><code>name</code></td><td><b>必須</b></td><td>カスタムエレメントの名前、"-"を含む必要がある。
+    <td><code>name</code></td><td><b>必須</b></td><td>カスタムエレメントの名前、"-"を含む必要がある。</td>
   </tr>
   <tr>
     <td><code>attributes</code></td><td>オプション</td><td><a href="#published-properties">公開プロパティ</a>を設定するのに使う。</td>
@@ -58,6 +58,7 @@ subtitle: Guide
   <tr>
     <td><code>constructor</code></td><td>オプション</td><td>グローバルオブジェクトに登録されるコンストラクタの名前。ユーザが<code>new</code>を使ってカスタムエレメントを作成できるようにする。 (例：<code>var tagName = new TagName()</code>).</td>
   </tr>
+
 </table>
 
 #### デフォルトの属性 {#defaultattrs}
