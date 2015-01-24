@@ -14,7 +14,7 @@ bundle install
 npm install
 grunt docs
 cd _site
-pythom -m SimpleHTTPServer
+python -m SimpleHTTPServer
 
 ```
 ブラウザで http://localhost:8000/docs/start/getting-the-code.html を開く
