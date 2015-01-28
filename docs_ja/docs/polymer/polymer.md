@@ -70,15 +70,15 @@ subtitle: Guide
       <script>Polymer();</script>
     </polymer-element>
 
-`<tag-name>`のインスタンスが作られると、`class="active" mycustomattr`がデフォルトで含まれています:
+`<tag-name>`のインスタンスが作られると、`class="active" mycustomattr`という二つの属性がデフォルトで含まれています:
 
     <tag-name class="active" mycustomattr></tag-name>
 
-#### 属性の大文字小文字 Attribute case sensitivity {#attrcase}
+#### 属性の大文字小文字 {#attrcase}
 
 HTMLパーサは属性の名前の *大文字小文字を区別しない* ことは気に留めておきましょう。しかし、JavaScriptにおけるプロパティ名は *大文字小文字を区別します* 。
 
-これが意味するところは、属性は好きなように名前をつけられるものの、エレメントの属性リストを見ると属性名は常に小文字になっているということです。Polymerはこのことに配慮して、属性とプロパティを注意深く対応させようとします。例えば、次の例では:
+つまり、属性は好きなように名前をつけられるものの、エレメントの属性リストを見ると属性名は常に小文字になっているということです。Polymerはこのことに配慮して、属性とプロパティを注意深く対応させようとします。例えば、次の例では:
 
     <name-tag nameColor="blue" name="Blue Name"></name-tag>
 
@@ -313,16 +313,14 @@ Polymer([ <em class="nocode">tag-name</em>, ] <em class="nocode">prototype</em>)
 属性を使って値を設定する方法には二つの制限があります:値は文字列でなくてはならず、変数名は小文字でなければなりません。
 (詳しくは[属性名の大文字小文字](#attrcase)を参照して下さい。)
 
-To use this `<app-globals>` element with the previous `<my-component>` example,
-you'd need to update the paths that refer to the global variables (for example
-`$.globals.values.lastname` instead of `$.globals.lastName`).
+先ほどの`<my-component>`とこの`<app-globals>`を一緒に使うには、グローバル変数の読み出し方法を変更する必要があります。
+(例えば、`$.globls.lastName`ではなく、`$.globals.values.lastname` のように)
 
-### Element lifecycle methods {#lifecyclemethods}
+### エレメントのライフサイクルメソッド {#lifecyclemethods}
 
-{{site.project_title}} has first class support for the Custom Element lifecycle
-callbacks, though for convenience, implements them with shorter names.
+{{site.project_title}} はエレメントの各ライフサイクルで呼び出されるコールバックを第一級要素としてサポートしています。しかしながらより便利にするために、それらを短い名前で実装しています。 
 
-All of the lifecycle callbacks are optional:
+すべてのライフサイクルコールバックは必須ではありません:
 
     Polymer('tag-name', {
       created: function() { ... },
@@ -336,26 +334,23 @@ All of the lifecycle callbacks are optional:
       },
     });
 
-Below is a table of the lifecycle methods according to the Custom Elements
-[specification](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html#custom-element-lifecycle) vs. the names {{site.project_title}} uses.
+以下にカスタムエレメントのライフサイクルメソッド一覧の、[WebComponentsの仕様](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html#custom-element-lifecycle) と{{site.project_title}}の対比を示します。
 
-Spec | {{site.project_title}} | Called when
+仕様 | {{site.project_title}} | 呼び出されるタイミング
 |-
-createdCallback | created | An instance of the element is created.
-- | ready | The `<polymer-element>` has been fully prepared (e.g. shadow DOM created, property observers setup, event listeners attached, etc).
-attachedCallback | attached | An instance of the element was inserted into the DOM.
-- | domReady | Called when the element's initial set of children are guaranteed to exist. This is an appropriate time to poke at the element's parent or light DOM children. Another use is when you have sibling custom elements (e.g. they're `.innerHTML`'d together, at the same time). Before element A can use B's API/properties, element B needs to be upgraded. The `domReady` callback ensures both elements exist.
-detachedCallback | detached | An instance was removed from the DOM.
-attributeChangedCallback | attributeChanged | An attribute was added, removed, or updated. **Note**: [Changed watchers](#change-watchers) are often easier to use and can watch either ordinary properties or attribute changes matching [published properties](#published-properties).
+createdCallback | created | エレメントのインスタンス作成時
+- | ready | `<polymer-element>`の準備が出来た時(例えば、shadowDOMが作られ、プロパティの監視が始まり、イベントリスナが登録された、など)
+attachedCallback | attached | エレメントのインスタンスがDOMに追加された時
+- | domReady | エレメントの初期子要素が用意出来た時。このメソッドはlightDOMの子要素や親要素を操作するのに最適なタイミングです。他の使い方としては、同じDOM階層にあるAとBの二つのカスタムエレメント(例えば同じ `.innerHTML` 内にある場合など)のうち、AからBのメソッドやプロパティを呼び出すにはBの準備ができている必要がありますが、`domReady`コールバックは両方のエレメントが存在することを保証します。
+detachedCallback | detached | インスタンスがDOMからとりのぞかれた時
+attributeChangedCallback | attributeChanged | 属性が追加、削除、変更された時 **注意**: [Changed watchers](#change-watchers)は大抵の場合より簡単に使うことが出来、通常のプロパティに加え、[公開プロパティ](#published-properties)の変更も監視できます。
 {: .table .responsive-table .lifecycle-table }
 
-### The polymer-ready event {#polymer-ready}
+### polymer-ready イベント {#polymer-ready}
 
-{{site.project_title}} parses element definitions and handles their upgrade _asynchronously_.
-If you prematurely fetch the element from the DOM before it has a chance to upgrade,
-you'll be working with a plain `HTMLElement`, instead of your custom element. {{site.project_title}} elements also support inline resources, such as stylesheets, that need to be loaded. These can cause [FOUC](http://en.wikipedia.org/wiki/Flash_of_unstyled_content) issues if they're not fully loaded prior to rendering an element. To avoid FOUC, {{site.project_title}} delays registering elements until stylesheets are fully loaded.
+{{site.project_title}} は要素定義を解析し、その要素を _非同期に_ polymer-elementへと変換します。エレメントが変換される前に、DOMからそのエレメントを取得すると、カスタムエレメントではなくふつうの`HTMLElement`が返されます。{{site.project_title}}エレメントはまたロードする必要のあるインラインリソース(たとえばスタイルシート)をサポートしています。エレメントが表示される前にこれらのリソースが読み込まれていないと、[FOUC](http://en.wikipedia.org/wiki/Flash_of_unstyled_content)問題(スタイル適用前の要素がちらつく問題)を引き起こすことがあります。FOUCを避けるため、{{site.project_title}}はスタイルシートが完全に読み込まれるまでエレメントの登録を遅らせます。
 
-To know when elements have been registered/upgraded, and thus ready to be interacted with, use the `polymer-ready` event.
+いつエレメントが登録／変換完了し、操作ができるようになったかを知るには、`polymer-ready` イベントを使います。
 
     <head>
       <link rel="import" href="path/to/x-foo.html">
@@ -370,35 +365,29 @@ To know when elements have been registered/upgraded, and thus ready to be intera
       </script>
     </body>
 
-## Features {#features}
+## 特徴 {#features}
 
-### Published properties
+### 公開プロパティ
 
-When you _publish_ a property name, you're making that property part of the
-element's "public API". Published properties have the following features:
+プロパティを _公開_ すると、そのプロパティはエレメントの"公開API"の一部となります。プロパティの公開は以下の特徴を持ちます:
 
-*   Support for two-way, declarative data binding.
+*   宣言的な双方向データバインディングをサポートする
 
-*   Declarative initialization using an HTML attribute with a matching name.
+*   一致する名前を持つHTML属性を使った宣言的な初期化
 
-*   Optionally, the current value of a property can be _reflected_ back to an
-    attribute with a matching name.
+*   オプションとして、プロパティの現在値が、一致する名前を持つHTML属性に_反映_される
 
-**Note:** Property names are case sensitive, but attribute names are not.
-{{site.project_title}} matches each property name with the corresponding
-attribute name, as described in [Attribute case sensitivity](#attrcase). This
-means you can't publish two properties distinguished only by capitalization (for
-example, `name` and `NAME`).
+**注意:** プロパティ名は大文字小文字を区別します。しかしHTML属性名は区別しません。
+[属性の大文字小文字](#attrcase)で解説したように、{{site.project_title}}は各プロパティ名を対応する属性名に一致させようとします。つまり、同じ綴りを持った、大文字小文字の違いしか無いプロパティを二つ同時に使うことは出来ません。(たとえば `name` と `NAME`など)
 {: .alert .alert-info }
 
-There are two ways to publish a property:
+プロパティを公開するには二つの方法があります:
 
-*   **Preferred** - Include its name in the `<polymer-element>`'s `attributes`
-    attribute.
-*   Include the name in a `publish` object on your prototype.
+*   **推奨** - 公開したいプロパティ名を`<polymer-element>`の`attributes`属性に含めること
 
-As an example, here's an element that publishes three public properties, `foo`,
-`bar`, and `baz`, using the `attributes` attribute:
+*   公開したいプロパティ名をプロトタイプの `publish` オブジェクトに含めること
+
+以下は、`attributes`属性を使って`foo` `bar` `baz`の3つのプロパティを公開する例をあげます:
 
     <polymer-element name="x-foo" attributes="foo bar baz">
       <script>
@@ -406,7 +395,7 @@ As an example, here's an element that publishes three public properties, `foo`,
       </script>
     </polymer-element>
 
-And here's one using the `publish` object:
+次に `publish` オブジェクトを使った例です:
 
     <polymer-element name="x-foo">
       <script>
