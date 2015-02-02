@@ -412,25 +412,19 @@ attributeChangedCallback | attributeChanged | 属性が追加、削除、変更�
       </script>
     </polymer-element>
 
-Note that the `baz` property uses a different format, to enable
-[attribute reflection](#attrreflection).
+[属性の反映](#attrreflection)を有効にするために、`baz`プロパティは違ったフォーマットになっていることに注目して下さい。
 
-Generally it's preferable to use the `attributes` attribute because it's the
-declarative approach and you can easily see all of the exposed properties at the
-top of the element.
+大体において`attributes`属性を使うことが好ましい方法です。なぜならそのほうが宣言的なやり方であり、アクセス可能なプロパティをエレメントの一番最初で俯瞰できるからです。
 
-You should opt for the `publish` object when any of the following is true:
+しかし、以下のいずれかに当てはまる場合は、オブジェクトを`publish`する方法を選ぶべきです:
 
-*   Your element has many properties and placing them all on one line feels
-    unwieldy.
-*   You want to define default values for properties and prefer the DRYness of
-    doing it all in one place.
-*   You need to reflect changes from the property value back to the corresponding
-    attribute.
+*   エレメントに大量のプロパティがあり、全てを一行に書くのは見苦しい場合
+*   プロパティのデフォルト値を設定する必要があり、DRY原則にのっとって一か所で処理を済ませたい場合
+*   プロパティの変更を対応する属性に反映する必要がある場合
 
-#### Default property values
+#### プロパティのデフォルト値
 
-By default, properties defined in `attributes` are initialized to `undefined`:
+デフォルトでは`attributes`で定義されたプロパティは`undefined`で初期化されます:
 
     <polymer-element name="x-foo" attributes="foo">
       <script>
@@ -439,13 +433,14 @@ By default, properties defined in `attributes` are initialized to `undefined`:
       </script>
     </polymer-element>
 
-Specifically, {{site.project_title}} adds `foo` to the element's prototype with a value of `undefined`.
 
-**Note:** Prior to {{site.project_title}} 0.3.5, properties were initialized to
-`null` by default.
+具体的に言うと、{{site.project_title}}は`undefined`という値を持ったプロパティ`foo`をエレメントのプロトタイプに追加します。
+
+**注意:** {{site.project_title}} 0.3.5 まではプロパティは'null'で初期化されていました。
 {: .alert .alert-info }
 
-You can provide your own default values by explicitly specifying the default value on the element's `prototype`:
+エレメントの`prototype`でデフォルト値を明示的に指定することで、独自のデフォルト値を設定できます
+:
 
     <polymer-element name="x-foo" attributes="bar">
       <script>
@@ -456,7 +451,7 @@ You can provide your own default values by explicitly specifying the default val
       </script>
     </polymer-element>
 
-Or you can define the whole thing using the `publish` property:
+あるいは、`publish`プロパティを使って同じことが出来ます:
 
     <polymer-element name="x-foo">
       <script>
@@ -468,9 +463,7 @@ Or you can define the whole thing using the `publish` property:
       </script>
     </polymer-element>
 
-For property values that are objects or arrays, you should set the default value
-in the `created` callback instead. This ensures that a separate object is
-created for each instance of the element:
+プロパティの値がオブジェクトであったり配列であったりする場合、デフォルト値を設定するのは`created`コールバック内で行う必要があります。これによって、各インスタンスごとに異なったオブジェクトが確実に割り当てられるようになります:
 
     <polymer-element name="x-default" attributes="settings">
       <script>
@@ -486,52 +479,40 @@ created for each instance of the element:
     </polymer-element>
 
 
-#### Configuring an element via attributes
+#### 属性を通じてエレメントを設定する
 
-Attributes are a great way for users of your element to configure it,
-declaratively. They can customize a published property by setting its initial
-value as the attribute with the corresponding name:
+属性はユーザーがエレメントを宣言的に設定する素晴らしい方法です。
+公開プロパティに対応する属性名に初期値を設定することで、プロパティの値を変更できます:
 
     <x-foo name="Bob"></x-foo>
 
-If the property value isn't a string, {{site.project_title}} tries to convert
-the attribute value to the appropriate type.
+プロパティの値が文字列でない場合、{{site.project_title}}は属性値を適切な方に変換しようと試みます。
 
-The connection from attribute to property is _one way_. Changing the property
-value does **not** update the attribute value, unless
-[attribute reflection](#attrreflection) is enabled for the property.
+属性からプロパティへの接続は__一方通行です__。[attribute reflection](#attrreflection)が有効になっていない限り、プロパティの値を変更しても、属性の値は**変更されません**。
 
-**Note**: Configuring an element using an attribute shouldn't be confused with
-[data binding](databinding.html). Data binding to a published property is
-by-reference, meaning values are not serialized and deserialized to strings.
+**注意**: エレメントを属性値で設定することを[データバインディング](databinding.html)と混同しないで下さい。プロパティへのデータバインディングは参照です。つまり、値は文字列に変換されません。
 {: .alert .alert-info}
 
-##### Hinting a property's type {#attrhinting}
+##### プロパティの型ヒンティング {#attrhinting}
 
-When attribute values are converted to property values, {{site.project_title}}
-attempts to convert the value to the correct type, depending on the default
-value of the property.
+属性値がプロパティの値に変換される際に、{{site.project_title}}はプロパティのデフォルト値に応じて値を適切な型に変換しようと試みます。
 
-For example, suppose an `x-hint` element has a `count` property that defaults to `0`.
+例えば、`x-hint`エレメントに`count`プロパティがあり、そのデフォルト値が`0`であったとしましょう。
 
     <x-hint count="7"></x-hint>
 
-Since `count` has a Number value, {{site.project_title}} converts
-the string "7" to a Number.
+`count`はNubmer型なので、{{site.project_title}}は文字列型の"7"をNumber型に変換します。
 
-If a property takes an object or array, you can configure it using a
-double-quoted JSON string. For example:
+プロパティがオブジェクトか配列の場合、二重引用符を使ったJSON文字列で設定できます。例えば:
 
     <x-name fullname='{ "first": "Bob", "last": "Dobbs" }'></x-name>
 
-This is equivalent to setting the element's `fullname` property to an object
-literal in JavaScript:
+この例はJavaScriptでエレメントの`fullname`プロパティをオブジェクトリテラルで設定するのと同じです:
 
     xname.fullname = { first: 'Bob', last: 'Dobbs' };
 
-The default value can be set on the prototype itself, in
-the `publish` object, or in the `created` callback. The following element
-includes an unlikely combination of all three:
+デフォルト値はプロトタイプに設定することが出来ます。その場合は`publish`オブジェクトを使うか、`created`コールバック内で行います。
+次の例は3つのパターンを全て含んだ珍しい例です:
 
     <polymer-element name="hint-element" attributes="isReady items">
       <script>
@@ -553,10 +534,7 @@ includes an unlikely combination of all three:
       </script>
     </polymer-element>
 
-**Important:** For properties that are objects or arrays, you should always
-initialize the properties in the `created` callback. If you set the default
-value directly on the `prototype` (or on the `publish` object), you may run into
-unexpected "shared state" across different instances of the same element.
+**重要ポイント:** オブジェクトか配列のプロパティは常に`created`コールバックで初期化すべきです。デフォルト値を`prototype`に自家に設定したり、`publish`オブジェクトに設定したりすると、異なったインスタンス間で意図しない状態の共有が起こることがあります。
 {: .alert .alert-error }
 
     // Good!
@@ -573,27 +551,25 @@ unexpected "shared state" across different instances of the same element.
       person: {}
     });
 
-#### Property reflection to attributes {#attrreflection}
+#### プロパティから属性への値の反映 {#attrreflection}
 
-Property values can be _reflected_ back into the matching attribute. For
-example, if reflection is enabled for the `name` property, setting
-`this.name = "Joe"` from within an element is equivalent to  calling
-`this.setAttribute('name', 'Joe')`.  The element updates the DOM accordingly:
+通常プロパティの値は対応する属性に__反映されることありません__。
+例えば、`name`プロパティで値の反映が有効になっていると、エレメント内で`this.name = "Joe"`とすることは、`this.setAttribute('name', 'Joe')`という呼び出しと等しくなります。
+エレメントは次のようにDOMを更新します:
 
     <x-foo name="Joe"></x-foo>
 
-Property reflection is only useful in a few cases, so it is off by default.
-You usually only need property reflection if you want to style an element based
-on an attribute value.
+プロパティの値の反映は、デフォルトの動作から外れたいくつかの場合に便利です。
+大抵の場合、属性値によってエレメントのスタイルを変えたい場合にのみ、プロパティの値の反映が必要になります。
 
-To enable reflection, define the property in the `publish` object.
-Instead of a simple value:
+値の反映を有効にするには、プロパティを`publish`オブジェクト内で定義します。
+次のようにするのではなく:
 
 <pre>
 <var>propertyName</var>: <var>defaultValue</var>
 </pre>
 
-Specify a reflected property using this format:
+このようにプロパティを指定して下さい：
 
 <pre>
 <var>propertyName</var>: {
@@ -602,13 +578,11 @@ Specify a reflected property using this format:
 }
 </pre>
 
-The property value is serialized to a string based on its data type. A
-few types get special treatment:
+プロパティの値はその型に応じて文字列に変換されます。いくつかの型は特別な扱いを受けます:
 
-*   If the property value is an object, array, or function, the value is
-    **never** reflected, whether or not `reflect` is `true`.
+*   プロパティの値がオブジェクト、配列、または関数の場合、その値は`reflect`が`true`に設定されていても、**決して反映されません**。
 
-*   If the property value is boolean, the attribute behaves like a standard
+*   プロパティの値がブーリアンの場合、If the property value is boolean, the attribute behaves like a standard
     boolean attribute: the reflected attribute appears only if the value is
     truthy.
 
