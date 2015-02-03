@@ -582,15 +582,11 @@ attributeChangedCallback | attributeChanged | 属性が追加、削除、変更�
 
 *   プロパティの値がオブジェクト、配列、または関数の場合、その値は`reflect`が`true`に設定されていても、**決して反映されません**。
 
-*   プロパティの値がブーリアンの場合、If the property value is boolean, the attribute behaves like a standard
-    boolean attribute: the reflected attribute appears only if the value is
-    truthy.
+*   プロパティの値がブーリアンの場合、属性は通常のブーリアン属性のように振る舞います: 値が真の場合のみ属性が存在する状態になります。
 
-Also, note that the initial value of an attribute is **not** reflected, so the
-reflected attribute does not appear in the DOM unless you set it to a different
-value.
+また、プロパティの初期値は属性に**反映されない**ことに留意して下さい。したがって、値を変更するまで属性はDOM上にはしません。
 
-For example:
+例えば:
 
     <polymer-element name="disappearing-element">
       <script>
@@ -605,29 +601,21 @@ For example:
       </script>
     </polymer-element>
 
-Setting `hidden = true` on a `<disappearing-element>` causes the `hidden`
-attribute to be set:
+`hidden = true`に設定することで、`<disappearing-element>`の`hidden`属性がDOMに存在する状態になり、次のようになります:
 
     <disappearing-element hidden>Now you see me...</disappearing-element>
 
-Attribute _reflection_ is separate from data binding. Two-way data binding is
-available on published properties whether or not they're reflected. Consider the
-following:
+属性の_反映_はデータバインディングとは別のものです。双方向データバインディングは公開プロパティが反映されるかどうかに関係なく有効になります。次の例を見て下さい:
 
     <my-element name="{%raw%}{{someName}}{%endraw%}"></my-element>
 
-If the `name` property is _not_ set to reflect, the `name` attribute always
-shows up as `name="{%raw%}{{someName}}{%endraw%}"` in the DOM. If `name` _is_
-set to reflect, the DOM attribute reflects the current value of `someName`.
+`name`プロパティが値を反映_しない_ように設定されていても、`name`属性は常にDOM上に`name="{%raw%}{{someName}}{%endraw%}"`と表示されます。もし`name`が値を反映_する_ように設定されたいたら、DOM上の属性は`someName`に設定された値になります。
 
-### Data binding and published properties
+### データバインディングと公開プロパティ
 
-Published properties are data-bound inside of {{site.project_title}} elements
-and accessible via `{%raw%}{{}}{%endraw%}`. These bindings are by reference and
-are two-way.
+公開プロパティは{{site.project_title}}エレメント内でデータバインドされ、`{%raw%}{{}}{%endraw%}`を使ってアクセス可能になります。このバインドは参照であり、双方向です。
 
-For example, we can define a `name-tag` element that publishes two properties,
-`name` and `nameColor`.
+例えば、`name`と`nameColor`という二つの公開プロパティを持つ`name-tag`というエレメントを定義したとします。
 
     <polymer-element name="name-tag" attributes="name nameColor">
       <template>
@@ -640,18 +628,16 @@ For example, we can define a `name-tag` element that publishes two properties,
       </script>
     </polymer-element>
 
-In this example, the published property `name` has initial value of `undefined` and `nameColor` has a value of "orange". Thus, the `<span>`'s color will be orange.
+この例では公開プロパティ`name`の初期値は`undefined`で、`nameColor`の初期値は"orange"です。したがって、`<span>`のテキスト色はオレンジになります。
 
-For more information see the [Data binding overview](databinding.html).
+より詳しくは、[データバインディングの概要](databinding.html)を参照して下さい。
 
-### Computed properties
+### 算出プロパティ
 
-Computed properties are dynamic properties that are computed
-based on other property values. You can also publish a computed
-property, so it can be data bound outside the element.
+算出プロパティは他のプロパティの値に基づいて動的に値が変わるプロパティです。
+算出プロパティも、その値を公開して外部エレメントにバインドすることが出来ます。
 
-Computed properties are defined in the `computed` object on the
-element's prototype:
+算出プロパティはエレメントのプロトタイプ内の`computed`オブジェクト内で定義されます。
 
 <pre class="nocode">
 <b>computed: {</b>
@@ -659,33 +645,27 @@ element's prototype:
 }</b>
 </pre>
 
-Each computed property is defined by a property name and a
-[Polymer expression](/docs/polymer/expressions.html). The value
-of the computed property is updated dynamically whenever one of
-the input values in the expression changes.
+各算出プロパティはプロパティ名と[Polymer式](/docs/polymer/expressions.html)で定義されます。
+算出プロパティの値は計算式のどれかが変更されると動的に更新されます。
 
-In the following example, when you update the input value,
-`num`, the computed property `square` updates automatically.
+次の例では、`num`という入力値が変更されると、算出プロパティの`square`が自動的に更新されます。
 
 {% include samples/computed-property.html %}
 
-Computed properties are read-only: for example, setting
-the `square` property on `square-element` has no effect.
+算出プロパティは読み出し専用です: 例えば、`square`プロパティに値を設定してもなんの効果もありません。
 
-You can publish a computed property like any other property,
-by adding it to the `attributes` list or to the `publish` object.
-Any default value specified in the `publish` object is ignored.
+他のプロパティ同様に、`attributes`か`publish`オブジェクトに追加することで、算出プロパティを公開できます。
+`publis`オブジェクトに設定されたデフォルト値は無視されます。
 
-**Limitations**: In {{site.project_title}} 0.4.0 and earlier, computed properties
-couldn't be published.
-For example, you couldn't bind to the `square` property on `square-element` using
+**制限あり**: {{site.project_title}}のバージョン0.4.0以前では、算出プロパティは公開できませんでした。
+例えば次のようにして`square`プロパティをバインドすることは出来ません。
  `<square-element square="{%raw%}{{value}}{%endraw%}>`.
 {: .alert .alert-warning }
 
-### Declarative event mapping
+### 宣言的なイベントマッピング
 
-{{site.project_title}} supports declarative binding of events to methods in the component.
-It uses special <code>on-<em>event</em></code> syntax to trigger this binding behavior.
+{{site.project_title}}はコンポーネントにおける宣言的なイベントとメソッドのマッピングをサポートしています。
+マッピングされた動作を呼び出すには特別な<code>on-<em>event</em></code>書式を使います。
 
     <polymer-element name="g-cool" on-keypress="{% raw %}{{keypressHandler}}{% endraw %}">
       <template>
@@ -699,23 +679,21 @@ It uses special <code>on-<em>event</em></code> syntax to trigger this binding be
       </script>
     </polymer-element>
 
-In this example, the `on-keypress` declaration maps the standard DOM `"keypress"` event to the `keypressHandler` method defined on the element. Similarly, a button within the element
-declares a `on-click` handler for click events that calls the `buttonClick` method.
-All of this is achieved without the need for any glue code.
+この例では、`on-keypress`宣言がDOM標準の`"keypress"`イベントを、エレメント内の`keypressHandler`に結びつけています。同様にエレメント内部ののボタンでは`on-click`ハンドラがクリックイベントに応じて`buttonClick`メソッドを呼び出します。これらは一切の追加プログラムなしに実現されます。
 
-Some things to notice:
+いくつかの注意事項があります:
 
-* The value of an event handler attribute is the string name of a method on the component. Unlike traditional syntax, you cannot put executable code in the attribute.
-* The event handler is passed the following arguments:
-  * `inEvent` is the [standard event object](http://www.w3.org/TR/DOM-Level-3-Events/#interface-Event).
-  * `inDetail`: A convenience form of `inEvent.detail`.
-  * `inSender`: A reference to the node that declared the handler. This is often different from `inEvent.target` (the lowest node that received the event) and `inEvent.currentTarget` (the component processing the event), so  {{site.project_title}} provides it directly.
+* イベントハンドラ属性の値はコンポーネントのメソッド名を文字列で表現したものです。
+* イベントハンドラには以下の引数が渡されます:
+  * `inEvent` は [standard event object](http://www.w3.org/TR/DOM-Level-3-Events/#interface-Event)です。
+  * `inDetail`: `inEvent.detail`の便利な形です
+  * `inSender`: ハンドラを宣言したノードへの参照です。多くの場合、`inEvent.target`(イベントを受け取る最下層のノード)や`inEvent.currentTarget`(イベントを処理しているコンポーネント)とは異なります。そのため、{{site.project_title}}はこの値を直接提供します。
 
-#### Imperative event mapping
+#### プログラムによるイベントマッピング
 
-Alternatively, you can add event handlers to a {{site.project_title}} element imperatively.
+もうひとつの方法として、プログラムで{{site.project_title}}エレメントにイベントハンドラを追加できます。
 
-**Note:** In general, the declarative form is preferred.
+**注意:** 一般的に宣言的なやり方のほうが好ましい方法です。
 {: .alert .alert-info}
 
     <polymer-element name="g-button">
@@ -735,37 +713,22 @@ Alternatively, you can add event handlers to a {{site.project_title}} element im
       </script>
     </polymer-element>
 
-The example adds event listeners for `up` and `down` events
-to the {{site.project_title}} element called `g-button`.
-The listeners are added to the host element rather than to individual
-elements it contains.
-These listeners handle events on the host element
-in addition to events that bubble up from within it.
-This code is equivalent
-to adding an <code>on-<em>event</em></code>
-handler directly on a `<polymer-element>`.
+この例では`g-button`という名前の{{site.project_title}}エレメントの`up`と`down`イベントにイベントリスナを追加ししています。イベントリスナはテンプレート内の子要素ではなく、エレメントそのものに追加します。
+イベントリスナはエレメントのイベントを処理し、内から外へイベントを伝播させます。このコードは`<polymer-element>`に直に<code>on-<em>event</em></code>ハンドラを追加するのと同じです。
 
-The relationship between the <code>on-<em>event</em></code> attribute
-and the `eventDelegates` object
-is analogous to the relationship between the
-`attributes` attribute and the `publish` object.
+<code>on-<em>event</em></code>属性と`eventDelegates`オブジェクトの関係は、`attributes`属性と`publish`オブジェクトの関係に似ています。
 
-The keys within the `eventDelegates` object are the event names to listen for.
-The values are the callback function names, here `onTap`.
-Event handler functions defined imperatively
-receive the same arguments as those defined declaratively.
+`eventDelegates`オブジェクト内のキーは処理するイベント名で、値はコールバック関数です。`onTap`イベントハンドラは宣言的に定義したときと同様の引数を受け取ります。
 
-### Automatic node finding
+### 自動ノード検索
 
-Another useful feature of {{site.project_title}} is automatic node finding.
-Nodes in a component's shadow DOM that are tagged with an
-`id` attribute are automatically referenced in the component's `this.$` hash.
+{{site.project_title}}のもうひとつの便利な昨日は自動ノード検索です。
+コンポーネントのshadow DOM内にあるノードのうち、`id`属性を持つものは、自動的にコンポーネントの`this.$`ハッシュに登録され、参照可能になります。
 
-**Note:** Nodes created dynamically using data binding are _not_ added to the
-`this.$` hash. The hash includes only _statically_ created shadow DOM nodes
-(that is, the nodes defined in the element's outermost template).
+**注意:** データバインディングによって動的に作られるノードは`this.$`ハッシュには_追加されません_。ハッシュにはインスタンス化時のshadow DOMノードだけが含まれます。(つまり、一番外側のテンプレートに含まれる要素のみということです)
 {: .alert .alert-warning }
 
+例えば、次の例では`id`が`nameInput`という`<input>`を含んだテンプレートを定義しています。このコンポーネントは`this.$.nameInput`という書式で`<input>`の
 For example, the following defines a component whose template contains an `<input>` element whose `id` attribute is `nameInput`. The component can refer to that element with the expression `this.$.nameInput`.
 
     <polymer-element name="x-form">
