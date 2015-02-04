@@ -728,8 +728,7 @@ attributeChangedCallback | attributeChanged | 属性が追加、削除、変更�
 **注意:** データバインディングによって動的に作られるノードは`this.$`ハッシュには_追加されません_。ハッシュにはインスタンス化時のshadow DOMノードだけが含まれます。(つまり、一番外側のテンプレートに含まれる要素のみということです)
 {: .alert .alert-warning }
 
-例えば、次の例では`id`が`nameInput`という`<input>`を含んだテンプレートを定義しています。このコンポーネントは`this.$.nameInput`という書式で`<input>`の
-For example, the following defines a component whose template contains an `<input>` element whose `id` attribute is `nameInput`. The component can refer to that element with the expression `this.$.nameInput`.
+例えば、次の例では`id`が`nameInput`という`<input>`を含んだテンプレートを定義しています。このコンポーネントは`this.$.nameInput`という書式で`<input>`を参照できます。
 
     <polymer-element name="x-form">
       <template>
@@ -744,9 +743,7 @@ For example, the following defines a component whose template contains an `<inpu
       </script>
     </polymer-element>
 
-To locate other nodes inside the element's shadow DOM, you can create a
-container element with a known ID and use `querySelector` to retrieve
-descendants. For example, if your element's template looks like this:
+エレメント内のshadowDOMにある他のノードを探すには、IDをつけたエレメントを作って、`querySelector`を使ってその子要素を取得できます。例えば、エレメントのテンプレートが以下のようであった場合:
 
     <template>
       <div id="container">
@@ -758,16 +755,16 @@ descendants. For example, if your element's template looks like this:
       </div>
     </template>
 
-You can locate the inner container using:
+innerコンテナは次のようにして検索できます:
 
     this.$.container.querySelector('#inner');
 
-### Observing properties {#observeprops}
+### プロパティの監視 {#observeprops}
 
-#### Changed watchers {#change-watchers}
+#### 変更監視 {#change-watchers}
 
-The simplest way to observe property changes on your element is to use a changed watcher.
-All properties on {{site.project_title}} elements can be watched for changes by implementing a <code><em>propertyName</em>Changed</code> handler. When the value of a watched property changes, the appropriate change handler is automatically invoked.
+プロパティの変更を監視する最も単純な方法は変更監視を使うことです。
+{{site.project_title}}エレメントのプロパティは全て監視対象にすることが出来ます。その方法は<code><em>propertyName</em>Changed</code>ハンドラを実装することです。監視対象のプロパティの値が変更されると、対応した変更関しハンドラが自動的に呼び出されます。
 
     <polymer-element name="g-cool" attributes="better best">
       <script>
@@ -784,18 +781,16 @@ All properties on {{site.project_title}} elements can be watched for changes by 
       </script>
     </polymer-element>
 
-In this example, there are two watched properties, `better` and `best`. The `betterChanged` and `bestChanged` function will be called whenever `better` or `best` are modified, respectively.
+この例では、`better`と`best`という二つのプロパティが監視されています。`betterChanged`関数と`bestChanged`関数はこの二つが変更された時にそれぞれ呼び出されます。
 
-#### Custom property observers &mdash; the `observe` object {#observeblock}
+#### 独自のプロパティ監視 &mdash; `observe` オブジェクト {#observeblock}
 
-Sometimes a [changed watcher](#change-watchers) is not enough. For more control over
-property observation, {{site.project_title}} provides the `observe` object.
+時々[changed watcher](#change-watchers)では十分でないことがあります。プロパティ監視をより細かく制御するため、{{site.project_title}}には`observe`オブジェクトが備わっています。
 
-An `observe` object defines a custom property/observer mapping for one or more properties.
-It can be used to watch for changes to nested objects or share the same callback
-for several properties.
+`observe`オブジェクトには単独もしくは複数のプロパティと監視ハンドラの割り当てを定義します。
+入れ子になったプロパティの変更監視や、複数のプロパティで同じコールバック関数を共有するのに使えます。
 
-**Example:** sharing a single observer
+**例:** 一つの関しハンドラを共有する場合
 
     Polymer('x-element', {
       foo: '',
@@ -813,12 +808,11 @@ for several properties.
       },
     });
 
-In the example, `validate()` is called whenever `foo` or `bar` changes.
+この例では、`foo`もしくは`bar`が変更されると`validate()`が呼び出されます。
 
-**Example:** using automatic node finding in an `observe` object
+**例:** `observe`オブジェクトで自動ノード検索を利用する
 
-When an element has an ID, you can use the `this.$` hash in the `observe` object to watch
-a property on that element. 
+エレメントにIDがあれば、`observe`オブジェクト内で`this.$`ハッシュを使ってエレメントのプロパティを監視できます。
 
     <template>
       <x-foo id="foo"></x-foo>
@@ -833,12 +827,10 @@ a property on that element.
       }
     });
 
-All property names in the `observe` object are relative to `this`, so `$.foo.someProperty` 
-refers to a property on the `<x-foo>` element. See the section on 
-[automatic node finding](#automatic-node-finding) for more infomration on the `this.$`
-hash and its limitations.
+`observe`オブジェクト内の全てのプロパティ名は`this`からの相対パスです。つまり、`$.foo.someProperty`は
+`<x-foo>`エレメントのプロパティを参照します。`this.$`ハッシュとその制限については[自動ノード検索](#automatic-node-finding)を参照して下さい。
 
-**Example:** watching for changes to a nested object path
+**例:** 入れ子になったオブジェクトのパスの変更を監視する
 
     Polymer('x-element', {
       observe: {
@@ -858,7 +850,7 @@ hash and its limitations.
       }
     });
 
-It's important to note that **{{site.project_title}} does not call the <code><em>propertyName</em>Changed</code> callback for properties included in the `observe` object**. Instead, the defined observer gets called.
+ここで一点重要なのは、**`observe`オブジェクトに記述されたプロパティに対しては{{site.project_title}}は<code><em>propertyName</em></code>を呼び出さない**ということです。代わりに、定義済みの監視ハンドラが呼び出されます。
 
     Polymer('x-element', {
       bar: '',
@@ -874,13 +866,12 @@ It's important to note that **{{site.project_title}} does not call the <code><em
     });
 
 
-### Firing custom events {#fire}
+### カスタムイベントの発行 {#fire}
 
-{{site.project_title}} core provides a convenient `fire()` method for
-sending custom events. Essentially, it's a wrapper around your standard `node.dispatchEvent(new CustomEvent(...))`. In cases where you need to fire an event after microtasks have completed,
-use the asynchronous version: `asyncFire()`.
+{{site.project_title}}にはカスタムイベントを発行するための便利なメソッド`fire()`が備わっています。
+その中身は標準の`node.dispatchEvent(new CustomEvent(...))`のラッパーです。細かい作業を終えたあとにイベントを発行したいなどの場合には、非同期バージョンの`asyncFire()`を使って下さい。
 
-Example:
+例:
 
 {% raw %}
     <polymer-element name="ouch-button">
@@ -905,11 +896,10 @@ Example:
     </script>
 {% endraw %}
 
-**Tip:** If your element is within another {{site.project_title}} element, you can
-use the special [`on-*`](#declarative-event-mapping) handlers to deal with the event: `<ouch-button on-ouch="{% raw %}{{myMethod}}{% endraw %}"></ouch-button>`
+**ヒント:** あなたの作ったエレメントが他の{{site.project_title}}エレメントの中にある場合、イベントに応答するのに特別な[`on-*`](#declarative-event-mapping)ハンドラを使うことが出来ます:  `<ouch-button on-ouch="{% raw %}{{myMethod}}{% endraw %}"></ouch-button>`
 {: .alert .alert-success }
 
-### Extending other elements
+### 他のエレメントを拡張する
 
 A {{site.project_title}} element can extend another element by using the `extends`
 attribute. The parent's properties and methods are inherited by the child element
