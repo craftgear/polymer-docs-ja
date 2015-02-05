@@ -899,11 +899,9 @@ innerコンテナは次のようにして検索できます:
 **ヒント:** あなたの作ったエレメントが他の{{site.project_title}}エレメントの中にある場合、イベントに応答するのに特別な[`on-*`](#declarative-event-mapping)ハンドラを使うことが出来ます:  `<ouch-button on-ouch="{% raw %}{{myMethod}}{% endraw %}"></ouch-button>`
 {: .alert .alert-success }
 
-### 他のエレメントを拡張する
+### 他のエレメントを継承する
 
-A {{site.project_title}} element can extend another element by using the `extends`
-attribute. The parent's properties and methods are inherited by the child element
-and data-bound.
+`extends`属性を使うことで、{{site.project_title}}エレメントは他のエレメントを継承できます。親のプロパティやメソッドは子とデータバインドに引き継がれます。
 
     <polymer-element name="polymer-cool">
       <template>
@@ -929,9 +927,9 @@ and data-bound.
 
     <polymer-cooler>Matt</polymer-cooler>
 
-#### Overriding a parent's methods
+#### 親のメソッドをオーバーライドする
 
-When you override an inherited method, you can call the parent's method with `this.super()`, and optionally pass it a list of arguments (e.g. `this.super([arg1, arg2])`). The reason the parameter is an array is so you can write `this.super(arguments)`.
+継承したメソッドをオーバーライドする場合、親のメソッドを `this.super()`で呼び出すことが出来ます。また、引数の配列を渡すことも出来ます(例 `this.super([arg1, arg2])`)。引数が配列である理由は`this.super(arguments)`のような書き方を可能にするためです。
 
 {% raw %}
     <polymer-element name="polymer-cool">
@@ -966,34 +964,25 @@ When you override an inherited method, you can call the parent's method with `th
     <polymer-cooler>Matt</polymer-cooler>
 {% endraw %}
 
-In this example, when the user clicks on a `<polymer-cooler>` element, its
-`makeCoolest()` method is called, which in turn calls the parent's version
-using `this.super()`. The `praise` property (inherited from `<polymer-cool>`) is set
-to "coolest".
+この例では、ユーザが`<polymer-cooler>`エレメントをクリックすると自身の`makeCoolest()`メソッドが呼ばれ、次に親の同名のメソッドが`this.super()`によって呼ばれます。`<polymer-cool>`から継承された`praise`プロパティは"coolest"に設定されます。
 
-## Built-in element methods {#builtin}
+## エレメント組み込みのメソッド {#builtin}
 
-{{site.project_title}} includes a few handy methods on your element's prototype.
-A few of the utility methods are documented here:
+{{site.project_title}}にはエレメントのプロトタイプにいくつかの便利なメソッドがあります。この便利なメソッドについてはいかにドキュメントがあります:
 
-* [`onMutation`](#onMutation) can be used to set up a callback when the element's children change.
-* [`async`](#asyncmethod) schedules a task to be executed after a configurable timeout, and is 
-  synchronized with `requestAnimationFrame`.
-* [`job`](#job) can be used to debounce event handlers, ensuring that a task is executed only
-  once during a given time window.
+* [`onMutation`](#onMutation) エレメントの子要素が変更された場合に、コールバック関数を設定するのに使われます。
+* [`async`](#asyncmethod) 設定した時間が経過した後に実行されるタスクを予約します。`requestAnimationFrame`と同期されます。
+* [`job`](#job) イベントハンドラが何度も呼び出されるのを抑制するのに使われます。一定の時間内にタスクが一度だけ実行されることを保証します。
 
-An additional instance method, [`injectBoundHTML`](databinding-advanced.html#boundhtml), 
-is documented in the data-binding section.
+追加のインスタンスメソッド[`injectBoundHTML`](databinding-advanced.html#boundhtml)はデータバインディングセクションで解説します。
 
-### Observing changes to light DOM children {#onMutation}
+### light DOM 子要素の変更を監視する {#onMutation}
 
-To know when light DOM children change, you can setup a Mutation Observer to
-be notified when nodes are added or removed. To make this more convenient, {{site.project_title}} adds an `onMutation()` callback to every element. Its first argument is the DOM element to
-observe. The second argument is a callback which is passed the `MutationObserver` and the mutation records:
+light DOM の子要素が変更された場合にそれを知るには、ノードが追加・削除された時に通知を受け取る Mutation Observer を設定します。{{site.project_title}}では全てのエレメントに`onMutation()`コールバック関数を追加して、これを簡単にしています。この関数の最初の引数は監視対象のオブジェクトで、2つ目の引数は`MutationObserver`に渡され、変化を記録するコールバック関数です:
 
     this.onMutation(domElement, someCallback);
 
-**Example** - Observe changes to (light DOM) children elements:
+**例** - (light DOM)の子要素の変更を監視する:
 
     ready: function() {
       // Observe a single add/remove.
@@ -1006,17 +995,14 @@ observe. The second argument is a callback which is passed the `MutationObserver
       this.onMutation(this, this.childrenUpdated);
     }
 
-### Dealing with asynchronous tasks {#asyncmethod}
+### 非同期のタスクをこなす {#asyncmethod}
 
-Many things in {{site.project_title}} happen asynchronously. Changes are gathered up
-and executed all at once, instead of executing right away. Batching
-changes creates an optimization that (a) prevents duplicated work and (b) reduces unwanted [FOUC](http://en.wikipedia.org/wiki/Flash_of_unstyled_content).
+{{site.project_title}}ではたくさんのことが非同期で起こります。変更は逐次起こるのではなく、あるていどまとまったところで一度に実行されます。変更を一度に行うことで、重複した作業を取り除き、不必要な[FOUC](http://en.wikipedia.org/wiki/Flash_of_unstyled_content)を減らすという最適化を行っています。
 
-[Change watchers](#change-watchers) and situations that rely on data-bindings
-are examples that fit under this async behavior. For example, conditional templates may not immediately render after setting properties because changes to those renderings are saved up and performed all at once after you return from JavaScript.
+[Change watchers](#change-watchers)とデータバインディングを利用する場面はこの非同期の振る舞いの好例です。例えば、条件付きのテンプレートは、プロパティが設定されたあと即座に表示されないかもしれません。なぜなら変更に応じた表示内容は一旦保留され、JavaScriptの実行完了時にまとめて表示されるからです。
 
-To do work after changes have been processed, {{site.project_title}} provides `async()`.
-It's similar to `window.setTimeout()`, but it automatically binds `this` to the correct value and is timed to `requestAnimationFrame`:
+変更が実際に処理されたあとに、なにか作業をしたい場合、{{site.project_title}}には`async()`があります。
+これは`window.setTimeout()`に似ていますが、このメソッドは`this`を自動的に適切な値にバインドし、`requestAnimationFrame`と同期します。
 
     // async(inMethod, inArgs, inTimeout)
     this.async(function() {
@@ -1028,11 +1014,9 @@ It's similar to `window.setTimeout()`, but it automatically binds `this` to the 
     //  this.foo = 3;
     //}.bind(this), 1000);
 
-The first argument is a function or string name for the method to call asynchronously.
-The second argument, `inArgs`, is an optional object or array of arguments to
-pass to the callback.
+最初の引数は非同期に呼び出される関数またはメソッドの名前です。2つ目の引数`inArgs`はオプションで、コールバックに渡されるオブジェクト化配列です。
 
-In the case of property changes that result in DOM modifications, follow this pattern:
+プロパティの変更がDOMの変更を引き起こす場合は次のパターンに従って下さい:
 
     Polymer('my-element', {
       propChanged: function() {
@@ -1043,9 +1027,9 @@ In the case of property changes that result in DOM modifications, follow this pa
       updateValues: function() {...}
     });
 
-### Delaying work {#job}
+### 作業を遅延させる {#job}
 
-Sometimes it's useful to delay a task after an event, property change, or user interaction. A common way to do this is with `window.setTimeout()`:
+時によってはイベントやプロパティ変更、ユーザの操作などのあとに実行されるように作業を遅延させることが便利な場合があります。これを実現する一般的な方法は`window.setTimeout()`を使うことです:
 
     this.responseChanged = function() {
       if (this.timeout1) {
@@ -1056,7 +1040,7 @@ Sometimes it's useful to delay a task after an event, property change, or user i
       }, 500);
     }
 
-However, this is such a common pattern that {{site.project_title}} provides the `job()` utility for doing the same thing:
+しかし、これは非常によくあるパターンなので、同じことをするのに{{site.project_title}}では`job()`ユーティリティメソッドを提供しています:
 
     this.responseChanged = function() {
       this.job('job1', function() { // first arg is the name of the "job"
@@ -1064,19 +1048,16 @@ However, this is such a common pattern that {{site.project_title}} provides the 
       }, 500);
     }
 
-`job()` can be called repeatedly before the timeout but it only results in a single side-effect. In other words, if `responseChanged()` is immediately executed 250ms later, the `done` event won't fire until 750ms.
+`job()`メソッドはタイムアウトするまでに何度でも呼び出せますが、結果として実行されるのは一度だけです。言い換えれば、もし`responseChanged()`が250ms後に実行されたとしても、`done`イベントは750msが経つまで発行されません。
 
-## Advanced topics {#additional-utilities}
+## より高度なトピック {#additional-utilities}
 
-### Life of an element's bindings {#bindings}
+### エレメントのデータバインディングのライフサイクル {#bindings}
 
-When you remove an element from the DOM, {{site.project_title}} asynchronously
-deactivates its {%raw%}`{{}}`{%endraw%} bindings and `*Changed` methods. This helps prevent
-memory leaks, ensuring the element will be garbage collected.
+エレメントをDOMから削除すると、{{site.project_title}}は非同期に{%raw%}`{{}}`{%endraw%}を使ったデータバインディングと`*Changed`メソッドを無効化します。
+これによってメモリリークを防ぎ、エレメントがガーベジコレクションの対象になることを保証します。
 
-If you want the element to "remain active" when it's not in the `document`,
-call `cancelUnbindAll()` right after you remove it. The [lifecycle methods](#lifecyclemethods)
-are a good place for this:
+エレメントが`document`内になくてもエレメントを"アクティブに"保ちたいなら、エレメントを削除した直後に`callUnbindAll()`を呼んで下さい。このメソッドの呼び出しは[ライフサイクルメソッド](#lifecyclemethods) で行うのがよいでしょう:
 
     Polymer('my-element', {
       detached: function() {
@@ -1085,13 +1066,11 @@ are a good place for this:
       }
     });
 
-If you explicitly call `cancelUnbindAll()`, {{site.project_title}} won't manage
-the bindings automatically. It's your responsibility to manage the element's
-bindings by eventually doing one of the following:
+明示的に`cancelUnbindAll()`を呼び出すと、{{site.project_title}}はデータバインディングを自動で無効化しません。エレメントのデータバインディングを管理するのはあなたの責任になります。
+次のうちどちらかを行って下さい:
 
--   Adding the element back into the DOM.
--   Explicitly unbinding the element by calling the `unbindAll` or
-    `asyncUnbindAll` method.
+-   エレメントをDOMに再度追加する
+-   `unbindAll`か`asyncUnbindAll`を呼ぶことで明示的にエレメントのデータバインドを解除する
 
     var el = document.querySelector('my-element');
     el.parentNode.removeChild(el);
@@ -1100,18 +1079,19 @@ bindings by eventually doing one of the following:
     // finished with this element, not going to reinsert it.
     el.unbindAll();
 
-If you fail to unbind or reinsert an element, your application may leak memory.
+エレメントのバインディングを解除するか、再度DOMに追加するのを忘れると、メモリリークの原因になります。
 
-#### Using preventDispose {#preventdispose}
+#### preventDisposeを使う {#preventdispose}
 
-To force bindings from being removed in all cases, set `.preventDispose`:
+どんな場合にもデータバインディングが解除されるのを防ぐには、`preventDispose`プロパティを使います:
 
     Polymer('my-element', {
       preventDispose: true
     });
 
-### How data changes are propagated {#flush}
+### データの変更がどのように伝播するか {#flush}
 
+{{site.project_title}}におけるデータの変更は、`Object.observe()`が有効になった時、ほとんど即座に起こります(細かな作業の終わりに)。
 Data changes in {{site.project_title}} happen almost immediately (at end of a microtask)
 when `Object.observe()` is available. When it's not supported, {{site.project_title}} uses a polyfill ([observe-js](https://github.com/Polymer/observe-js)) to poll and periodically propagate data-changes throughout the system. This is done through a method called `Platform.flush()`.
 
