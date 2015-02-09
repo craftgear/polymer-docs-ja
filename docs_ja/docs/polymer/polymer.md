@@ -1091,65 +1091,60 @@ light DOM の子要素が変更された場合にそれを知るには、ノー�
 
 ### データの変更がどのように伝播するか {#flush}
 
-{{site.project_title}}におけるデータの変更は、`Object.observe()`が有効になった時、ほとんど即座に起こります(細かな作業の終わりに)。
-Data changes in {{site.project_title}} happen almost immediately (at end of a microtask)
-when `Object.observe()` is available. When it's not supported, {{site.project_title}} uses a polyfill ([observe-js](https://github.com/Polymer/observe-js)) to poll and periodically propagate data-changes throughout the system. This is done through a method called `Platform.flush()`.
+{{site.project_title}}におけるデータの変更は、`Object.observe()`が使える場合、ほとんど即座に起こります(細かな作業の終わりに)。`Object.observe()`がサポートされていない場合は、pollyfilの[observe-js](https://github.com/Polymer/observe-js)を用いて定期的にデータの変更をチェックし、変更を伝播させます。この動作は`Platform.flush()`を呼び出すことでも行えます。
 
-#### What is `Platform.flush()`?
+#### `Platform.flush()`とはなにか?
 
-`Platform.flush()` is part of {{site.project_title}}'s data observation polyfill, [observe-js](https://github.com/Polymer/observe-js). It dirty check's all objects that have been observed and ensures notification callbacks are dispatched. {{site.project_title}} automatically calls `Platform.flush()` periodically, and this should be sufficient for most application workflows. However, there are times when you'll want to call `Platform.flush()` in application code.
+`Platform.flush()`は{{site.project_title}}のデータ監視polyfill[observe-js](https://github.com/Polymer/observe-js)の一部です。このライブラリは監視対象のオブジェクトを網羅的にチェックし、通知コールバック関数が呼び出されることを保証します。{{site.project_title}}は自動で定期的に`Platform.flush()`を呼び出します。そのため、大抵の場合自分でこの処理を呼び出す必要はありませんが、そのようにしたい場合もあるでしょう。
 
-**Note:** on platforms that support `Object.observe()` natively, `Platform.flush()` does nothing.
+**注意:** `Object.observe()`をネイティブサポートしている環境では`Platform.flush()`はなにもしません。
 {: .alert .alert-info }
 
-#### When should I call `Platform.flush()`?
+#### いつ`Platform.flush()`を呼び出すべきか?
 
-Instead of waiting for the next poll interval, one can manually schedule an update by calling `Platform.flush()`. **There are very few cases where you need to call `Platform.flush()` directly.**
+定期的な呼び出しを待つ代わりに、`Platform.flush()`を呼び出すことで更新処理を手動で予約することが出来ます。**`Platform.flush()`を直接呼び出す必要があるケースは非常にまれです。**
 
-If it's important that a data change propagates before the next screen paint, you may
-need to manually call `Platform.flush()`. Here are specific examples:
+データ変更の伝播が次回の描画処理よりも先んじて行われることが非常に重要であれば、`Platform.flush()`を手動で呼び出す必要があります。以下に例をあげます:
 
-1. A property change results in a CSS class being added to a node. Often, this works out fine, but sometimes, it's important to make sure the node does not display without the styling from the added class applied to it. To ensure this, call `Platform.flush()` in the property change handler after adding the CSS class.
-2. The author of a slider element wants to ensure that data can propagate from it as the user slides the slider. A user of the element, might, for example, bind the slider's value to an input and expect to see the input change while the slider is moving. To achieve this, the element author calls `Platform.flush()` after setting the element's value in the `ontrack` event handler.
+1. プロパティの変更がノードに追加されようとしているCSSクラスに影響を及ぼす。ノードが追加されたCSSクラスが適用されてから表示されることを確実にしたいような場合は、プロパティ変更を行う関数内でCSSクラスを追加した後に`Platform.flush()`を呼び出します。
+2. スライダーエレメントの作者が、ユーザがスライダーを動かすにつれてデータ変更を通知したい。たとえばユーザはスライダーをインプット要素にバインドして、スライダーを動かすとインプット要素の値が変化することを期待しているかもしれません。これを実現するために、スライダーの作者は`ontrack`関数でスライダーの値を設定した後に`Platform.flush()`を呼び出します。
 
-**Note:** {{site.project_title}} is designed such that change notifications are asynchronous. Both `Platform.flush()` and `Object.observe()` (after which it's modeled) are asynchronous. Therefore, **`Platform.flush()` should not be used to try to enforce synchronous data notifications**. Instead, always use [change watchers](#change-watchers) to be informed about state.
+**注意:** {{site.project_title}}はデータ変更通知が非同期で行われるように設計されています。`Platform.flush()`と`Object.observe()`はともに非同期です。したがって、**`Platform.flush()`はデータ変更通知を同期で行うために使うべきではありません。** かわりに状態の通知については常に[change watchers](#change-watchers)を使うようにして下さい。
 {: .alert .alert-info }
 
-### How {{site.project_title}} elements prepare themselves {#prepare}
+### {{site.project_title}}エレメントの初期化は同様に行われるか {#prepare}
 
-For performance reasons, `<polymer-element>`s avoid the expense of preparing ShadowDOM, event listeners, and property observers if they're created outside the main document.
-This behavior is similar to how native elements such as `<img>` and `<video>` behave.
-They remain in a semi-inert state when created outside the main document (e.g. an `<img>` avoids the expense of loading its `src`).
+パフォーマンスを高めるために、`<polymer-element>`はメインドキュメント外で作成された場合、shadowDOM、イベントリスナ、プロパティ監視を生成しません。
+この振る舞いは`<img>`や`<video>`などのネイティブ要素と同じです。これらの要素はメインドキュメントの外で作成されると不活性の状態になります(例：`<img>`は`src`を読み込みません)
 
-{{site.project_title}} elements prepare themselves automatically in the following cases:
+{{site.project_title}}エレメントは次のような場合に自動的に初期化されます:
 
-1. when they're created in a `document` that has a `defaultView` (the main document)
-2. when they receive the `attached` callback
-3. when they're created in the `shadowRoot` of another element that is preparing itself
+1. `defaultView`を持つ`document`（メインドキュメント）内で作成された時
+2. `attached`コールバックを受け取った時
+3. 初期化中の他のエレメントの`shadowRoot`で作成された時
 
-In addition, if the `.alwaysPrepare` property is set to `true`, {{site.project_title}} elements
-prepare themselves even when they do not satisfy the above rules.
+加えて、`.alwaysPrepare`プロパティが`true`になっている場合は{{site.project_title}}はこれらのルールに当てはまらない場合でもエレメントを初期化します。
 
     Polymer('my-element', {
       alwaysPrepare: true
     });
 
-**Note:** an element's [`ready()` lifecycle callback](#lifecyclemethods) is called after an element has been prepared. Use `ready()` to know when an element is done initializing itself.
+**注意:** エレメントの[`ready()` lifecycle callback](#lifecyclemethods)はエレメントの初期化が終わったあとに呼び出されます。エレメントの初期化が終わったかどうかを知るには`ready()`を使って下さい。
 {: .alert .alert-success }
 
-### Resolving paths of sibling elements {#resolvepath}
+### 兄弟要素のパスを解決する {#resolvepath}
 
-For the general case of element re-use and sharing, URLs in HTML Imports are meant to be relative to the location of the import. The majority of the time, the browser takes care of this for you.
+エレメントの再利用と共有のために、HTMLインポートのURLはインポートが呼び出された場所に対する相対パスを意味します。大抵の場合ブラウザがパスの解釈を行います。
 
-However, JavaScript doesn't have a notion of a local import. Therefore, {{site.project_title}} provides a `resolvePath()` utility for converting paths relative to the import to paths relative to the document.
+しかし、JavaScriptにはローカルインポート記法がありません。したがって、{{site.project_title}} には`resolvePath()`ユーティリティがあり、このユーティリティは相対パスをインポートが実行されたドキュメントに対する相対パスに変換します。
 
-For example: If you know your import is in a folder containing a resource (e.g `x-foo.png`), you can get a path to `x-foo.png` which will work relative to the main document by calling `this.resolvePath('x-foo.png')`.
+例えば、インポート対象のエレメントが`x-foo.png`というリソースのあるフォルダにある場合、メインドキュメントから`x-foo.png`への相対パスを、`this.resolvePath('x-foo.png')`を呼び出すことで得られます。
 
-Visually, this might look like the following:
+図で示すとこれは次のようになります:
 
     index.html
     components/x-foo/
       x-foo.html
       x-foo.png
 
-At an element level, where `this` refers to an instance of an `x-foo` created by `index.html`, `this.resolvePath('x-foo.png') === 'components/x-foo/x-foo.png'`.
+`index.html`内で作成された`x-foo`のインスタンスないでは、`this`は`x-foo`自身を参照するので、`this.resolvePath('x-foo.png') === 'components/x-foo/x-foo.png'`になります。
