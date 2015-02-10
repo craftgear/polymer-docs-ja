@@ -2,16 +2,16 @@
 layout: default
 type: guide
 shortname: Docs
-title: Data binding overview
+title: データバインディングの概要
 subtitle: Data-binding
 ---
 
 {% include toc.html %}
 
 
-{{site.project_title}} supports two-way data binding.  Data binding extends HTML and the DOM APIs to support a sensible separation between the UI (DOM) of an application and its underlying data (model). Updates to the model are reflected in the DOM and user input into the DOM is immediately assigned to the model.
+{{site.project_title}}は双方向データバインディングをサポートしています。データバインディングはHTMLとDOM API群を拡張し、アプリケーションのUI(DOM)とその下にあるデータ(モデル)のわかりやすい分離をサポートします。データモデルの更新はDOMに反映され、DOMに対するユーザの入力は即剤にデータモデルに割り当てられます。
 
-For {{site.project_title}} elements, **the model is always the element itself**. For example, consider a simple element:
+{{site.project_title}}エレメントにとって、**データモデルは常にエレメントそのものです**。例えば、次のような単純なエレメントを考えてみましょう:
 
 {% raw %}
     <polymer-element name="name-tag">
@@ -29,48 +29,40 @@ For {{site.project_title}} elements, **the model is always the element itself**.
     </polymer-element>
 {% endraw %}
 
-Here the `owner` property is the model for the `name-tag` element. If you update the `owner` property:
+`owner`プロパティは`name-tag`エレメントのデータモデルです。`owner`プロパティを更新すると:
 
     document.querySelector('name-tag').owner = 'June';
 
-You change the contents of the tag:
+タグの内容を変更できます:
 
 This is **June**'s name-tag element.
 
 
 
-## The `<template>` element {#template}
+## `<template>` エレメント {#template}
 
-The HTML Template element allows you to declare chunks of inert HTML that can be cloned and used at some later point. The contents of the `<template>` element are _hidden_ in the sense that they aren't rendered in the browser and can't be retrieved by `querySelector`; and _inactive_ in the sense that they don't cause resources to be loaded or scripts to be run.
+HTMLテンプレートエレメントはHTMLのひな形を作って、それを複製して使えるようにします。 `<template>`エレメントの中にあるコンテンツはブラウザには表示されず、`querySelector`を使って取得できないので _隠された_ 状態であり、また、リソースを読み込んだりスクリプトを実行したりすることがないので、_不活性の_ 状態です。
 
-In {{site.project_title}}, templates have two special purposes:
+{{site.project_title}}では、テンプレートには特別な用途が2つあります:
 
-*   In a {{site.project_title}} element declaration, the first (top-level) `<template>` element is used
-    to define the custom element's shadow DOM.
+*   {{site.project_title}}エレメントの定義において、最初の(トップレベルの)`<template>`エレメントは、カスタムエレメントのshadow DOMを定義します。
 
-*   Inside a {{site.project_title}} element, you can use templates with data binding to render dynamic
-   content.
+*   {{site.project_title}}エレメントの内部では、動的コンテンツを表示するためにテンプレートをデータバインディングと合わせて利用できます。
 
-**Note:** The `<template>` element is a new element in the HTML standard. For information on using templates
-_outside_ of {{site.project_title}}, see [HTML's New  Template Tag](http://www.html5rocks.com/tutorials/webcomponents/template/)
-on HTML5Rocks.
+**注意:** `<template>`エレメントはHTML標準の新しいエレメントです。{{site.project_title}}とは関係なくテンプレートを使う方法についてはHTML5Rocksの[HTML's New  Template Tag](http://www.html5rocks.com/tutorials/webcomponents/template/)を参照して下さい。
 {: .alert .alert-info }
 
-## Templates with data binding
+## データバインディングとテンプレート
 
-Templates by themselves are useful. {{site.project_title}} adds declarative, two-way data
-binding to templates. Data binding lets you assign, or bind, a JavaScript object as the template’s _data model_.  A bound template can:
+テンプレートはそれ自体が便利なものですが、{{site.project_title}}は宣言的な双方向データバインディングをテンプレートに追加します。データバインディングを使うと、JavaScriptのオブジェクトをテンプレートの_データモデル_として割り当てることが出来ます。データモデルを割り当てられたテンプレートでは:
 
-*   Maintain a single copy of the template’s contents (a _template instance_). The template
-    instance is inserted in the DOM tree as a sibling of the original template.
+*   テンプレートのコンテンツのコピー(_テンプレートインスタンス_)を保持します。テンプレートインスタンスはDOMツリーの元になったテンプレートの並びに挿入されます。
 
-*   Maintain  a _set of template instances_ for each item in an array, where each instance is
-    bound to an item in the array.
+*   配列の各アイテムに対して、_テンプレートインスタンスの集合_を保持します。各インスタンスは配列の各アイテムに割り当てられます。
 
-*   Maintain two-way _bindings_ inside each template instance between values in DOM nodes
-     and the model data bound to the instance.
+*   各テンプレートインスタンスの内部では、DOMノードの値と、インスタンスに割り当てられたデータモデルの値の間で、双方向データバインディングが維持されます。
 
-To see how this works, here's an example {{site.project_title}} element that uses data binding:
+以下にデータバインディングを使った{{site.project_title}}エレメントの例を示します:
 
 {%raw%}
     <polymer-element name="greeting-tag">
@@ -100,10 +92,9 @@ To see how this works, here's an example {{site.project_title}} element that use
 {%endraw%}
 
 
-As usual, this custom element includes an outer `<template>` element to define its shadow DOM, as shown in [Element declaration](polymer.html#element-declaration).
+[エレメントの定義](polymer.html#element-declaration)で見たとおり、このカスタムエレメントは自身のshadow DOMを定義する`<template>`エレメントを外側に持ちます。
 
-Inside that template, there's a second template that contains
-expressions surrounded by double-mustache {%raw%}`{{`&nbsp;`}}`{%endraw%} symbols:
+この外側のテンプレート内部には、2つ目のテンプレートがあり、二重の波括弧でくくられた式{%raw%}`{{`&nbsp;`}}`{%endraw%}を含んでいます:
 
 {%raw%}
     <template repeat="{{s in salutations}}">
@@ -111,22 +102,17 @@ expressions surrounded by double-mustache {%raw%}`{{`&nbsp;`}}`{%endraw%} symbol
     </template>
 {%endraw%}
 
-What's going on in this template?
+何がこのテンプレートで行われているのでしょうか？
 
-*  The {%raw%}`repeat="{{s in salutations}}"`{%endraw%} tells the template to
-    generate a DOM fragment (or instance) for each element in the `salutations`
-    array.
+*  {%raw%}`repeat="{{s in salutations}}"`{%endraw%} という属性はテンプレートが`salutations`配列の各アイテムに対して、DOMフラグメント（インスタンス）を生成することを示しています。
 
-*   The contents of the template define what each instance looks like.
-    In this case, it contains a `<li>` with a text node and an `<input>` as its children.
+*   テンプレート内のコンテンツは各テンプレートインスタンスがどんな形になるかを定義します。この例では、`<input>`とテキストノードをを子要素に持つ`<li>`です。
 
-*   The expressions {%raw%}`{{s.what}}`{%endraw%} and {%raw%}`{{s.who}}`{%endraw%} create
-    data bindings to objects in the `salutations` array.
+*   {%raw%}`{{s.what}}`{%endraw%} と {%raw%}`{{s.who}}`{%endraw%} という二つの式は、`salutations`配列のアイテムに対しるデータバインディングを示します。
 
-The values inside the {%raw%}`{{`&nbsp;`}}`{%endraw%} are <em>{{site.project_title}} expressions</em>. In the examples in this section, the expressions are either  JavaScript objects (like `salutations`) or paths (like `salutations.who`). (Expressions can also include literal values and some operators --
-see [Expressions](#expressions) for details.)
+{%raw%}`{{`&nbsp;`}}`{%endraw%} 内の値は <em>{{site.project_title}} 式</em>です。このセクションの例では、式はJavaScriptのオブジェクト(例 `salutations`)か、パス(例 `salutations.who`)です。(式にはリテラル値や算術演算子を含めることも出来ます。-- 詳しくは[Expressions](#expressions)を参照して下さい。)
 
-When you create a `<greeting-tag>` element, it initializes the `salutations` array:
+`<greeting-tag>`をDOMで呼び出すと、`salutations`配列が初期化されます:
 
     this.salutations = [
       {what: 'Hello', who: 'World'},
@@ -135,49 +121,44 @@ When you create a `<greeting-tag>` element, it initializes the `salutations` arr
       {what: 'Goodbye', who: 'Imperative'}
     ];
 
-Notice that this is just JavaScript data: **there's no need to import your data into special observable objects**. The `this.salutations` array serves as the _model_ for the template.
+これが単なるJavaScriptのデータであることに注意して下さい。**データを特別なオブジェクトに格納する必要がありません**。`this.salutations`配列はテンプレートの_データモデル_になります。
 
-The template is set in motion when you create or modify the model. Here's the result:
+データモデルを作るか変更するかすると、テンプレートの出力結果を見ることが出来ます。以下に例を示します:
 
 ![ScreenShot](/images/databinding/example-1.png)
 
-and here's what the DOM looks like:
+そして、DOMは次のようになります:
 
 ![ScreenShot](/images/databinding/example-1-dom.png)
 
-You can see that the template created four instances immediately following its position in the document.
+テンプレートが自身のすぐ後に4つのインスタンを作っていることがわかります。
 
 
-## Dynamic, two-way data binding
+## 動的な双方向データバインディング
 
-Unlike server-side templating, {{site.project_title}} data binding is _dynamic_. If you change a value in the model, the DOM observes the change and updates accordingly. The following sample adds a method to update the model. Press the button, and you can see the model data instantly reflected in
-the DOM.
+サーバでのテンプレート処理とは異なり、{{site.project_title}}でのデータバインディングは_動的_です。データモデルの値を変更すると、DOMはその変更を反映して更新されます。次に示す例ではデータモデルを更新するメソッドを追加します。ボタンを押すと、モデルデータの変更が即座にDOMに反映されます。
 
 {% include samples/databinding/greeting-tag.html %}
 
-However, the DOM doesn't just observe data in the model. When you bind a DOM element that collects user input, it _pushes_ the collected value into the model.
+しかし、DOMはデータモデルの変更を反映するだけではありません。DOMエレメントでユーザからの入力を受け付けるようにすると、入力内容をデータモデルに_通知_します。
 
 ![ScreenShot](/images/databinding/input-to-model.png)
 
-**Note:** You can use [change watchers and observe blocks](polymer.html#observeprops) to trigger
-custom behavior when the model data changes.
+**注意:** [プロパティの監視](polymer.html#observeprops)を使ってデータモデルが変更された時に独自の処理を実行することが出来ます。
 {: .alert .alert-info }
 
-Lastly, see what happens when you add and remove items from the `salutations` array:
+最後に、`salutaions`配列にアイテムを追加したり、配列からアイテムを削除したりする例を見てみましょう:
 
 ![ScreenShot](/images/databinding/update-model-array.png)
 
-The `repeat` attribute ensures there is one instance for each item in the
-array. We removed two elements from the middle of `salutations` and inserted one in their place. The
-`<template>` responded by removing the two corresponding instances and creating a new one in the right location.
+`repeat`属性は配列の各アイテムに対して一つのインスタンスを作ります。`salutations`の中程から二つのアイテムを削除し、その場所に一つのアイテムを追加しました。`<template>`はこれに対応して二つのインスタンスを削除し、同じ場所に新しいインスタンスを一つ作ります。
 
-Getting the idea? Data binding allows you author your HTML _using_ HTML which contains information about
-_where data goes_ and directives which _control the document's structure_ -- all depending on the data you provide it.
+おわかりになったでしょうか？
+データバインディングはデータの配置先と、ドキュメント構造を持ったHTMLを使って、HTMLを作ることが出来ます。この過程はテンプレートに与えるデータによってコントロールされます。
 
-## Event handling and data binding
+## イベントハンドリングとデータバインディング
 
-With data binding, it’s easy to add event handlers using the
-[declarative event mapping](polymer.html#declarative-event-mapping) (on-_event_ handlers):
+データバインディングを使うと、[宣言的なイベントマッピング](polymer.html#declarative-event-mapping) (on-_event_ handlers)を使ってイベントハンドラを追加するのが簡単になります。
 
 {%raw%}
     <template>

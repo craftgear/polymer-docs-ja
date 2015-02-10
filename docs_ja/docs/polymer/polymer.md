@@ -662,7 +662,7 @@ attributeChangedCallback | attributeChanged | 属性が追加、削除、変更�
  `<square-element square="{%raw%}{{value}}{%endraw%}>`.
 {: .alert .alert-warning }
 
-### 宣言的なイベントマッピング
+### 宣言的なイベントマッピング {#declarative-event-mapping}
 
 {{site.project_title}}はコンポーネントにおける宣言的なイベントとメソッドのマッピングをサポートしています。
 マッピングされた動作を呼び出すには特別な<code>on-<em>event</em></code>書式を使います。
