@@ -170,15 +170,12 @@ HTMLテンプレートエレメントはHTMLのひな形を作って、それを
     </template>
 {%endraw%}
 
-Often, you’ll want to identify the event with the model data used to generate
-the template instance, either to update the model data or to access a piece
-of data that isn’t rendered by the template.
+イベントが発生した時に、テンプレートインスタンスを作るときに使ったデータモデルにアクセスしたと思うことがよくあるでしょう。
+あるいは、テンプレートに表示されていないデータの一部を更新したり、読み出したりしたいこともあるでしょう。
 
-You can get the model data from the event’s `target.templateInstance.model`
-property. Any identifiers that you could access inside the template are
-available as properties on the `.model` object.
+イベントの`target.templateInstance.model`プロパティを使ってデータモデルにアクセスすることが出来ます。テンプレート内部でアクセスできるすべてのIDが`.model`オブジェクトのプロパティとして利用できます。
 
-For example, the  `selectStory` method might look like this:
+例えば、`selectStory`メソッドは次のようになるでしょう:
 
     selectStory: function(e, detail, sender) {
       var story = e.target.templateInstance.model.s;
@@ -186,12 +183,12 @@ For example, the  `selectStory` method might look like this:
       this.loadStory(story.id); // accessing non-rendered data from the model
     }
 
-Continue on to:
+以下のドキュメントにつづきます:
 
 <a href="/docs/polymer/binding-types.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Types of bindings</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>バインディングの種類</paper-button>
 </a>
 
 <a href="/docs/polymer/expressions.html">
-  <paper-button raised><core-icon icon="arrow-forward"></core-icon>Expressions</paper-button>
+  <paper-button raised><core-icon icon="arrow-forward"></core-icon>式</paper-button>
 </a>
