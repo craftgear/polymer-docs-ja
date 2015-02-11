@@ -2,32 +2,26 @@
 layout: default
 type: guide
 shortname: Docs
-title: Types of bindings
+title: バインディングの種類
 subtitle: Data-binding
 ---
 
 {% include toc.html %}
 
-There are several ways to bind data to a template. You can:
+データをテンプレートにバインドする方法はいくつかあります:
 
-*   Create a single instance of a template, by specifying a single object using the `bind` attribute.
-*   Create multiple instances of a template, by specifying an array of objects using the `repeat`
-     attribute.
-*   Conditionally create an instance of a template, depending on whether the value passed to the `if` attribute is truthy.
+*   `bind`属性に一つのオブジェクトを指定してテンプレートのインスタンスを一つ作る
+*   `repeat`属性にオブジェクトの配列を指定して、テンプレートのインスタンスを複数作る
+*   `if`属性に渡された値が真と判断された場合にのみ、テンプレートのインスタンスを作る
 
-**Note:** Binding templates only works inside {{site.project_title}} elements. For example, if a
-`<template>` element is inserted directly into a page’s `<body>` tag, the `bind` attribute
-doesn’t work as described here. If you need to use template binding outside of a
-{{site.project_title}} element, see [Using data binding outside of a {{site.project_title}} element](/docs/polymer/databinding-advanced.html#bindingoutside).
+**注意:** テンプレートへの値のバインドは{{site.project_title}}エレメント内部でのみ有効です。例えば、`<template>`エレメントが直接`<body>`タグ内にある場合には、`bind`属性はここで解説したようには動きません。テンプレートへの値のバインドを{{site.project_title}}の外で行う必要がある場合は、 [{{site.project_title}} エレメントの外でデータバインディングを行う](/docs/polymer/databinding-advanced.html#bindingoutside)を参照して下さい。
 {: .alert .alert-info }
 
-When you use a binding _inside_ a template, you create a _node binding_, which binds a model value to a
-DOM node. Node bindings are interpreted by the node, based on the element type and where the binding
-occurs. See [Node bindings](#node-bindings) for details.
+テンプレート_内部_でバインディングを行う場合、_ノードバインディング_がデータモデルの値をDOMノードに結びつけます。ノードバインディングは、バインディングが起こったエレメントの種類に基づいてノードによって解釈されます。詳しくは[Node bindings](#node-bindings)を参照して下さい。
 
-## Single template instances
+## 単独のテンプレートインスタンス
 
-Using the `bind` attribute, you can create a single instance of a template bound to an object.
+`bind`属性を使うことで、一つのオブジェクトに結びついた単独のテンプレートインスタンスを作ることが出来ます。
 
 {% raw %}
     <template>
@@ -38,12 +32,11 @@ Using the `bind` attribute, you can create a single instance of a template bound
     </template>
 {% endraw %}
 
-Where `person` is an object (or more accurately, a [{{site.project_title}} expression](/docs/polymer/expressions.html) that yields an object).
+`person`はオブジェクトです（より正確には、オブジェクトとして評価される[{{site.project_title}} 式](/docs/polymer/expressions.html)です）。
 
-Bindings inside the template are evaluated in the context of the bound object. For example,
-if `person` has a property, `name`, {%raw%}`{{name}}`{%endraw%} evaluates to the value of `person.name`.
+テンプレート内部でのバインディングはバインドされるオブジェクトのコンテキストで評価されます。例えば、`person`が`name`プロパティを持っていれば、{%raw%}`{{name}}`{%endraw%}は`person.name`の値として評価されます。
 
-For convenience, you can also create a _named scope_ when binding an object:
+オブジェクトをバインドする際に_名前付きスコープ_を作ることが出来て便利です:
 
 {% raw %}
     <template>
@@ -54,17 +47,15 @@ For convenience, you can also create a _named scope_ when binding an object:
     </template>
 {% endraw %}
 
-In this case, you can use the named scope `p` to access the properties of the `person` object.
-Named scopes can be handy when nesting templates.
+この例では、`p`という名前付きスコープを使って`person`オブジェクトのプロパティにアクセスすることが出来ます。名前付きスコープはテンプレートを入れ子にする際に便利です。
 
 
 
-## Iterative templates
+## テンプレートの繰り返し
 
-Iterative, or repeating, templates, generate a single template instance for each item in
-an array. Each instance is bound to an item in the array.
+テンプレートの繰り返しでは、配列の各アイテムに対して一つのテンプレートインスタンスが生成されます。各インスタンスは配列の各アイテムに結び付けられます。
 
-The simplest format for a repeating template is:
+連プレートの繰り返しの最も単純な形は次のようになります:
 
 {% raw %}
     <template>
@@ -74,10 +65,10 @@ The simplest format for a repeating template is:
     </template>
 {% endraw %}
 
-Refer to the current item in `array` using an empty binding expression {%raw%}`{{}}`{%endraw%}, which matches
-the current binding scope. Refer to a property of the current item as {%raw%}<code>{{<var>propertyname</var>}}</code>{%endraw%}.
+`array`の現在のアイテムを、空のバインド式{%raw%}`{{}}`{%endraw%}で参照しています。
+この式は現在のバインドスコープに一致します。現在のアイテムのプロパティを参照するには{%raw%}<code>{{<var>propertyname</var>}}</code>{%endraw%}を使います。
 
-Like the `bind` attribute, the `repeat` attribute supports named scopes:
+`bind`属性と同様に、`repeat`属性でも名前付きスコープが使えます:
 
 {% raw %}
     <template>
@@ -87,8 +78,7 @@ Like the `bind` attribute, the `repeat` attribute supports named scopes:
     </template>
 {% endraw %}
 
-When using named scopes with the `repeat` attribute, the index value for each
-item in the array is also available by using the following syntax:
+`repeat`属性と共に名前付きスコープを使うと、次のようにして各アイテムの配列内のインデックスを参照できます。
 
 {% raw %}
     <template>
@@ -100,8 +90,8 @@ item in the array is also available by using the following syntax:
     </template>
 {% endraw %}
 
-Like the `bind` attribute, you can omit the value from the `repeat` element to inherit the
-parent scope. For example, suppose you have an array of objects like this:
+`bind`属性と同様に、`repeat`属性の値を省略して、親のスコープを継承することが出来ます。
+例えば、次のようなオブジェクトの配列があったとしましょう:
 
     this.items = [
       {name: "Milk"},
@@ -109,7 +99,7 @@ parent scope. For example, suppose you have an array of objects like this:
       {name: "Cereal"}
     ];
 
-You can use code like this to access both the array itself and its elements:
+配列と、配列内の各アイテムに次のようにして個別にアクセスできます:
 
 {% raw %}
     <template>
@@ -126,7 +116,7 @@ You can use code like this to access both the array itself and its elements:
     </template>
 {% endraw %}
 
-The resulting output is:
+出力結果は:
 
 Item count: 3
 
@@ -134,10 +124,11 @@ Item count: 3
 *   Bread
 *   Cereal
 
+となります。
 
-## Conditional templates
+## 条件付きテンプレート
 
-Conditional templates use the `if` attribute to conditionally create a template instance.
+条件付きテンプレートでは`if`属性を使ってテンプレートインスタンスを作るかどうかを決めます。
 
 {% raw %}
     <template>
@@ -147,11 +138,9 @@ Conditional templates use the `if` attribute to conditionally create a template 
     </template>
 {% endraw %}
 
-The conditional template can be explicitly bound to an object using the
-{%raw%}`bind={{expression}}`{%endraw%} syntax.
+条件付きテンプレートでは{%raw%}`bind={{expression}}`{%endraw%}書式を使って明示的にバインドするオブジェクトを指定できます。
 
-Where the explicit binding is omitted, a nested template can inherit the scope of
-the containing template. Conditional templates are frequently used this way:
+明示的なバインドがない場合、入れ子になったテンプレートは親テンプレートのスコープを継承します。条件付きテンプレートは次のようにして使われることが多いです:
 
 {% raw %}
     <template>
@@ -163,9 +152,9 @@ the containing template. Conditional templates are frequently used this way:
     </template>
 {% endraw %}
 
-For more information on nesting templates, see [Expression scopes](/docs/polymer/expressions.html#expression-scopes).
+テンプレートの入れ子に関してより詳しくは[式のスコープ](/docs/polymer/expressions.html#expression-scopes)を参照して下さい。
 
-You can also use `if` with the  `repeat` attribute.
+`if`は`repeat`と一緒に使うことが出来ます。
 
 {% raw %}
     <template>
@@ -177,10 +166,10 @@ You can also use `if` with the  `repeat` attribute.
     </template>
 {% endraw %}
 
-## Importing templates by reference
+## 参照を使ってテンプレートをインポートする
 
-Sometimes, you may want to reuse a template in multiple places, or reference a template generated elsewhere.
-That's where the `ref` attribute comes in:
+別々の場所でテンプレートを再利用したい、あるいは別の場所で生成されたテンプレート参照したいことがあるかもしれません。
+そんな時には`ref`が役に立ちます:
 
 {% raw %}
     <template>
@@ -195,7 +184,7 @@ That's where the `ref` attribute comes in:
     </template>
 {% endraw %}
 
-You can use the `ref` attribute to define recursive templates, such as tree structures:
+`ref`属性を使って、ツリー構造のようなテンプレートの再起を表現できます:
 
 {% raw %}
     <template>
@@ -211,7 +200,7 @@ You can use the `ref` attribute to define recursive templates, such as tree stru
     </template>
 {% endraw %}
 
-In addition, you can bind to the `ref` attribute _itself_, to choose templates dynamically:
+さらに、テンプレートを動的に参照するために`ref`の参照先を_自分自身_にすることが出来ます:
 
 {% raw %}
     <template>
@@ -219,45 +208,45 @@ In addition, you can bind to the `ref` attribute _itself_, to choose templates d
     </template>
 {% endraw %}
 
-## Node bindings
+## ノードバインディング
 
-Node bindings are created for each binding in the contents of a template. A node binding creates a named relationship between a model value and a DOM node.
+ノードバインディングはテンプレートのコンテンツの各バインドについて行われます。ノードバインディングはデータモデルの値とDOMノードのつながりに名前をつけます。
 
-How nodes interpret bindings depends on the _type of element_, and the _binding name_. In {{site.project_title}}, the binding name is based on where the binding appears in the markup:
+ノードがバインディングを解釈する方法は_エレメントの種類_と_バインド名_に依存します。{{site.project_title}}では、バインド名はマークアップ内でバインディングが起こった場所に基づきます:
 
-* A binding in the text content of an element, such as {%raw%}`<span>{{someText}}</span>`{%endraw%}, uses the name `textContent`.
-* A binding in an element's attribute value, such as {%raw%}`<span style="{{someStyles}}">`{%endraw%} uses the name of the attribute as the name of the binding.
+* {%raw%}`<span>{{someText}}</span>`{%endraw%}のようなエレメントのテキストコンテンツのバインディングは、`textContent`という名前になります。
+* {%raw%}`<span style="{{someStyles}}">`{%endraw%} のようなエレメントの属性値へのバインディングは属性名をバインド名に使います。
 
 
-### Binding to text
+### テキストに対するバインディング
 
-If a binding occurs between tags, it creates a `textContent` binding to the element.
+タグ内でのバインディングは、エレメントに`textContent`バインディングを生成します。
 
 {% raw %}
     <p>This paragraph has some {{adjective}} text.</p>
 {% endraw %}
 
-All text nodes treat a `textContent` binding as a one-way binding: changing the model changes the bound node, but imperatively changing the DOM value does _not_ update the model.
+全てのテキストノードにおける`textContent`バインディングを一方通行です。つまり、ノードに結び付けられたデータモデルの値を変更すると、テキストノードの値も変更されますが、テキストノードの値を変更してもデータモデルは変更されません。
 
-### Binding to attributes
+### 属性に対するバインディング
 
-When you bind to an attribute, the binding takes the attribute's name. For example, the following binding uses the name `style`.
+属性に値をバインドすると、属性名がバインディング名になります。例えば、次のバインディングの名前は`style`になります。
 
 {% raw %}
     <span style="color: {{myColor}}">Colorful text!</span>
 {% endraw %}
 
-How these bindings work depends on the element being bound:
+バインド先のエレメントに応じて、この種のバインディングは次のように振る舞います:
 
-- For _most_ standard DOM elements, these bindings form one-way bindings to the attribute. For example, changing the `myColor` property updates the color of the element, but imperatively changing the `style` attribute _doesn't_ update the `myColor` property.
+- _ほとんどの_標準DOMエレメントにおいては、この種のバインディングは属性に対する一方通行のバインディングです。例えば、データモデルの`myColor`プロパティを変更するとエレメントのテキスト色が変わりますが、プログラムで`style`属性を変更しても、データモデルの`myColor`プロパティは_変更されません_。
 
-- The form input elements `input`, `option`, `select`, and `textarea` support two-way bindings for certain attributes.
+- `input`, `option`, `select`, `textarea` といったフォームの入力エレメントは、特定の属性について双方向データバインディングをサポートしています。
 
-- {{site.project_title}} elements support two-way bindings to published properties. If you publish a property using the `attributes` attribute or a `publish` block, it's available for two-way data binding.
+- {{site.project_title}}エレメントは公開プロパティに対する双方向データバインディングをサポートしています。`publish`オブジェクトか`attributes`属性を使ってプロパティを公開しているなら、双方向データバインディングが有効です。
 
-- Custom elements are also free to interpret bindings in other ways. For example, a non-{{site.project_title}} element could use the underlying [Node.bind](node_bind.html) library to override the default handling of named bindings.
+- カスタムエレメントは他の方法でバインディングを解釈することが出来ます。{{site.project_title}}エレメント以外のカスタムエレメントは[Node.bind](node_bind.html)ライブラリを使ってデフォルトのバインディングの名前の付け方を変更できます。
 
-### Binding to input values
+### 入力値に対するバインディング
 
 Two-way bindings are supported as a special case on some user input elements. Specifically, the following attributes support two-way bindings:
 
