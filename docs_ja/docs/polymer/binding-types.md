@@ -248,18 +248,18 @@ Item count: 3
 
 ### 入力値に対するバインディング
 
-Two-way bindings are supported as a special case on some user input elements. Specifically, the following attributes support two-way bindings:
+いくつかの入力エレメントでは特別に双方向データバインディングがサポートされます。特に、以下に挙げる属性では双方向データバインディングが使えます:
 
-- `input` element: `value` and `checked` attributes.
-- `option` element: `value` attribute.
-- `select` element: `selectedIndex` and `value` attributes.
-- `textarea` element: `value` attribute.
+- `input` エレメント: `value` と `checked` 属性。
+- `option` エレメント: `value` 属性。
+- `select` エレメント: `selectedIndex` と `value` 属性。
+- `textarea` エレメント: `value` 属性。
 
-### Binding to {{site.project_title}} published properties
+### {{site.project_title}}の公開プロパティにバインドする
 
-When you bind to a [published property](polymer.html#published-properties) on a {{site.project_title}} element, you get a two-way binding to the property.
+{{site.project_title}}の[公開プロパティ](polymer.html#published-properties)にバインドする場合、双方向データバインディングになります。
 
-In the following sample, the `intro-tag` binds to a published property on the `say-hello` element:
+次の例では、`intro-tag`は`say-hello`エレメントの公開プロパティにバインドします:
 
 {% raw %}
     <!-- say-hello element publishes the 'name' property -->
@@ -287,24 +287,17 @@ In the following sample, the `intro-tag` binds to a published property on the `s
     <intro-tag></intro-tag>
 {% endraw %}
 
-Here, `yourName` is bound to _both_ the `say-hello` element's `name` property and
-the `input` element's `value` attribute. Both bindings are two-way, so when the user enters
-a name, it's pushed into the `say-hello` element's `name` property. If you change the
-value of the `name` property, the value is pushed into the `input` element.
+ここで、`yourName`は`say-hello`エレメントの`name`プロパティと、`input`エレメントの`value`属性の_両方に_バインドされます。この二つのバインディングはともに双方向であり、ユーザが名前を入力するとその値は`say-hello`エレメントの`name`プロパティへと通知されます。逆に`name`プロパティの値を変更すると、その値は`input`エレメントの入力値に反映されます。
 
-**Note:** The `intro-tag` element doesn't define a `yourName` property. In this case, the data
-binding system creates the property automatically.
+**注意:** `intro-tag`エレメントでは`yourName`プロパティを定義していません。この例では、データバインディング機構が自動でプロパティを作成します。
 {: .alert .alert-info }
 
 
-#### Binding objects and arrays to published properties
+#### オブジェクトと配列を公開プロパティにバインドする
 
-Most of the examples show data binding with simple string values,
-but {{site.project_title}} lets you bind references between elements
-using published properties.
+ほとんどのデータバインディングの例は単純な文字列を扱っていますが、{{site.project_title}}では公開プロパティを用いてエレメント同士の参照をバインドすることが出来ます。
 
-Let's modify the `name-tag` example to take an object instead of individual
-properties.
+`name-tag`の例を修正して、プロパティを一つのオブジェクトのまとめてみましょう。
 
     <polymer-element name="name-tag" attributes="person">
       <template>
@@ -323,7 +316,7 @@ properties.
       </script>
     </polymer-element>
 
-Now, imagine we make a new component called `<visitor-creds>` that uses `name-tag`:
+次に、この`name-tag`を用いた`<visitor-creds>`という新しいコンポーネントを作るとします:
 
     <polymer-element name="visitor-creds">
       <template>
@@ -341,15 +334,14 @@ Now, imagine we make a new component called `<visitor-creds>` that uses `name-ta
       </script>
     </polymer-element>
 
-When an instance of `<visitor-creds>` is created, its `person` property (an object)
-is also bound to `<name-tag>`'s `person` property. Now both components are using
-the same `person` object.
+`<visitor-creds>`のインスタンスが作成されると、その`person`プロパティ（オブジェクト）は同時に`<name-tag>`の`person`プロパティにバインドされます。これで二つのコンポーネントは同じ`person`オブジェクトを参照するようになります。
 
 
 
-### Conditional attributes
+### 条件属性
 
-For boolean attributes, you can control whether or not the attribute appears using the special conditional attribute syntax:
+ブーリアン属性では、特別な条件書式を使って、その属性が表示されるかどうかをコントロールできます:
+
 
 {% raw %}
 <pre class="prettyprint">
@@ -357,24 +349,23 @@ For boolean attributes, you can control whether or not the attribute appears usi
 </pre>
 {%endraw%}
 
-If _boolean-expression_ is truthy, _attribute_  appears in the markup; otherwise it is omitted. For example:
+_boolean-expression_が真の値であれば、_attribute_はマークアップに表示されます。一方、値が偽であれば表示されません:
 
 {% raw %}
     <span hidden?="{{isHidden}}">This may or may not be hidden.</span>
 {% endraw %}
 
-### One-time bindings
+### 一度だけのバインディング
 
 {% include experimental.html %}
 
-Sometimes, you may not need dynamic bindings. For these cases, there are one-time bindings.
+動的なバインディングが必要な場合もあります。そういった場合には、一度だけバインディングを実行する方法があります。
 
-Anywhere you use {% raw %}`{{}}`{% endraw %} in expressions, you can use double brackets
-(`[[]]`) to set up a one-time binding. The binding becomes inactive after {{site.project_title}}
-sets its value for the first time.
+式で{% raw %}`{{}}`{% endraw %} を使う代わりに、ダブルブラケット(`[[]]`)を使うと、一度だけのバインディングになります。{{site.project_title}}が一度値を設定するとバインディングは無効になります。
 
-Example:
+例:
 
     <input type="text" value="this value is inserted once: [[ obj.value ]]">
 
-One time bindings can potentially be a performance win if you don't need the overhead of setting up property observation.
+
+プロパティの監視が必要なければ、一度だけのバインディングはパフォーマンスを改善する可能性があります。
