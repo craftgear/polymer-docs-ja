@@ -2,65 +2,52 @@
 layout: default
 type: guide
 shortname: Docs
-title: Expressions
+title: 式
 subtitle: Data-binding
 ---
 
 {% include toc.html %}
 
+`<polymer-element>`内部では、{%raw%}`{{`&nbsp;`}}`{%endraw%} を使ってバインディングを行った場合、インライン式や名前付きスコープ、マークアップの繰り返しなどを書くのに{{site.project_title}}の[式ライブラリ](https://github.com/polymer/polymer-expressions)が利用可能です。
 
-Within a `<polymer-element>` you can use {{site.project_title}}'s [expression
-library](https://github.com/polymer/polymer-expressions) to write inline expressions,
-named scopes, and iterative markup, anywhere {%raw%}`{{`&nbsp;`}}`{%endraw%} bindings are used.
+式は[計算済みプロパティ](/docs/polymer/polymer.html#computed-properties)を定義するのにも使えます。
 
-Expressions can also be used to define [computed properties](/docs/polymer/polymer.html#computed-properties).
+## 式の書式
 
-## Expression syntax
+{{site.project_title}}はJavaScriptの厳密なサブセットを{%raw%}`{{}}`{%endraw%}での式としてサポートしています。この機能を使うには、その振る舞いと限界を理解しておくことが重要です:
 
-{{site.project_title}} supports expressions in {%raw%}`{{}}`{%endraw%} with a strict
-subset of the JavaScript language. In order to use this feature, it's
-important to understand its behavior and limitations:
+- インライン式の目的はシンプルな値と関係の表現を可能にすることです。複雑なロジックをHTMLに記述するのは多くの場合良くない実装です。
+- 式はページ内のスクリプトを実行する(例 `eval`)ことはありません。グローバルオブジェクト(例 `window`)にはアクセスできません。式はパースされると、式で表現されたパスに含まれる値に変換されます。
+- 式を使ってHTMLを挿入することは出来ません。XSSを避けるため、式の出力結果はバインドされた値が挿入される前にHTMLエスケープされます。
 
-- The goal for inline expressions is to allow the expression of simple value
-concepts and relationships. It is generally bad practice to put complex logic
-into your HTML (view).
-- Expressions are never run (e.g. `eval`) as page script. They cannot access any
-global state (e.g. `window`). They are parsed and converted to a simple
-interpreted form which is provided the present values of paths contained in
-the expression.
-- You can't insert HTML using expressions. To avoid XSS issues, the output of an expression
-is HTML escaped before being inserted as the value of the binding.
-
-**Note:** For the rare instance where you need to insert HTML dynamically, 
-see [Inserting data-bound HTML](databinding-advanced.html#boundhtml)
+**注意:** HTMLを動的に挿入する必要があるというまれな場合には、
+[バインドされたHTMLを挿入する](databinding-advanced.html#boundhtml)を参照して下さい。
 {: .alert alert-info }
 
-Expressions support the following subset of JavaScript:
+式は次に挙げるJavaScriptのサブセットをサポートします:
 
-| Feature | Example | Explanation
+| 機能 | 例 | 説明
 |---------|
-|Identifiers & paths | `foo`, `match.set.game` | These values are treated as relative to the current scope, extracted, and observed for changes. The expression is re-evaluated if one of the values in the expression changes. Changing a property value does not result in the expression being re-evaluated. For example, changing the value of `foo.bar` doesn't cause the expression `foo` to be re-evaluated.
-| Array access | `foo[bar]` | Where `foo` and `bar` are identifiers or paths. The expression is re-evaluated if `foo` or `bar` changes, or if the value at `foo[bar]` changes.
-| Logical not operator | `!` |
-| Unary operators | `+foo`, `-bar` | Converted to `Number`. Or converted to `Number`, then negated.
-| Binary operators | `foo + bar`, `foo - bar`, `foo * bar` | Supported: `+`, `-`, `*`, `/`, `%`
-| Comparators | `foo < bar`, `foo != bar`, `foo == bar` | Supported: `<`, `>`, `<=`, `>=`, `==`, `!=`, `===`, `!==`
-| Logical comparators | `foo && bar || baz` | Supported: `||`, `&&`
-| Ternary operator | `a ? b : c` |
-| Grouping (parenthesis) | `(a + b) * (c + d)` |
-| Literal values | numbers, strings, `null`, `undefined` | Escaped strings and non-decimal numbers are not supported. |
-| Array & Object initializers | `[foo, 1]`, `{id: 1, foo: bar}` |
-| Function | `reverse(my_list)` | The expression's value is the return value of the function. The function's arguments are observed for changes, and the expression is re-evaluated whenever one of the arguments changes.
+|識別子とパス | `foo`, `match.set.game` | これらの値は、現在のスコープに対する相対パスとして扱われ、展開、監視されます。式内部のどれかの値が変更されると式が再計算されますが、プロパティの変更では再計算は行われません。例えば、`foo.bar`の値を変更しても`foo`は再計算されません。
+| 配列としてのアクセス | `foo[bar]` | `foo`と`bar`は識別子かパスです。式は`foo`か`bar`、もしくは`foo[bar]`の値が変更されると再計算されます。
+| 論理否定演算子 | `!` |
+| 単項演算子 | `+foo`, `-bar` | `Number`に変換されます。 あるいは`Number`に変換された後、否定されます。
+| 二項演算子 | `foo + bar`, `foo - bar`, `foo * bar` |  `+`, `-`, `*`, `/`, `%` が利用可能です
+| 比較演算子 | `foo < bar`, `foo != bar`, `foo == bar` | `<`, `>`, `<=`, `>=`, `==`, `!=`, `===`, `!==` が利用可能です。
+| 論理演算子 | `foo && bar || baz` | `||`, `&&` が利用可能です。
+| 三項演算子 | `a ? b : c` |
+| グループ化 (括弧) | `(a + b) * (c + d)` |
+| リテラル値 | numbers, strings, `null`, `undefined` | エスケープされた文字列と10進数以外の数値はサポートされません。
+| 配列とオブジェクト | `[foo, 1]`, `{id: 1, foo: bar}` |
+| 関数 | `reverse(my_list)` | 式の値は関数の返り値になります。関数の引数は変更監視の対象であり、引数のどれかが変更されると式は再計算されます。
 {: .first-col-nowrap .responsive-table .expressions-table }
 
 
-In addition to the JavaScript portion, an expression can also include one or more _filters_, which
-modify the output of the JavaScript expression. See [Filtering expressions](#filters) for
-information.
+JavaScriptのサブセットに加えて、式には_フィルタ_を含めることが出来ます。フィルタはJavaScript式の出力結果を変更します。より詳しくは[四季をフィルタリングする](#filters)を参照して下さい。
 
-## Evaluating expressions
+## 式を計算する
 
-Expressions are parsed when they're within a binding or computed property declaration:
+式は、バインディングか計算済みプロパティの中にあると、パースされます:
 
 <pre class="nocode">
 {%raw%}<b>{{</b> <var>expression</var> <b>}}</b>{%endraw%}
@@ -76,26 +63,25 @@ Expressions are parsed when they're within a binding or computed property declar
 }</b>
 </pre>
 
-The value of the expression is evaluated. In a binding, the result inserted as the value of the binding:
+パース後、式の値は計算され、バインディングの値として計算結果が挿入されます:
 
 {% raw %}
     <div>Jill has {{daughter.children.length + son.children.length}} grandchildren</div>
 {% endraw %}
 
+の結果は：
 may result in:
 
     <div>Jill has 100 grandchildren</div>
 
-For standard (double-mustache) bindings and computed properties, the
-expression is re-evaluated whenever the value of one or more paths
-in the expression changes.
+となります。
 
-## Expression scopes {#expression-scopes}
+標準のバインディング(二重ひげ記法)と計算済みプロパティでは、式内のパスのうちどれかが変更されると、式は再計算されます。
 
-Expressions are evaluated based on the current _scope_, which defines which identifiers and paths
-are visible. The expressions in `bind`, `repeat` or `if` attributes are evaluated in the scope of
-the parent template. For an element's outermost template, paths and identifiers are
-interpreted relative to the element itself (so `this.prop` is available as {%raw%}`prop`{%endraw%}).
+## 式のスコープ {#expression-scopes}
+
+式は現在の_スコープ_で評価されます。スコープはどの識別子やパスが参照可能か定義しています。
+`bind`属性、`repeat`属性 あるいは `if`属性における式は、親テンプレートのスコープで評価されます。エレメントの最も外側にあるテンプレートでは、パスと識別子はエレメント自身に対する相対パスとして解釈されます。(そのため`this.prop`は{%raw%}`prop`{%endraw%}と書けます)
 
 For computed properties, the scope of an expression is always the element itself.
 
