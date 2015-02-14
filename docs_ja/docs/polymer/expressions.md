@@ -83,17 +83,15 @@ may result in:
 式は現在の_スコープ_で評価されます。スコープはどの識別子やパスが参照可能か定義しています。
 `bind`属性、`repeat`属性 あるいは `if`属性における式は、親テンプレートのスコープで評価されます。エレメントの最も外側にあるテンプレートでは、パスと識別子はエレメント自身に対する相対パスとして解釈されます。(そのため`this.prop`は{%raw%}`prop`{%endraw%}と書けます)
 
-For computed properties, the scope of an expression is always the element itself.
+計算済みプロパティでは、式のスコープは常にエレメントそのものです。
 
-Templates that don't include `bind` or `repeat` share the current scope.
+`bind`や`repeat`を含まないテンプレートは現在のスコープを共有します。
 
-A `bind` or `repeat` without an expression is the same as using an expression that
-specifies the current scope.
+式を含まない`bind`や`repeat`は、現在のスコープを指定した式を含む`bind`や`repeat`と同じです。
 
-### Nested scoping rules {#nested-scoping-rules}
+### 入れ子になったスコープのルール {#nested-scoping-rules}
 
-If a `<template>` using a named scope contains child `<template>`s,
-all ancestor scopes are visible, up-to and including the first ancestor **not** using a named scope. For example:
+`<template>`に名前付きスコープを持つ複数の`<template>`が含まれている場合、親要素のスコープは全て参照可能です。これには名前付きスコープを**含まない**最初の親要素も含まれます。例えば:
 
 {% raw %}
     <template>
@@ -114,87 +112,70 @@ all ancestor scopes are visible, up-to and including the first ancestor **not** 
     </template>
 {% endraw %}
 
-In other words:
+言い換えると:
 
-- If a template uses a named scope, its parent scope is visible.
-- If a template uses an unnamed scope, its parent scope is _not_ visible.
+- テンプレートが名前付きスコープを持つ場合、親要素のスコープは全て参照可能です。
+- テンプレートが名前付きスコープを含まない場合、親要素のスコープは参照**できません**。
 
-## Filtering expressions {#filters}
+## フィルタリング式 #filters}
 
-Filters can be used to modify the output of expressions. {{site.project_title}} supports several
-default filters for working with data. They're used in bindings by piping an input expression
-to the filter:
+式の出力結果を修正するのにフィルタを使うことが出来ます。{{site.project_title}}にはいくつかのデフォルトフィルタが用意されています。フィルタはバインディング内で式をパイプすることで利用します:
 
 <pre class="prettyprint">
 {% raw %}{{ <var>expression</var> | <var>filterName</var> }}{% endraw %}
 </pre>
 
-{{site.project_title}} provides two predefined filters, `tokenList` and `styleObject`. You can also
-create your own [custom filters](#custom-filters).
+{{site.project_title}} には `tokenList`と`styleObject`という二つの定義済みフィルタがあります。[カスタムフィルタ](#custom-filters)を作ることも出来ます。
 
-If your filter depends on the properties of one of the paths or identifiers in your expression,
-note that the expression isn't re-evaluated when properties change. For example, if you have an
-expression like:
+式の識別子やパスをフィルタの対象にする場合、プロパティの変更では式が再計算されないことに注意して下さい。例えば、次のような式があったとします:
 
     {% raw %}{{user | formatUserName}}{% endraw %}
 
-The expression isn't re-evaluated when a property, such as `user.firstName` changes. If you need
-the filter to be re-run when a property changes, you can include it explicitly in the expression,
-like this:
+`user.firstName`のようなプロパティが変更されたとしても、式は再計算されません。プロパティの変更時にフィルタを再度実行したい場合は、次のようにしてプロパティを明示的に式に含めるようにします:
 
     {% raw %}{{ {firstName: user.firstName, lastName: user.lastName} | formatUserName}}{% endraw %}
 
-Since `user.firstName` and `user.lastName` are included explicitly in this expression, both
-properties are observed for changes.
+`user.firstName`と`user.lastName`が明示的に式に含まれているため、これらのプロパティは変更監視の対象になります。
 
-### tokenList
+### tokenListフィルタ
 
-The `tokenList` filter is useful for binding to the `class` attribute. It allows you
-to dynamically set/remove class names based on the object passed to it. If the object
-key is truthy, the name will be applied as a class.
+`tokenList`フィルタは`class`属性に値をバインドする際に便利です。`tokenList`に渡されるオブジェクトに基づいて、動的にクラス名を設定/削除することが出来ます。オブジェクト内のキーが真の値を持つなら、キー名がクラス名として設定されます。
 
-For example:
+例えば:
 
 {% raw %}
     <div class="{{ {active: user.selected, big: user.type == 'super'} | tokenList}}">
 {% endraw %}
 
-results in the following if `user.selected == true` and `user.type == 'super'`:
+`user.selectd == true`かつ`user.type == 'super'`である場合、この例は次のような出力結果になります:
 
     <div class="active big">
 
-### styleObject
+### styleObjectフィルタ
 
-The `styleObject` filter converts a JSON object containing CSS styles into a string of CSS suitable for
-assigning to the `style` attribute.
+`styleObject`フィルタはCSSスタイルを含むJSONオブジェクトを`style`属性に適した書式に変換します。
 
-For simple property values {{site.project_title}} allows you to bind to the `style` attribute
-directly:
+プロパティ一つの場合{{site.project_title}}では直接`style`属性にバインド可能です:
 
 {% raw %}
     <div style="color: {{color}}">{{color}}</div>
 {% endraw %}
 
-If the element's `color` property is "red", this results in the following:
+エレメントの`color`プロパティが"red"なら、これは次のような出力結果になります:
 
     <div style="color: red">red</div>
 
-However, if you have an object containing a set of styles as name:value pairs,
-use the `styleObject` filter to transform it into the appropriate format.
+しかし、キー名と値のペアで複数のスタイルを表現するオブジェクトを`style`属性に適用したい場合は、`styleObject`フィルタをつかって変換することが出来ます。
 
 {% raw %}
     <div style="{{styles | styleObject}}">...</div>
 {% endraw %}
 
-In this examples `styles` is an object of the form `{color: 'red', background: 'blue'}`, and
-the output of the `styleObject` filter is a string of CSS declarations (for example,
-`"color: 'red'; background: 'blue'"`).
+この例で、`styles`は`{color: 'red', background: 'blue'}`というオブジェクトであったとすると、`styleObject`フィルタが出力するCSSスタイルは、`"color: 'red'; background: 'blue'"` となります。
 
-### Writing custom filters {#custom-filters}
+### カスタムフィルタを作成する {#custom-filters}
 
-A filter is simply a function that transforms the input value. You can create a _custom filter_ for
-your element by adding a method to the element's prototype. For example, to add a filter called
-`toUpperCase` to your element:
+フィルタは入力値を変更して返す関数に過ぎません。エレメントのprototypeにメソッドを追加することで、_カスタムフィルタ_を作成できます。例えば、`toUpperCase`というフィルタを追加するには:
 
     Polymer('greeting-tag', {
       ...
@@ -202,17 +183,13 @@ your element by adding a method to the element's prototype. For example, to add 
         return value.toUpperCase();
       },
 
-And use the filter like this:
+とし、次のようにしてこのフィルタを使います:
 
 {% raw %}
     {{s.who | toUpperCase}}
 {% endraw %}
 
-This filter modifies values when they're being inserted into the DOM, so if `s.who` is set to `world`,
-it displays as `WORLD`. You can also define a custom filter that operates when converting back from
-a DOM value to the model (for example, when binding an input element value). In this case, create
-the filter as an object with `toDOM` and `toModel` functions. For example, to keep your model text
-in lowercase, you could modify the `toUpperCase` as follows:
+このフィルタは値がDOMに挿入された時に変更を行います。`s.who`の値が`world`なら、出力は`WORLD`となります。同様にDOMの値からデータモデルに逆の変換をするフィルタを作ることも出来ます(例：inputエレメントの値をバインドするような場合)。この場合は、フィルタをオブジェクトにし、`toDOM`と`toModel`という名前の関数を作ります。例えば、データモデルに格納するテキストを常に小文字にするなら、`toUpperCase`フィルタを次のように変更します:
 
     toUpperCase: {
       toDOM: function(value) {
@@ -223,40 +200,36 @@ in lowercase, you could modify the `toUpperCase` as follows:
       }
     }
 
-**Note:** If the user enters text in a bound input field, the `toModel` filter is invoked before the
-value stored to the model. However, `toDOM` filter is only called when the model is changed
-imperatively. So the text entered by the user isn't filtered (that is, it doesn't
-get capitalized). To validate or transform a value as the user types it, you can use a `on-input`
-or `on-blur` event handler.
+**注意:** ユーザがバインド済みのinputエレメントに値を入力すると、データモデルに値が格納される前に、`toModel`フィルタが実行されます。しかし、`toDOM`フィルタはデータモデルがプログラムで変更された時にしか呼び出されません。したがって、ユーザの入力値は`toDOM`フィルタによって変換されず、大文字にはなりません。ユーザの入力に応じて値を変換するには、`on-input`イベントか、`on-blur`イベントが使えます。
 {: .alert .alert-info }
 
-#### Filter parameters
+#### フィルタの引数
 
-You can pass parameters to a filter. For example:
+フィルタには引数を渡すことが出来ます。例えば:
 
 {% raw %}
     {{myNumber | toFixed(2)}}
 {% endraw %}
 
-The code for the `toFixed` filter could look like this:
+`toFixed`フィルタの実装は次のようになります:
 
     toFixed: function(value, precision) {
       return Number(value).toFixed(precision);
     }
 
-The parameters passed to a filter are observed for changes.
+フィルタの引数は変更監視の対象になります。
 
-#### Chaining filters
+#### フィルタの連鎖
 
-You can also chain filters, passing the output of one filter to another:
+出力を別のフィルタに渡すことでフィルタをつなげて使うことが出来ます:
 
 {% raw %}
     {{myNumber | toHex | toUpperCase}}
 {% endraw %}
 
-### Writing global filters
+### グローバルフィルタの作成
 
-
+{{site.project_title}}では個別エレメントのprototypeに[カスタムフィルタ](#custom-filters) を追加することが出来ますが、
 Although {{site.project_title}} supports adding [custom filters](#custom-filters) to the element prototype,
 you may want to register global filters which can be reused across multiple elements.
 
