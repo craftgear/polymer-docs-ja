@@ -229,23 +229,19 @@ may result in:
 
 ### グローバルフィルタの作成
 
-{{site.project_title}}では個別エレメントのprototypeに[カスタムフィルタ](#custom-filters) を追加することが出来ますが、
-Although {{site.project_title}} supports adding [custom filters](#custom-filters) to the element prototype,
-you may want to register global filters which can be reused across multiple elements.
+{{site.project_title}}では個別エレメントのprototypeに[カスタムフィルタ](#custom-filters) を追加することが出来ますが、複数のエレメントで再利用できるグローバルフィルタを登録したいことがあるかもしれません。
 
-To register a global filter, add a custom filter to the prototype of the
-`PolymerExpressions` object.
+グローバルフィルタを登録するには、カスタムフィルタを `PolymerExpressions`オブジェクトのprototypeに追加します。
 
-#### Examples
+#### グローバルフィルタの例
 
-Let's create a filter for transforming the letters in any string to uppercase.
+文字列を全て大文字に変換するフィルタを作ってみましょう。
 
 {% raw %}
     {{Hello Polymer | uppercase}}
 {% endraw %}
 
-To register `uppercase` as a global filter, add it to the prototype for
-`PolymerExpressions` object:
+`uppercase`をグローバルフィルタとして登録するには、`PolymerExpressions`オブジェクトのprototypeに追加します:
 
 {% raw %}
     PolymerExpressions.prototype.uppercase = function(input) {
@@ -253,8 +249,7 @@ To register `uppercase` as a global filter, add it to the prototype for
     };
 {% endraw %}
 
-You can also pass parameters to global filters. Here's an example of a `startsWith`
-filter that returns only those items in an array that begin with a certain letter:
+グローバルフィルタに引数を渡すことも出来ます。次に挙げるのは、配列内で指定した文字から始まる要素だけを返す`startWith`フィルタの例です:
 
 {% raw %}
     {{arrayOfFriends | startsWith('M')}}
@@ -270,12 +265,11 @@ Filter definition:
     };
 {% endraw %}
 
-A useful set of community-driven [collection](https://github.com/addyosmani/polymer-filters) of {{site.project_title}} filters is available if you need further
-examples of global filters.
+グローバルフィルタについてより詳しく知りたい場合は、コミュニティの有志によって作成されている{{site.project_title}}の[フィルタコレクション](https://github.com/addyosmani/polymer-filters)が参考になります。
 
-#### Importing global filters
+#### グローバルフィルタをインポートする
 
-To use a filter across multiple elements, define it in a script and import it at the top of your element
+複数のエレメントにアクセするフィルタを使うには、スクリプト内でフィルタを定義し、エレメントの最初でそのフィルタをインポートします。
 (after polymer.html).
 
 
