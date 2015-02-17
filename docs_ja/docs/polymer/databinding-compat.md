@@ -2,24 +2,22 @@
 layout: default
 type: guide
 shortname: Docs
-title: Compatibility notes
+title: 互換性について
 subtitle: Data-binding
 ---
 
 {% include toc.html %}
 
+テンプレートの仕様のうちいくつかは、polyfillライブラリで完全に再現できません。以下に挙げるようなそのためいくつかの回避策が必要になります:
 
-A few features of native templates can’t be replicated perfectly with the polyfill library, and require some workarounds. These include:
+ブラウザによっては`<template>`エレメントを`<select>`や`<table>`といったエレメント内部に配置できないことがあります。
+テンプレートをサポートしていないブラウザでは、ある種の属性のバインディング（例えば、`<img>`タグの`src`属性など）は正しく動作しません。
 
-Some browsers don’t allow  `<template>` elements inside certain elements like `<select>` or `<table>`.
-Binding to certain attributes (such as the `<img>` tag’s `src` attribute) doesn’t work correctly on some browsers that don’t support templates.
+## テンプレートを内部に配置できないエレメント
 
-## Elements that can’t contain a template
+`<template>`がHTMLの仕様になるまでは、`<select>`と`<table>`では子要素を制限するために特別な解析処理を行っていました。この古いルールのせいで、`<template>`をサポートしていないブラウザでは、コンテキストから`<template>`を含む予想外のエレメントを取り出して並置関係にしようとします。
 
-Until the addition of HTML `<template>`, the `<select>` and `<table>` elements had
-special parser rules to limit the types of children they could contain. Because of these legacy rules, browsers that don't support `<template>` will lift unexpected elements out of context and make them siblings, including `<template>` itself!
-
-For example, the following won't work correctly in browsers that don't support `<template>`:
+例えば、次の例は`<template>`をサポートしないブラウザでは正常に動きません:
 
     <!-- Won't work in browsers that don't support <template>. -->
     <table>
@@ -28,7 +26,7 @@ For example, the following won't work correctly in browsers that don't support `
       </template>
     </table>
 
-The `<template repeat>` is hoisted out and rendered as a sibling:
+`<template repeat>`の部分は外部に取り出され、並置関係になります:
 
     <!-- Unsupported browsers make the child <template> a sibling. -->
     {%raw%}<template repeat="{{tr in rows}}">{%endraw%}
@@ -38,7 +36,7 @@ The `<template repeat>` is hoisted out and rendered as a sibling:
       ...
     </table>
 
-**For browsers that don't support `<template>`**, {{site.project_title}} can repeat tags like `<option>` and `<tr>` directly using the `template` attribute:
+** `<template>` をサポートしないブラウザでは**, `option`や`<tr>`といったタグで直接`template`属性を使うことで繰り返しができます。
 
     <table>
       {%raw%}<tr template repeat="{{tr in rows}}">{%endraw%}
@@ -46,7 +44,7 @@ The `<template repeat>` is hoisted out and rendered as a sibling:
       </tr>
     </table>
 
-Another example using `<select>`/`<option>`:
+`<select>`/`<option>`を使った例は次のようになります:
 
     <polymer-element name="my-select">
       <template>
@@ -65,8 +63,7 @@ Another example using `<select>`/`<option>`:
       select.options = ['One', 'Two', 'Three'];
     </script>
 
-If your users are using browsers that don't support `<template>`, use the `template`
-attribute on these special elements:
+ユーザが`<template>`をサポートしないブラウザを使っている場合は、次に挙げるエレメントで`template`属性を使って下さい:
 
 * `caption`
 * `col`
@@ -80,9 +77,7 @@ attribute on these special elements:
 * `tr`
 * `thead`
 
-**Note:** browsers with native support for `<template>` allow it to be a child
-of elements `<select>` and `<table>`. If you know your users are using a browser
-with support, you can use the standard template
+**注意:** `<template>`をサポートしているブラウザでは、`<select>`と`<table>`の子要素として`<template>`が使えます。その場合は標準のテンプレートを使って下さい。
 {: .alert .alert-info }
 
 
@@ -94,14 +89,14 @@ with support, you can use the standard template
       </template>
     </table>
 
-## Binding to attributes
+## 属性へのバインド
 
-Binding expressions to certain attributes can produce side effects in browsers that don't implement `<template>` natively.
-For example, running {% raw %}`<img src="/users/{{id}}.jpg">`{% endraw %} under the polyfill produces a network request that 404s.
+ある種の属性に対するバインド式では、`<template>`をサポートしないブラウザにおいて、副作用が発生することがあります。
+例えば、{% raw %}`<img src="/users/{{id}}.jpg">`{% endraw %}を実行すると、404になることがあります。
 
-In addition, browsers such as IE sanitize certain attributes, disallowing {% raw %}`{{}}`{% endraw %} replacements in their text.
+それに加えて、IEのようなブラウザではある種の属性は値のチェックが行われ、{% raw %}`{{}}`{% endraw %}を用いた置き換えが無効になります。
 
-To avoid these side effects, bindings in certain attributes can be prefixed with "_":
+こういった副作用を防ぐため、ある種の属性でのバインディングでは"_"を先頭につけることが出来ます。
 
 {% raw %}
     <img _src="/users/{{id}}.jpg">
