@@ -43,8 +43,8 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 未 | docs/elements/material.md |
 | 未 | docs/elements/paper-elements.md |
 | 完 | docs/polymer/binding-types.md |
-| 未 | docs/polymer/databinding-advanced.md |
-| 進 | docs/polymer/databinding-compat.md |
+| 進 | docs/polymer/databinding-advanced.md |
+| 完 | docs/polymer/databinding-compat.md |
 | 完 | docs/polymer/databinding.md |
 | 未 | docs/polymer/debugging.md |
 | 完 | docs/polymer/expressions.md |

@@ -2,7 +2,7 @@
 layout: default
 type: guide
 shortname: Docs
-title: 互換性について
+title: データバインディングの互換性について
 subtitle: Data-binding
 ---
 
