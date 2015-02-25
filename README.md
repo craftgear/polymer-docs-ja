@@ -23,7 +23,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 
 ### 進捗
 
-18/54 完了
+19/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -43,7 +43,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 未 | docs/elements/material.md |
 | 未 | docs/elements/paper-elements.md |
 | 完 | docs/polymer/binding-types.md |
-| 進 | docs/polymer/databinding-advanced.md |
+| 完 | docs/polymer/databinding-advanced.md |
 | 完 | docs/polymer/databinding-compat.md |
 | 完 | docs/polymer/databinding.md |
 | 未 | docs/polymer/debugging.md |
@@ -55,7 +55,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 完 | docs/polymer/polymer.md |
 | 未 | docs/polymer/runtime-config.md |
 | 未 | docs/polymer/styling.md |
-| 未 | docs/polymer/template.md |
+| 進 | docs/polymer/template.md |
 | 未 | docs/polymer/touch.md |
 | 完 | docs/start/creatingelements.md |
 | 完 | docs/start/customelements.md |

@@ -2,33 +2,33 @@
 layout: default
 type: guide
 shortname: Docs
-title: Template Binding
+title: テンプレートバインディング
 subtitle: Library
 
 feature:
-  summary: Polymer's [TemplateBinding](https://github.com/polymer/TemplateBinding) library extends the capabilities of the [HTML Template Element](http://www.w3.org/TR/html5/scripting-1.html#the-template-element) by enabling it to create, manage, and remove instances of content bound to data defined in JavaScript. Although internal in Polymer, it is also useful standalone.
-links:
+  summary: Polymerの[テンプレートバンディング](https://github.com/polymer/TemplateBinding)ライブラリは、[HTML Template Element](http://www.w3.org/TR/html5/scripting-1.html#the-template-element)の機能を拡張したもので、JavaScriptで定義されたデータに紐付けられたコンテンツを生成、操作、削除できるようにしてあります。Polymer内部のみならず、単独でも便利なライブラリです。
+参考リンク:
 - "HTML5Rocks - HTML's New Template Tag": http://www.html5rocks.com/tutorials/webcomponents/template/
 ---
 
 {% include spec-header.html %}
 
-## Learn the tech
+## 連プレートの仕組みを学ぶ
 
-Template Binding extends the `<template>` element with new attributes for binding data:
+テンプレートバインディングは`<template>`エレメントを拡張したもので、データをバインドするための新しい属性が追加されています:
 
 1. `bind`
 1. `repeat`
 1. `if`
 1. `ref`
 
-### Basic usage
+### 基本的な使い方
 
 #### bind
 
 {% raw %}
     <template bind="{{ singleton }}">
-      Creates a single instance with {{ bindings }} when singleton model data is provided.
+      配列でないモデルデータsingletonにバインドされたインスタンスを作ります
     </template>
 {% endraw %}
 
@@ -36,11 +36,11 @@ Template Binding extends the `<template>` element with new attributes for bindin
 
 {% raw %}
     <template repeat="{{ collection }}">
-      Creates an instance with {{ bindings }} for every element in the array collection.
+      配列内の各要素ごとにバインドされたインスタンスを作ります。
     </template>
 {% endraw %}
 
-Named scopes:
+名前付きスコープ:
 
 {% raw %}
     <template repeat="{{ user in users }}">
@@ -48,7 +48,7 @@ Named scopes:
     </template>
 {% endraw %}
 
-Indexing:
+インデックス付き呼び出し:
 
 {% raw %}
     <template repeat="{{ foo, i in foos }}">
@@ -62,15 +62,15 @@ Indexing:
 
 {% raw %}
     <template bind if="{{ conditionalValue }}">
-      Binds if and only if conditionalValue is truthy.
+      conditionalValueが真の値である場合のみバインドされます。
     </template>
 
     <template if="{{ conditionalValue }}">
-      Binds if and only if conditionalValue is truthy. (same as *bind if*)
+      conditionalValueが真の値である場合のみバインドされます。(*bind if*と同じです)
     </template>
 
     <template repeat if="{{ conditionalValue }}">
-      Repeat if and only if conditionalValue is truthy.
+      conditionalValueが真の値である場合のみ繰り返しバインドされます。
     </template>
 {% endraw %}
 
@@ -78,17 +78,17 @@ Indexing:
 
 {% raw %}
     <template id="myTemplate">
-      Used by any template which refers to this one by the ref attribute
+      ref属性でこのテンプレートを参照している別のテンプレート内で使われます。
     </template>
 
     <template bind ref="myTemplate">
-      When creating an instance, the content of this template will be ignored,
-      and the content of #myTemplate is used instead.
+      インスタンス生成の際にこのテンプレート内部にある要素は無視され、#myTemplate 内部の要素が代わりに表示されます。
     </template>
 {% endraw %}
 
-### Activating a template
+### テンプレートを有効にする
 
+データモデルをテンプレートに設定することで
 Setting data model on the template causes any `bind`, `repeat` or `if` attribute
 directive to begin acting:
 
