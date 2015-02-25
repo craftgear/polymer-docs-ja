@@ -224,55 +224,39 @@ sectionをクリックすると、次のようにDOMが変化します。（読�
 
 *   {{site.project_title}}を使っているなら、[auto-binding template](#autobinding)を利用して、カスタムエレメントを作ることなくデータバインディングを利用できます。
 
-*   {{site.project_title}}を使って_いない_なら、[Template Binding](/docs/polymer/template.html) ライブラリを直接使って下さい。このライブラリは{{site.project_title}}内部で使われており、単独でも利用可能です。
-*   If you _aren't_ using the rest of {{site.project_title}}, use the
-    [Template Binding](/docs/polymer/template.html) library directly. The template binding library is
-    used internally by {{site.project_title}}, and can be used directly, with or without the rest of
-    {{site.project_title}}. (Note that if you use template binding by itself, you cannot use {{site.project_title}}
-    expressions.)
+*   {{site.project_title}}を使って_いない_なら、[Template Binding](/docs/polymer/template.html) ライブラリを直接使って下さい。このライブラリは{{site.project_title}}内部で使われており、単独でも利用可能です。(テンプレートライブラリを単独で利用すると{{site.project_title}}の式表現は使えなくなることに注意して下さい。)
 
-**Note:** Earlier versions of {{site.project_title}} included an element called `<polymer-body>`.
-If you were using `<polymer-body>` previously, the closest substitute is an auto-binding template.
+**注意:** {{site.project_title}}の初期のバージョンには、`<polymer-body>`というエレメントがありました。もし`<polymer-body>`を以前使っていたなら、一番近い代用品はauto-bindingテンプレートです。
 {: .alert .alert-info }
 
-### Using the auto-binding template element {#autobinding}
+### auto-binding テンプレートエレメントを使う {#autobinding}
 
-The `auto-binding` element is a {{site.project_title}} custom element that extends the standard
-`<template>` element. You can use it when you want to use {{site.project_title}} data
-binding in a page without having to create a custom element just for this purpose. Auto-binding
-templates support a subset of the features available when you create your own custom element:
+`auto-binding` エレメントは標準の`<template>`エレメントを拡張する{{site.project_title}}のカスタムエレメントです。このエレメントを使うことで、データバインディングのためだけに新しいカスタムエレメントを作ることなく、{{site.project_title}}のデータバインディングを利用できるようになります。
+auto-bindingテンプレートはカスタムエレメントの機能のうち、以下に挙げるものだけをサポートします:
 
--   Full-featured data binding, with {{site.project_title}} expressions.
--   [Declarative event mapping](polymer.html#declarative-event-mapping).
--   [Automatic node finding](polymer.html#automatic-node-finding).
+-   {{site.project_title}}の式表現を含む、データバインディングの全機能
+-   [宣言的イベントマッピング](polymer.html#declarative-event-mapping).
+-   [自動ノード検索](polymer.html#automatic-node-finding).
 
-For an auto-binding template, the data model is on the template itself. For example, to use data
-binding at the top level of a page:
+auto-bindingテンプレートでは、データモデルはテンプレートそのものです。例えば、ページのトップレベルでデータバインディングを使うには次のようにします:
 
 {% include samples/databinding/auto-binding.html %}
 
-The auto-binding template inserts the instances it creates immediately after
-itself in the DOM tree (_not_ in its shadow DOM). In this case, the quotes are
-inserted as children of the `body` element.
+auto-bindingテンプレートはDOMツリーで自身のすぐ後にインスタンスを挿入します（自身のshadow DOMないではありません）。この場合、quoteは`body`エレメントの子要素として挿入されます。
 
-After adding the instances, the auto-binding template fires the `template-bound`
-event.
+インスタンスの挿入後、auto-bindingテンプレートは`template-bound`イベントを発行します。
 
-The `auto-binding` element is currently included automatically when you load the
-{{site.project_title}} library.
+`auto-binding`エレメントは{{site.project_title}}ライブラリをロードすると自動でインクルードされます。
 
-## Inserting data-bound HTML {#boundhtml}
+## データバインドされたHTMLを挿入する {#boundhtml}
 
-The {{site.project_title}} data binding escapes any HTML in the bound data.
-This avoids many potential security pitfalls with including arbitrary HTML.
+{{site.project_title}}ではバインドされたデータ内のHTMLは全てエスケープされます。これによって任意のHTMLを挿入するなどの潜在的なセキュリティホールを避けます。
 
-However, for those special cases where you need to add HTML dynamically, {{site.project_title}} 
-elements provide the `injectBoundHTML` instance method. `injectBoundHTML` replaces
-the contents of a target element with an arbitrary block of HTML. Any data binding 
-expressions in the HTML are bound to the element.
+しかし、動的にHTMLを挿入したいという特別な場合に備えて、{{site.project_title}}エレメントには`injectBoundHTML`インスタンスメソッドがあります。`injectBoundHTML`は対象エレメントのコンテンツを任意のHTMLで置き換えます。追加するHTML内のデータバインド式は、追加されたエレメントにバインドされます。
 
-For example, in the following example, a message is injected into the `message_area` `<div>`.
+例えば、次の例ではメッセージが`message_area``<div>`に追加されます。
 
+`message`プロパティを変更すると、`message_area`に表示されるデータも変わります。
 Changing the `message` property changes the data displayed in the `message_area`.
 
 {%raw%}
@@ -291,5 +275,4 @@ Changing the `message` property changes the data displayed in the `message_area`
     </polymer-element>
 {%endraw%}
 
-Note that the rules for data binding using `injectBoundHTML` are the same as the rules for 
-standard data binding. For example, if `message` contains HTML, the HTML is escaped.
+`injectBoundHTML`を使ってデータバインディングを行う場合のルールは標準のデータバインディングと同じであることに注意して下さい。例えば、`message`にHTMLが含まれていた場合、そのHTMLはエスケープされます。
