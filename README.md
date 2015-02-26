@@ -51,11 +51,11 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 未 | docs/polymer/filters.md |
 | 未 | docs/polymer/helpers.md |
 | 未 | docs/polymer/layout-attrs.md |
-| 未 | docs/polymer/node_bind.md |
+| 進 | docs/polymer/node_bind.md |
 | 完 | docs/polymer/polymer.md |
 | 未 | docs/polymer/runtime-config.md |
 | 未 | docs/polymer/styling.md |
-| 進 | docs/polymer/template.md |
+| 完 | docs/polymer/template.md |
 | 未 | docs/polymer/touch.md |
 | 完 | docs/start/creatingelements.md |
 | 完 | docs/start/customelements.md |

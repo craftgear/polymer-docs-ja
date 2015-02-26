@@ -88,16 +88,13 @@ feature:
 
 ### テンプレートを有効にする
 
-データモデルをテンプレートに設定することで
-Setting data model on the template causes any `bind`, `repeat` or `if` attribute
-directive to begin acting:
+データモデルをテンプレートに設定することで、`bind`属性、`reapeat`属性、`if`属性の機能が有効になります:
 
     document.querySelector('template').model = {...};
 
-### Unbinding a model {#nodeunbind}
+### データモデルへのバインドを解消する {#nodeunbind}
 
-`Node.unbind(<property>)` can be used to unbind a property. For example, to unbind
-a model set using the `bind` attribute, call `template.unbind('bind')`:
+`Node.unbind(<property>)` を呼び出すとプロパティに設定されたデータモデルへのバインドを解消することが出来ます。例えば、`bind`属性を用いてバインドしたデータモデルを取り外すには、`template.unbind('bind')`を呼び出します:
 
 {% raw %}
     <button onclick="removeGo()">test</button>
@@ -118,8 +115,8 @@ a model set using the `bind` attribute, call `template.unbind('bind')`:
     </script>
 {% endraw %}
 
-### Examples
+### 例
 
-Please refer to the [HowTo examples](https://github.com/Polymer/TemplateBinding/tree/master/examples/how_to).
+[具体的なコード例](https://github.com/Polymer/TemplateBinding/tree/master/examples/how_to)を参照して下さい。
 
 {% include other-resources.html %}
