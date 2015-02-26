@@ -6,23 +6,21 @@ title: Node.bind()
 subtitle: Library
 
 feature:
-  summary: "[`Node.bind()`](https://github.com/polymer/NodeBind) is Polymer's data-binding library which allows DOM nodes to bind properties to data. Although internal in Polymer, it is also useful standalone."
+  summary: "[`Node.bind()`](https://github.com/polymer/NodeBind) は Polymerのデータバンディングライブラリです。このライブラリを使うことで、DOMノードはプロパティをデータモデルにバインドできるようになります。Polymer内部のみならず、単独でも便利なライブラリです。
 
 ---
 
 {% include spec-header.html %}
 
-## Learn the tech
+## データバインディングの仕組みを学ぶ
 
-### Why Node.bind()?
+### なぜNode.bind()が必要なのか?
 
-`Node.bind()` is a new method added to all DOM nodes which instructs them to bind the named
-property to the data provided. These allows applications to create a data model
-in JavaScript that DOM reacts to.
+`Node.bind()`は全てのDOMノードに追加される新しいメソッドで、DOMノードのプロパティを与えられたデータモデルにバインドします。これによってアプリケーションではDOMに反映されるデータモデルをJavaScriptで作ることが可能になります。
 
-### Basic usage
+### 基本的な使い方
 
-"Bind the value in `obj.path.to.value` to a TextNode's `.textContent`":
+"`obj.path.to.value`の値をテキストノードの`.textContent`にバインドします":
 
     var obj = {
       path: {
@@ -35,26 +33,24 @@ in JavaScript that DOM reacts to.
     var textNode = document.createTextNode('mytext');
     textNode.bind('textContent', new PathObserver(obj, 'path.to.value'));
 
-When the value in `path.to.value` changes, `Node.bind()` keeps `.textContent` up to date.
+`path.to.value`の値が変更されると、`Node.bind()`はその値を`.textContent`に随時反映します。
 
-## Binding types
+## バインドの種類
 
-The meaning of the binding name is interpreted by the node on which `bind()` is called.
-Some elements have special properties which can be two-way data bound:
+バインディング名の意味するところは、`bind()`が呼び出されたノードによって解釈されます。エレメントのうちいくつかは双方向データバインディングに使える特別なプロパティを持っています:
 
-- `Text` node - only handles bindings on its `textContent` property.
-- `HTMLInputElement` - handles bindings on its `value` and `checked` properties.
-- `HTMLTextareaElement` - handles bindings on its `value` property.
-- `HTMLSelectElement` - handles bindings on its `value` and `selectedIndex` properties.
+- `Text` ノード - `textContent`プロパティに対するバインディングのみ有効です
+- `HTMLInputElement` - `value`プロパティと`checked`プロパティに対するバインディングが有効です
+- `HTMLTextareaElement` - `value`プロパティに対するバインディングが有効です
+- `HTMLSelectElement` - `value`プロパティと`selectedIndex`プロパティに対するバインディングが有効です
 
-**All other elements handle bindings to attributes**.
+**上記以外の全てのエレメントは属性に対するバインドが有効です**。
 
-### Text nodes
+### テキストノード
 
     textNode.bind('textContent', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the `Text` node to make its `textContent` property dependent on the
-value `someObj.path.to.value`.
+この例では、`Text`ノードの`textContent`プロパティの値が`someObj.path.to.value`の値によって変化するようになります。
 
 <table class="table">
   <tr>
@@ -70,21 +66,21 @@ value `someObj.path.to.value`.
   </tr>
 </table>
 
-### &lt;input> element {#inputelements}
+### &lt;input> エレメント {#inputelements}
 
-The `<input>` element has two special properties, `value` and `checked` for two-way binding.
+`<input>`エレメントには二つの特別なプロパティがあります。`value`と`checked`では双方向データバインディングが有効です。
 
 #### value
 
     myValueInput.bind('value', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the `input` to ensure its `value` property is equal to `String(someObj.path.to.value)`. Upon binding, if the path is reachable, `value` is set to the path value. If the path is unreachable but can be made reachable by setting a single property on the final object, the property is set to `value`.
+`input`の`value`プロパティの値が、`String(someObj.path.to.value)`と等しくなるようにしています。バインディング実行時に、指定されたパスに値があれば`value`はその値にセットされます。もしパスに値がなく、データモデルにプロパティを一つ設定することでパスの値が設定できるなら、プロパティの値は`value`と等しくなります。
 
 #### checked
 
     myCheckboxOrRadioInput.bind('checked', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the `input` to ensure its `checked` property is equal to `Boolean(someObje.path.to.value)`.
+`input`の`checked`プロパティが`Boolean(someObje.path.to.value)`の値と等しくなるようにします。
 
 <table class="table">
   <tr>
@@ -100,7 +96,7 @@ Instructs the `input` to ensure its `checked` property is equal to `Boolean(some
   </tr>
 </table>
 
-### &lt;textarea> element {#textarea}
+### &lt;textarea> エレメント {#textarea}
 
 The `<textarea>` element has a special property, `value` for two-way binding.
 
