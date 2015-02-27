@@ -68,7 +68,7 @@ feature:
 
 ### &lt;input> エレメント {#inputelements}
 
-`<input>`エレメントには二つの特別なプロパティがあります。`value`と`checked`では双方向データバインディングが有効です。
+`<input>`エレメントには二つの双方向データバインディング対応の特別なプロパティ`value`と`checked`があります。
 
 #### value
 
@@ -98,31 +98,30 @@ feature:
 
 ### &lt;textarea> エレメント {#textarea}
 
-The `<textarea>` element has a special property, `value` for two-way binding.
+`<textarea>`エレメントには双方向データバインディング対応の特別なプロパティ`value`があります。
 
 #### value
 
     textarea.bind('value', new PathObserver(someObj, 'path.to.value'));
 
-`HTMLTextAreaElement.value` mimics the behavior of `input.value` (see above).
+`HTMLTextAreaElement.value` は`input.value`と同じように振る舞います。
 
-### &lt;select> element {#select}
+### &lt;select> エレメント {#select}
 
+`<select>`エレメントには方向データバインディング対応の特別なプロパティ `selectedIndex` と `value` があります。
 The `<select>` element has two special properties, `selectedIndex` and `value` for two-way binding.
 
 #### value
 
     select.bind('value', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the `HTMLSelectElement` to make its `value` property dependent on the
-value in `path.to.value`.
+`HTMLSelectElement` の `value` プロパティが`path.to.value`の値によって変化するようにします。
 
 #### selectedIndex
 
     select.bind('selectedIndex', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the `HTMLSelectElement` to make its `selectedIndex` property dependent on the
-value in `path.to.value`. Note, "`selectedIndex`" is case sensitive.
+`HTMLSelectElement` の `selectedIndex` プロパティが`path.to.value`の値によって変化するようにします。`selectedIndex` は大文字と小文字を区別します。
 
 <table class="table">
   <tr>
@@ -138,11 +137,11 @@ value in `path.to.value`. Note, "`selectedIndex`" is case sensitive.
   </tr>
 </table>
 
-### Element attribute values {#attributevalues}
+### エレメントの属性値 {#attributevalues}
 
     myElement.bind('title', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the element to make the value its `title` attribute dependent on the value `someObj.path.to.value`.
+エレメントの`title`属性が`someObj.path.to.value`の値によって変化するようにします。
 
 <table class="table">
   <tr>
@@ -158,11 +157,11 @@ Instructs the element to make the value its `title` attribute dependent on the v
   </tr>
 </table>
 
-### Element attribute presence {#attributepresence}
+### エレメントの属性が表示されるかどうか {#attributepresence}
 
     myElement.bind('hidden?', new PathObserver(someObj, 'path.to.value'));
 
-Instructs the element add/remove its `hidden` attribute based on the truthiness of  `someObj.path.to.value`.
+エレメントの`hidden`属性が、`someObj.path.to.value` の値の真偽によって追加・削除されます。
 
 <table class="table">
   <tr>
@@ -178,10 +177,9 @@ Instructs the element add/remove its `hidden` attribute based on the truthiness 
   </tr>
 </table>
 
-## Custom element bindings
+## カスタムエレメントのバインディング
 
-[Custom Elements](/platform/custom-elements.html) may choose to interpret bindings
-as they wish. They do this by overriding the `bind()` method.
+[カスタムエレメント](/platform/custom-elements.html)では、バインディングの方法を変更したいことがあるかもしれません。これは`bind()`メソッドをオーバーライドすることで可能です。
 
     MyFancyHTMLWidget.prototype.bind = function(name, observable, oneTime) {
       if (name == 'myBinding') {
@@ -198,5 +196,4 @@ as they wish. They do this by overriding the `bind()` method.
       }
     };
 
-If the element does not handle the binding, it should give its super class the
-opportunity to by invoking its `bind()` method.
+独自のバインド処理をしない場合は、スーパークラスの`bind()`メソッドを呼び出し、処理を移譲するべきです。 
