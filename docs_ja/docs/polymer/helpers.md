@@ -2,29 +2,26 @@
 layout: default
 type: guide
 shortname: Docs
-title: Polymer helper methods
+title: Polymer ヘルパメソッド
 subtitle: Guide
 ---
 
 {% include toc.html %}
 
-The {{site.project_title}} library provides a set of helper methods on the `Polymer` object.
-These methods provide extra features that are not tied to an individual {{site.project_title}}
-element, such as dynamically importing files, using mixins, and managing element registration.
+{{site.project_title}} ライブラリでは`Polymer`オブジェクトにヘルパメソッド一式を備えています。このヘルパメソッドは個々の{{site.project_title}}エレメントに限定されない追加の機能を提供します。例えば、動的なファイルのインポート、mixins、エレメントの登録制御などです。
 
-## Using dynamic HTML imports
+## 動的なHTMLインポートを使う
 
-The `Polymer.import` method can be used to dynamically import one or more HTML files:
+`Polymer.import` メソッドはHTMLファイルを動的にインポートするのに使えます:
+
 
 <pre>
 Polymer.import(<var>urls</var>, <var>callback</var>);
 </pre>
 
-Where <var>urls</var> is an array of HTML import URLs. Loading is asynchronous.
-{{site.project_title}} invokes <var>callback</var> when all imports have loaded and any
-custom elements defined in the imports have been upgraded. The callback takes no arguments.
+<var>urls</var> はインポートするHTMLファイルのURLを格納した配列です。HTMLのロードは非同期で行われます。{{site.project_title}}は全てのインポートが完了し、インポートされたカスタムエレメントがアップグレードされると<var>callback</var>を呼び出します。callbackは引数を取りません。
 
-For example, if you have the following element:
+例えば、次のようなエレメントがあったとします:
 
 `dynamic-element.html`:
 
@@ -40,7 +37,7 @@ For example, if you have the following element:
       </script>
     </polymer-element>
 
-You can dynamically load it like this:
+次のようにしてこの要素を動的にロードできます:
 
 `index.html`:
 
@@ -67,26 +64,21 @@ You can dynamically load it like this:
       </body>
     </html>
 
-The `<dynamic-element>` in `index.html` is parsed as a generic `HTMLElement`.
-When you click the button, the import is loaded and the `<dynamic-element>`
-instance is upgraded to a custom element.
+`index.html`内の`<dynamic-element>`は通常の`HTMLElement`としてパースされます。ボタンをクリックすると、インポートが実行され、`<dynamic-element>`はカスタムエレメントに変わります。 
 
-You can think of the `import` callback as equivalent to the `polymer-ready` event on page load.
-When the callback is invoked, all of the newly-imported elements are ready to use.
+`import`のコールバック関数はページロードの際に実行される`polymer-ready`イベントと同等のものとみなすことが出来ます。
+コールバック関数が呼び出されると、新しくインポートされた全てのエレメントは利用可能になっています。
 
-As on initial page load, if any element is lacking a corresponding `Polymer` call, it
-blocks registration of _all_ elements, which means the callback is never invoked. See
-[Hunting down unregistered elements](/docs/polymer/debugging.html#unregistered) for information
-on diagnosing problems with element registration.
+最初のページロードの際に、対応する`Polymer`の呼び出しがないエレメントが一つでもあると、_全ての_エレメントの登録を阻害します。その結果コールバック関数は呼び出されません。
+エレメント登録時の問題分析については、[登録されていないエレメントを突き止める](/docs/polymer/debugging.html#unregistered) を参照して下さい。
 
-**Note:** {{site.project_title}} provides a related mechanism: `HTMLImports.whenReady(callback)`.
-The callback is invoked when all of the imports in the document have finished loading.
-(Not including any imports added to the document _after_ calling `whenReady`.)
+**注意:** これに関連した機能として、{{site.project_title}} には`HTMLImports.whenReady(callback)`があります。
+このコールバック関数は全てのインポートが終了した時点で呼び出されます。(`whenReady`が呼び出された_あと_にドキュメントに追加されたインポートは含みません)
 {: .alert .alert-info }
 
-## Using mixins
+## mixinsを使う
 
-The `Polymer.mixin` method copies properties from one or more _mixin_ objects to a _target_ object:
+`Polymer.mixin` メソッドは一つまたは複数の_mixin_オブジェクトから、_target_へプロパティをコピーします:
 
 <pre>
 Polymer.mixin(<var>target</var>, <var>obj1</var> [, <var>obj2</var>, ..., <var>objN</var> ] )
