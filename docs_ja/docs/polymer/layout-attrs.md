@@ -37,14 +37,14 @@ demo-tabs::shadow #results {
 
 {% include toc.html %}
 
-{{site.project_title}} includes a declarative layout system built on top of [CSS Flexbox](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes). Features in CSS Flexbox are exposed as **attributes** you include on elements.
+{{site.project_title}}には[CSS Flexbox](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)をベースにして作られた宣言的レイアウト機能が備わっています。CSS Flexboxの機能はエレメントの**属性**として利用可能です。
 
-The layout attributes are implemented in [layout.html](https://github.com/Polymer/polymer/blob/master/layout.html) - a file included whenever you import {{site.project_title}} in your element. Layout attributes use Shadow DOM's [`/deep/` rules](/articles/styling-elements.html#cat) and therefore, work across all Shadow DOM boundaries. As long as you're loading {{site.project_title}}, feel free to reuse these attributes in your own elements.
+レイアウト属性は、[layout.html](https://github.com/Polymer/polymer/blob/master/layout.html)
+にて実装されています。このファイルは{{site.project_title}}をインポートすると自動でロードされます。レイアウト属性はShadowDOMの[`/deep/` rules](/articles/styling-elements.html#cat)を使うため、ShadowDOMの境界に関係なく効果を発揮します。{{site.project_title}}を読み込む限り、自作エレメントのどの部分でも自由にこの属性を利用できます。
 
-## Horizontal and vertical layout
+## 水平レイアウトと垂直レイアウト
 
-When a container includes the `layout` attribute, it can become a flex container.
-You can specify `horizontal`, `vertical` to change the orientation:
+他の要素を内側に持つ要素に`layout`属性が指定されていると、その要素はフレックスコンテナになります。`horizontal`か`vertical`を指定することで、要素の並ぶ方向を指定できます:
 
     <div horizontal layout>
       <div>One</div>
@@ -58,9 +58,9 @@ You can specify `horizontal`, `vertical` to change the orientation:
   <div>Three</div>
 </div>
 
-### Flexible children
+### フレキシブルな子要素
 
-Children of an element using the `layout` attribute can use `flex` attributes to control their own sizing. For example:
+`layout`属性を持つ要素の子要素では、`flex`属性を用いてサイズをコントロールできます。例えば:
 
     <div horizontal layout>
       <div>Alpha</div>
@@ -74,7 +74,7 @@ Children of an element using the `layout` attribute can use `flex` attributes to
   <div>Gamma</div>
 </div>
 
-The same is true for children of `vertical` elements:
+`vertical`エレメントにも同様のことが出来ます:
 
     <div vertical layout style="height:250px">
       <div>Alpha</div>
@@ -88,9 +88,9 @@ The same is true for children of `vertical` elements:
   <div>Gamma</div>
 </div>
 
-**Note**: for vertical layouts, the container needs to have a height for the children to flex correctly.
+**注意**: 垂直レイアウトでは、子要素のフレックス属性を正しく動かすために、コンテナには高さを指定する必要があります。
 
-Children elements can be told to take up more space by including a "flex ratio" with the `flex` atribute. A flex ratio is specified with a number string: _one_, _two_, _three_, currently up to _twelve_.
+子要素では、`flex`属性と合わせて"flex ratio"を指定することで、幅や高さを指定することが出来ます。flex ratio は1から12までの数値をあわらす文字列で指定されます:
 
 For example, to make "Gamma" 2x larger than "Beta" and "Alpha" 3x larger, use `flex two` and `flex three`, respectively:
 
