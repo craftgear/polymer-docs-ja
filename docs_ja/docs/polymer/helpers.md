@@ -84,7 +84,7 @@ Polymer.import(<var>urls</var>, <var>callback</var>);
 Polymer.mixin(<var>target</var>, <var>obj1</var> [, <var>obj2</var>, ..., <var>objN</var> ] )
 </pre>
 
-You can use `mixin` to share functionality between custom elements, by creating reusable _mixin_ objects.
+再利用可能な _mixin_ オブジェクトを作ることで、`mixin`を使って複数のカスタムエレメント間で機能を共有することが出来ます。
 
     var myMixin = {
       sharedMethod: function() {
@@ -100,11 +100,9 @@ You can use `mixin` to share functionality between custom elements, by creating 
     </script>
     </polymer-element>
 
-The `mixin` method makes a shallow copy of the mixin objects, and doesn't attempt to merge nested objects.
+`mixin`メソッドは、mixin対象オブジェクトの浅いコピーを作ります。ネストしたオブジェクトはマージしません。
 
-Since mixin objects are ordinary JavaScript objects, you can do anything with them that you'd do with an
-ordinary object. For example, to share a mixin across multiple custom elements in separate HTML imports,
-place the mixin in an HTML import and assign the mixin to a global variable:
+mixin対象オブジェクトは通常のJavaScriptオブジェクトであるため、オブジェクトに対して可能なあらゆる操作を行うことが出来ます。例えば、別々のHTMLインポートで読み込まれるカスタムエレメントの間で機能を共有するには、mixinをHTMLインポート内に置きグローバル変数にアサインします:
 
 `shared-mixin.html`:
 
@@ -126,15 +124,13 @@ place the mixin in an HTML import and assign the mixin to a global variable:
     </script>
     </polymer-element>
 
-## Forcing element registration
+## エレメントの登録を強制的に行う
 
-By default, {{site.project_title}} waits until all elements are ready before registering and upgrading them.
-If one `<polymer-element>` tag is missing its corresponding `Polymer` call (and doesn't have the `noscript` attribute),
-it blocks all elements from registering.
+デフォルトでは、全てのDOM要素が読み込まれまで{{site.project_title}}はカスタムエレメントの登録とカスタムエレメントへの変換を行いません。
+`Polymer`コンストラクタの呼び出しがなく、しかも`noscript`の指定もない`<polymer-element>`タグが一つでもあると、全てのカスタムエレメントの登録がブロックされます。
 
-The `Polymer.waitingFor` helper returns a list of `<polymer-element>` tags that are blocking registration.
+`Polymer.waitingFor`ヘルパは登録を妨げている全ての`<polymer-element>`タグの一覧を返します。
 
-`Polymer.forceReady` notifies {{site.project_title}} to register all available elements immediately, ignoring any
-incomplete elements.
+`Polymer.forceReady`は不完全なエレメントを無視して、全ての利用可能なエレメントを即座に登録するように{{site.project_title}}に指示します。
 
-For more details and example usage, see [Hunting down unregistered elements](/docs/polymer/debugging.html#unregistered).
+詳細と利用例については、[未登録のエレメントを突き止める](/docs/polymer/debugging.html#unregistered) を参照して下さい。
