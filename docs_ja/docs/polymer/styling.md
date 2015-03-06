@@ -2,33 +2,31 @@
 layout: default
 type: guide
 shortname: Docs
-title: Styling elements
+title: エレメントのスタイル指定
 subtitle: Guide
 ---
 
 {% include toc.html %}
 
-**Note:** styling {{site.project_title}} elements is no different than styling custom elements.
-For a complete guide on the basics, see "[A Guide to Styling Elements](/articles/styling-elements.html)".
+**注意:** {{site.project_title}}エレメントにスタイルを指定するのは、カスタムエレメントにスタイル指定するのと何ら変わりません。
+基本についての完全なガイドは"[A Guide to Styling Elements](/articles/styling-elements.html)"を参照して下さい。
 {: .alert }
 
-In addition to the [standard features for styling Custom Elements](/articles/styling-elements.html), {{site.project_title}} contains extra goodies for fully controlling element styling. This document outlines those features, including Flash-of-Unstyled-Content (FOUC) prevention, the specifics on how the the Shadow DOM polyfill applies styles, and workarounds for current limitations.
+[standard features for styling Custom Elements](/articles/styling-elements.html)に加えて、{{site.project_title}}にはエレメントのスタイルを完全にコントロールする追加の機能が備わっています。これらは、ちらつき防止（FOUC)、ShadowDOMのポリフィルがスタイルに適用される方法の指定、現在の制限を回避する方法などです。
 
-## FOUC prevention
+## ちらつき防止
 
-Before custom elements [upgrade](http://www.html5rocks.com/tutorials/webcomponents/customelements/#upgrades) they may display incorrectly. To help mitigate [FOUC](http://en.wikipedia.org/wiki/Flash_of_unstyled_content) issues, {{site.project_title}} provides a polyfill solution for the [`:unresolved` pseudo class](/articles/styling-elements.html#preventing-fouc). For simple apps, you can add the `unresolved` attribute to body. This initially hides the page until all elements are upgraded:
+カスタムエレメントが[upgrade](http://www.html5rocks.com/tutorials/webcomponents/customelements/#upgrades) される前に望ましくない形で表示されてしまうことがあります。これをFOUC(要素のちらつき)問題と呼びます。この問題を緩和するために、{{site.project_title}}では[`:unresolved` 偽クラス](/articles/styling-elements.html#preventing-fouc)を提供しています。単純なアプリケーションの場合は、`unresolved`属性をbodyに追加できます。これによって全てのエレメントがカスタムエレメントにupgradeされるまで、ページは隠された状態になります。
 
     <body unresolved>
 
 Class name | Behavior
 |-
-`body[unresolved]` | Makes the body `opacity: 0; display: block; overflow: hidden`.
-`[resolved]` | Fades-in the body over 200ms.
+`body[unresolved]` | bodyを `opacity: 0; display: block; overflow: hidden`にします。
+`[resolved]` | 200ミリ秒かけてbodyをフェードインさせます。
 {: .table .responsive-table .fouc-table }
 
-If you want finer control, add `unresolved` to individual elements rather
-than body. This shows the entire page upfront but allows you to control unresolved
-element styling yourself:
+より細かい制御がしたい場合は、`unresolved`をbodyではなく、個別のエレメントに追加して下さい。これによってページそのものはすぐに表示されますが、unresolvedなエレメントがどのように見える化をコントロールできるようになります:
 
     <style>
       [unresolved] {
@@ -38,15 +36,15 @@ element styling yourself:
     </style>
     <x-foo unresolved>If you see me, elements are upgraded!</x-foo>
     <div unresolved></div>
+[`polymer-ready`](/docs/polymer/polymer.html#polymer-ready)イベントが発行されると、{{site.project_title}}は次の処理を実行します:
 
-Upon [`polymer-ready`](/docs/polymer/polymer.html#polymer-ready) firing, {{site.project_title}} runs the following steps:
+1. `[unresolved]`属性を取り除く
+2. `[resolved]`属性を追加する
+3. 最初の`transitioned`イベントを受信したタイミングで`[resolved]`属性を取り除く
 
-1. removes the `[unresolved]` attribute from elements that have it
-2. adds the `[resolved]` attribute
-3. removes `[resolved]` on the first `transitionend` event the element receives
+### 起動後に要素を表示する {#unveilafterboot}
 
-### Unveiling elements after boot time {#unveilafterboot}
-
+ページロードのタイミング意外にもちらつきを防止するためにこの表示プロセスを利用できます。
 The veiling process can be used to prevent FOUC at times other than page load. To do so, apply the `[unresolved]` attribute to the desired elements and swap it out for the `[resolved]` attribute when the elements should be displayed. For example,
 
     element.setAttribute('unresolved', '');
