@@ -92,7 +92,7 @@ demo-tabs::shadow #results {
 
 子要素では、`flex`属性と合わせて"flex ratio"を指定することで、幅や高さを指定することが出来ます。flex ratio は1から12までの数値をあわらす文字列で指定されます:
 
-For example, to make "Gamma" 2x larger than "Beta" and "Alpha" 3x larger, use `flex two` and `flex three`, respectively:
+例えば、"Beta"に対して、"Gamma"を倍の幅に、"Alpha"を三倍の幅にしたいなら、それぞれに`flex two`と`flex three`を指定します:
 
     <div horizontal layout>
       <div flex three>Alpha</div>
@@ -106,19 +106,12 @@ For example, to make "Gamma" 2x larger than "Beta" and "Alpha" 3x larger, use `f
   <div flex two>Gamma</div>
 </div>
 
-### Auto-vertical
+### Auto-vertical 属性
 
-For vertical layouts, you can use the `auto-vertical` attribute
-on a child element to set an automatic flex basis on that element.
-Use this attribute for responsive designs
-if you want elements laid out horizontally when the display is wide
-or vertically when narrow.
+垂直レイアウトでは、`auto-vertical`属性を子要素に指定することで、その要素の配置方法をフレックスレイアウトに応じて自動で切り替えるようにすることが出来ます。
+ディスプレイが広い場合は要素を水平に配置し、狭い場合は垂直に配置したいなら、この属性を使って下さい。
 
-The following code uses `core-media-query` to get the screen size.
-If it's smaller than 640 pixels,
-the layout becomes vertical and the elements layout on a flex basis.
-Otherwise, the layout becomes horizontal and the elements are laid out
-normally.
+次に示すコードは、`core-media-query`を使ってスクリーンサイズを取得し、640ピクセルよりも狭い場合にレイアウトをフレックスにし、要素を垂直に配置します。それ以外の場合はレイアウトは水平になり、エレメントは横方向に配置されます。
 
 {% raw %}
     <core-media-query query="max-width: 640px"
@@ -137,9 +130,9 @@ normally.
   <div auto-vertical>Gamma</div>
 </div>
 
-### Cross-axis alignment
+### 交差軸方向への配置
 
-By default, children stretch to fit the cross-axis (e.g. _vertical_ stretching in a _horizontal_ layout).
+デフォルトでは、子要素は交差軸方向へ引き伸ばされて配置されます。(例: _水平_レイアウトでは、_垂直_方向へ引き伸ばされます)。
 
     <div horizontal layout>
       <div>Stretch Fill</div>
@@ -149,8 +142,7 @@ By default, children stretch to fit the cross-axis (e.g. _vertical_ stretching i
   <div>Stretch Fill</div>
 </div>
 
-Center _across_ the main axis (e.g. _vertical_ centering elements in a _horizontal_ layout)
-by adding `center`.
+交差軸の中心に配置したい場合(例: _水平_レイアウトで、_垂直_センタリング)、`center`を追加して下さい。
 
     <div horizontal layout center>
       <div>Center</div>
@@ -160,7 +152,7 @@ by adding `center`.
   <div>Center</div>
 </div>
 
-You can also position at the top/bottom (or left/right in `vertical` layouts) using `start` or `end`.
+同様に、`start`と`end`をつかうことで上付き・下付き(`vertical`レイアウトでは左寄せ・右寄せ)にも配置可能です。
 
     <div horizontal layout start>
       <div>start</div>
@@ -178,11 +170,11 @@ You can also position at the top/bottom (or left/right in `vertical` layouts) us
   <div>end</div>
 </div>
 
-## Justification
+## 行揃え
 
-Justifying content is done with the `*-justified` attributes.
+コンテンツの位置を親要素に沿って揃えるには、`*-justified`属性を使います。
 
-**Example** - start justified
+**例** - 左揃え
 
     <div horizontal start-justified layout>
       <div>start-justified</div>
@@ -192,7 +184,7 @@ Justifying content is done with the `*-justified` attributes.
   <div>start-justified</div>
 </div>
 
-**Example** - center justified
+**例** - 中央揃え
 
     <div horizontal center-justified layout>
       <div>center-justified</div>
@@ -202,7 +194,7 @@ Justifying content is done with the `*-justified` attributes.
   <div>center-justified</div>
 </div>
 
-**Example** - end justified
+**例** - 右揃え
 
     <div horizontal end-justified layout>
       <div>end-justified</div>
@@ -212,7 +204,7 @@ Justifying content is done with the `*-justified` attributes.
   <div>end-justified</div>
 </div>
 
-**Example** - equal space between each element
+**例** - 等間隔配置
 
     <div horizontal justified layout>
       <div>justified</div>
@@ -226,7 +218,7 @@ Justifying content is done with the `*-justified` attributes.
   <div>justified</div>
 </div>
 
-**Example** - equal space around each element
+**例** - 各要素ごとに等間隔の余白をつける
 
     <div horizontal around-justified layout>
       <div>around-justified</div>
@@ -238,9 +230,9 @@ Justifying content is done with the `*-justified` attributes.
   <div>around-justified</div>
 </div>
 
-## Self alignment
+## 子要素に配置を指定する
 
-Alignment can also be set per-child (instead of using the layout containers rules):
+配置は小要素ごとに指定することも可能です(レイアウトコンテナに指定する代わりに):
 
     <div horizontal layout>
       <div flex self-start>Alpha</div>
@@ -256,9 +248,9 @@ Alignment can also be set per-child (instead of using the layout containers rule
   <div flex self-stretch>Delta</div>
 </div>
 
-## Wrapping
+## 折り返し
 
-Wrapped layouts can be enabled with the `wrap` attribute.
+`wrap`属性を使うと子要素を自動で折り返し出来ます。
 
     <div horizontal layout wrap style="width: 220px">
       <div>Alpha</div>
@@ -274,7 +266,7 @@ Wrapped layouts can be enabled with the `wrap` attribute.
   <div>Delta</div>
 </div>
 
-Layout direction can be mirrored with the `reverse` attribute.
+配置方向を逆にするには`reverse`属性が使えます。
 
     <div horizontal layout reverse>
       <div>Alpha</div>
@@ -290,10 +282,10 @@ Layout direction can be mirrored with the `reverse` attribute.
   <div>Delta</div>
 </div>
 
-## Full bleed &lt;body>
+## body要素のFull bleed指定
 
-It's common to want the entire `<body>` to fit to the viewport. By themselves, {{site.project_title}}'s layout features on `<body>` don't achieve the result. You can make `<body>` take
-up the entire viewport by adding the `fullbleed` attribute:
+`<body>`がビューポート全体を占めるようにしたいというのはよくある要求です。デフォルト状態では、{{site.project_title}}のレイアウト機能はこの`<body>`をビューポート全体に表示するようにはなっていません。
+`<body>`がビューポート全体を占めるようにするには、`fullbleed`属性を使います:
 
     <body fullbleed vertical layout>
       <div flex>Fitting a fullbleed body.</div>
@@ -301,20 +293,20 @@ up the entire viewport by adding the `fullbleed` attribute:
 
 <iframe src="/samples/layout-attr.html" style="width: 100%; height: 150px;border:1px solid black"></iframe>
 
-This removes its margins and maximizes its height to the viewport.
+この指定をするとbody要素のマージンはなくなり、高さと幅が最大化されます。
 
-## General purpose attributes
+## 様々な属性
 
-{{site.project_title}} also includes other general purpose attributes for basic positioning:
+{{site.project_title}}には、要素の配置に使える様々な属性があります:
 
 Attribute | Result
 |-
-`block`| Assigns `display: block`
-`hidden` | Assigns `display: none`
-`relative` | Assigns `position: relative`
-`fit` | Sets `position: absolute` and sets `top:0;right:0;bottom:0;left:0;` (aka "trbl fitting"). <br><br>**Note:** When using the `fit` attribute, there must be a container with fixed size and has `position: relative` layout. This is so the children know where to fit to.
+`block`|  `display: block`を指定します
+`hidden` |  `display: none`を指定します
+`relative` |  `position: relative`を指定します
+`fit` |  `position: absolute`と `top:0;right:0;bottom:0;left:0;` (別名 "trbl fitting")を指定します。 <br><br>**注意:** `fit`属性を使う場合は、その要素を含むコンテナが指定されたサイズを持ち、`position: relative`レイアウトでなければなりません。これは子要素がどこに配置されるかを知る必要があるためです。
 
-**Examples**
+**例**
 
     <div>Before <span>[A Span]</span> After</div>
 

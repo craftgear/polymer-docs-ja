@@ -50,7 +50,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 完 | docs/polymer/expressions.md |
 | 未 | docs/polymer/filters.md |
 | 完 | docs/polymer/helpers.md |
-| 進 | docs/polymer/layout-attrs.md |
+| 完 | docs/polymer/layout-attrs.md |
 | 完 | docs/polymer/node_bind.md |
 | 完 | docs/polymer/polymer.md |
 | 未 | docs/polymer/runtime-config.md |
