@@ -45,7 +45,7 @@ Class name | Behavior
 ### 起動後に要素を表示する {#unveilafterboot}
 
 ページロードのタイミング意外にもちらつきを防止するためにこの表示プロセスを利用できます。
-The veiling process can be used to prevent FOUC at times other than page load. To do so, apply the `[unresolved]` attribute to the desired elements and swap it out for the `[resolved]` attribute when the elements should be displayed. For example,
+実際には`[unresolved]`属性を対象のエレメントに追加し、エレメントの表示準備が整ったらそれを`[resolved]`属性と置き換えます。例えば、
 
     element.setAttribute('unresolved', '');
 
@@ -53,9 +53,9 @@ The veiling process can be used to prevent FOUC at times other than page load. T
     element.setAttribute('resolved', '');
     element.removeAttribute('unresolved');
 
-## Including stylesheets in an element
+## エレメントにスタイルシートを含める
 
-{{site.project_title}} allows you to include stylesheets in your `<polymer-element>` definitions, a feature not supported natively by Shadow DOM. That is:
+{{site.porject_title}}では`<polymer-element>`タグ内部にスタイルシートを含めることが出来ます。この機能はShadowDOMの仕様にはないものです。次のようにして利用します:
 
     <polymer-element name="my-element">
       <template>
@@ -67,7 +67,7 @@ The veiling process can be used to prevent FOUC at times other than page load. T
       </script>
     </polymer-element>
 
-{{site.project_title}} will automatically inline the `my-element.css` stylesheet using a `<style>`:
+{{site.project_title}}は自動的に`my-element.css`を`<style>`タグにインライン展開します:
 
     <polymer-element ...>
       <template>
@@ -79,49 +79,47 @@ The veiling process can be used to prevent FOUC at times other than page load. T
       </script>
     </polymer-element>
 
-Be careful to put the stylesheet inside the template. We recommend putting the `<script>` tag below the template, especially if you include a stylesheet, however note this is optional otherwise.
+スタイルシートをテンプレートタグの内側に置くことに注意して下さい。スタイルシートを含める場合は特に`<script>`タグをテンプレートのすぐ下に置くことをおすすめします。もちろんこれは仕様ではなくアドバイスに過ぎません。
 
-## Polyfill CSS selectors {#directives}
+## PolyfillによるCSSセレクタ {#directives}
 
-When running under the Shadow DOM polyfill, {{site.project_title}} provides special `polyfill-*`
-CSS selectors to give you more control on how style rules are shimmed.
+ShadowDOM polyfillを使っている場合は、{{site.projet_title}}によって特別な`polyfill-*`というCSSセレクタが追加されます。
+このCSSセレクタを使うことでスタイルの適用方法をより細かく制御できるようになります。
 
 ### polyfill-next-selector {#at-polyfill}
 
-The `polyfill-next-selector` selector is used to replace a native CSS selector with one that
-will work under the polyfill.
+`polyfill-next-selector` セレクタはpolyfillが動いている場合にネイティブのCSSセレクタを置き換えるのに使われます。
 
-To replace native CSS style rules, place `polyfill-next-selector {}` above the
-selector you need to polyfill. Inside of `polyfill-next-selector`, add a
-`content` property. Its value should be a CSS selector that is roughly equivalent to
-the native rule. {{site.project_title}} will use this value to shim the native selector.
+ネイティブのCSSルールを置き換えるには、`polyfill-next-selector {}` を polyfillによって変更したいセレクタの上に置きます。`polyfill-next-selector`の中で、`content`プロパティを追加します。この値はネイティブのCSSルールとほぼ同じになります。{{site.project_title}}はこの値をネイティブセレクタの機能を補完するために使います。
 
-For example, in earlier versions of {{site.project_title}} targeting distributed nodes using `::content` only worked under the native Shadow DOM. This is no longer the case and in polyfilled browsers the `::content` elements will be removed. Under the polyfill, the following selector:
+例えば、{{site.project_title}}の初期のバージョンでは、`::content`を使った複数ノードにまたがるスタイル指定はShadowDOMをネイティブ実装している環境でしか動きませんでした。
+しかし現在ではこのかぎりではありません。polyfillによって機能を補助されたブラウザでは、`::content`エレメントは削除されます。polyfill環境では次に示すセレクタは:
 
     .foo ::content .bar {
       color: red;
     }
 
-Becomes:
+このようになります:
 
     .foo .bar {
       color: red;
     }
 
-This means you only need `polyfill-next selector` when doing something that would not work if `::content` were removed.
+これはつまり、`polyfill-next-selector`が必要になるのは、`::content`が削除された時に動かなくなるよようなことをする必要があるときだけ、ということです。
 
-For example: `::content > *` will not work in a polyfilled browser because `> *` is not a valid selector. This selector could be rewritten as follows:
+例えば、`::content > *` というスタイル指定はpolyfill環境のブラウザでは動きません。なぜなら、このセレクタは実際には `> *` のように解釈され、これは正しい書式ではないからです。この場合、つぎのように書き直すことが出来ます:
 
     polyfill-next-selector { content: ':host > *' }
     ::content > * { }
 
-Under native Shadow DOM nothing changes. Under the polyfill, the native selector is replaced with the one defined in its `polyfill-next-selector` predecessor.
+ShadowDOMをネイティブサポートしている環境ではなにも変わりません。polyfill環境下では `::content`で始まるネイティブセレクタの内容は、直前にある `polyfille-next-selector` によって置き換えられます。
 
 ### polyfill-rule {#at-polyfill-rule}
 
-The `polyfill-rule` selector is useful for creating style rules that *only* apply when the Shadow DOM polyfill is in use. When you can't write a style rule that works across native and Shadow DOM polyfill, it's your solution. However, because of the style shimming {{site.project_title}} provides, you should rarely need to use this selector.
+`polyfill-rule`セレクタはShadowDOM polyfillが有効になっている時 *だけ* 適用したいルールを作るためのものです。
+ShadowDOMをネイティブサポートした環境と、polyfill環境で、同じスタイルが違った表示になる場合は、このセレクタを使って別々のスタイル指定をすることが出来ます。しかし、{{site.project_title}}がスタイル機能を補助するので、このセレクタが必要になることは実際にはまれです。
 
-To use `polyfill-rule`, create the rule and include a list of styles. Then, add a `content` property describing the CSS selector those styles should apply to. For example:
+`polyfill-rule`を利用するには、ルールを作ってスタイルを追加します。次に`content`プロパティを追加し、裂きほど追加したスタイルが適応されるCSSセレクタを指定します。例えば:
 
     polyfill-rule {
       content: '.bar';
@@ -133,9 +131,9 @@ To use `polyfill-rule`, create the rule and include a list of styles. Then, add 
       background: blue;
     }
 
-These rules are a noop under native Shadow DOM. Under the polyfill, `polyfill-rule` is replaced by the selector in `content`. {{site.project_title}} also prefixes the rule with the element name.
+この二つのルールは、ShadowDOMをネイティブサポートした環境ではなんの効果もありませんが、polyfill環境下では、`content`で指し示したセレクタとして動作します。{{site.project_title}}はまた、エレメント名をルールの先頭に追加します。
 
-The previous examples become:
+先程の例は次のようになります:
 
     x-foo .bar {
       background: red;
@@ -147,7 +145,7 @@ The previous examples become:
 
 ### polyfill-unscoped-rule {#at-polyfill-unscoped-rule}
 
-The `polyfill-unscoped-rule` selector is exactly the same as `polyfill-rule` except that the rules inside it are not scoped by the polyfill. The selector you write is exactly what will be applied.
+`polyfill-unscoped-rule`セレクタは一点をのぞいて`polyfill-rule`と同じです。違いはpolyfillによってスコープが制限されないということです。セレクタは記述そのままで適用されます。
 
     polyfill-unscoped-rule {
       content: '#menu > .bar';
@@ -160,16 +158,14 @@ produces:
       background: blue;
     }
 
-You should only need `polyfill-unscoped-rule` in rare cases. {{site.project_title}} uses CSSOM to modify styles and there are a several known rules that don't round-trip correctly via CSSOM (on some browsers). One example using CSS `calc()` in Safari. It's only in these rare cases that `polyfill-unscoped-rule` should be used.
+`polyfill-unscoped-rule`はまれなケースで使うだけにすべきです。{{site.project_title}}ではCSSOM用いてスタイルを修飾しており、いくつかのルールはCSSOM経由では正しく解釈されないことが知られています。一つの例はSafariにおける`calc()`です。このようなまれなケースでは`polyfill-unscoped-rule`を利用すべきです。
 
 <!-- {%comment%}
-## Making styles global
+## グローバルなスタイルを定義する
 
-According to CSS spec, certain @-rules like `@keyframe` and `@font-face`
-cannot be defined in a `<style scoped>`. Therefore, they will not work in Shadow DOM.
-Instead, you'll need to declare their definitions outside the element.
+CSSの仕様によると、`@keyframe`や`@font-face`といったある種の@ルールは、`<style scoped>`内部では定義できないことになっています。そのため、これらのルールはShadowDOM内では有効になりません。カスタムエレメント外でこれらのルールを定義する必要があります。
 
-Stylesheets and `<style>` elements in an HTML import are included in the main document automatically:
+インポートされるHTMLにあるスタイルシートや`<style>`タグは、自動的にメインドキュメントに含まれます:
 
     <link rel="stylesheet" href="animations.css">
 
@@ -177,7 +173,7 @@ Stylesheets and `<style>` elements in an HTML import are included in the main do
       <template>...</template>
     </polymer-element>
 
-Example of defining a global `<style>`:
+グローバルな`<style>`定義の例は次のようになります:
 
     <style>
       @-webkit-keyframes blink {
@@ -196,10 +192,9 @@ Example of defining a global `<style>`:
       </template>
     </polymer-element>
 
-{{site.project_title}} also supports making a `<style>` or inline stylesheet global using the
-`polymer-scope="global"` attribute.
+また、`polymer-scope="global"`属性を使って、インラインスタイルシートや`<style>`タグをグローバルにする方法もあります。
 
-**Example:** making a stylesheet global
+**例:** スタイルシートをグローバルにする
 
     <polymer-element name="x-foo" ...>
       <template>
@@ -208,7 +203,7 @@ Example of defining a global `<style>`:
       </template>
     </polymer-element>
 
-Stylsheets that use `polymer-scope="global"` are moved to the `<head>` of the main page. This happens once.
+`polymer-scope="global"`を指定したスタイルシートはメインページの`<head>`に移動されます。これは一度だけ実行されます。
 
 **Example:** Define and use CSS animations in an element
 
