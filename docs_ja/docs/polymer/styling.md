@@ -205,7 +205,7 @@ CSSの仕様によると、`@keyframe`や`@font-face`といったある種の@�
 
 `polymer-scope="global"`を指定したスタイルシートはメインページの`<head>`に移動されます。これは一度だけ実行されます。
 
-**Example:** Define and use CSS animations in an element
+**例:** エレメント内でCSSアニメーションを定義して利用する
 
     <polymer-element name="x-blink" ...>
       <template>
@@ -223,20 +223,18 @@ CSSの仕様によると、`@keyframe`や`@font-face`といったある種の@�
       </template>
     </polymer-element>
 
-**Note:** `polymer-scope="global"` should only be used for stylesheets or `<style>`
-that contain rules which need to be in the global scope (e.g. `@keyframe` and `@font-face`).
+**注:** `polymer-scope="global"`はグローバルスコープを含むスタイルシートと`<style>`タグでのみ有効にすべきです。  (例 `@keyframe` や `@font-face`).
 {: .alert .alert-error}
 {%endcomment%}
  -->
 
-## Controlling the polyfill's CSS shimming {#stylingattrs}
+## polyfillのCSS機能補助を制御する {#stylingattrs}
 
-{{site.project_title}} provides hooks for controlling how and where the Shadow DOM polyfill
-does CSS shimming.
+{{site.project_title}}ではどこでどのようにShadowDOMのpolyfillがCSSの機能補助を実行するかを制御するフックが備わっています。
 
-### Ignoring styles from being shimmed {#noshim}
+### スタイルに対する機能補助を無効にする {#noshim}
 
-Inside an element, the `no-shim` attribute on a `<style>` or `<link rel="stylesheet">` instructs {{site.project_title}} to ignore the styles within. No style shimming will be performed.
+エレメント内で`<style>`や`<link rel="stylesheet">`に`no-shim`属性を追加すると、{{site.projet_title}}はその内部にあるスタイルをpolyfillの対象から外し、機能補助は実行されません。
 
     <polymer-element ...>
       <template>
@@ -246,25 +244,25 @@ Inside an element, the `no-shim` attribute on a `<style>` or `<link rel="stylesh
         </style>
       ...
 
-This can be a small performance win when you know the stylesheet(s) in question do not contain any Shadow DOM CSS features.
+スタイルシートにShadowDOMのCSS機能が無いとわかっている場合には、この属性を追加することで少しパフォーマンスが改善します。
 
-### Shimming styles outside of polymer-element {#sdcss}
+### polymerエレメント外でCSSの機能補助を利用する {#sdcss}
 
-Under the polyfill, {{site.project_title}} automatically examines any style or link elements inside of a `<polymer-element>`. This is done so Shadow DOM CSS features can be shimmed and [polyfill-*](#directives) selectors can be processed. For example, if you're using `::shadow` and `/deep/` inside an element, the selectors are rewritten so they work in unsupported browsers. See [Reformatting rules](#reformatrules) above.
+polyfill環境下では{{site.project_title}}は`<polymer-element>`内にあるスタイルシートやスタイルタグを自動的に検証します。これはShadowDOMのCSSの機能補助が実行され、[polyfill-*](#directives)セレクタが処理されるために行われます。例えば、エレメント内で`::shadow`や`/deep/`を利用していたら、これらのセレクタをサポートしてないブラウザでも動作するように書き換えが行われます。より詳しくは[Reformatting rules](#reformatrules)を参照して下さい。
 
-However, for performance reasons styles outside of an element are not shimmed.
-Therefore, if you're using `::shadow` and `/deep/` in your main page stylesheet, be sure to include `shim-shadowdom` on the `<style>` or `<link rel="stylesheet">` that contains these rules. The attribute instructs {{site.project_title}} to shim the styles inside.
+しかし、パフォーマンス上の理由から、エレメント外のスタイルは機能補助の対象になりません。
+したがってメインページのスタイルシートで`::shadow`や`/deep/`を利用している場合には、`<style>``<link rel="stylesheet"`に`shim-shadowdom`属性を追加するのを忘れないようにして下さい。
+この属性は{{site.project_title}}にスタイルが機能補助の対象であることを指示します。
 
     <link rel="stylesheet"  href="main.css" shim-shadowdom>
 
-## Polyfill details
+## polyfillの詳細
 
-### Handling scoped styles
+### スコープ付きスタイルの取り扱い
 
-Native Shadow DOM gives us style encapsulation for free via scoped styles. For browsers
-that lack native support, {{site.project_title}}'s polyfills attempt to shim _some_
-of the scoping behavior.
+ShadowDOMが実装されている環境では、スコープ付きスタイルを使ってスタイルの隠蔽を行えます。未実装のブラウザでは{{site.project_title}}のpolyfillがスコープ付きスタイルの機能の内_いくつか＿を再現しようと試みます。
 
+ShadowDOMのスタイル機能をpolyfillによって再現するのは難しいため、{{site.project_title}}では正確さよりもパフォーマンスと
 Because polyfilling the styling behaviors of Shadow DOM is difficult, {{site.project_title}}
 has opted to favor practicality and performance over correctness. For example,
 the polyfill's do not protect Shadow DOM elements against document level CSS.
