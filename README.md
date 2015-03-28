@@ -23,7 +23,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 
 ### 進捗
 
-23/54 完了
+24/54 完了
 
 | 状態 | ファイル名 |
 |----|--------------------------------------|
@@ -56,7 +56,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 未 | docs/polymer/runtime-config.md |
 | 完 | docs/polymer/styling.md |
 | 完 | docs/polymer/template.md |
-| 未 | docs/polymer/touch.md |
+| 進 | docs/polymer/touch.md |
 | 完 | docs/start/creatingelements.md |
 | 完 | docs/start/customelements.md |
 | 完 | docs/start/everything.md |

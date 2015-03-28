@@ -2,37 +2,29 @@
 layout: default
 type: guide
 shortname: Docs
-title: Touch &amp; gestures
+title: タッチとジェスチャ
 subtitle: Guide
 ---
 
 {% include toc.html %}
 
-## Why polymer-gestures?
+## なぜpolymer-gesturesが必要か？
 
-Mouse events and Touch events are fundamentally different beasts in browsers
-today, and that makes it hard to write cross-platform apps.
+今日のブラウザにおいて、マウスイベントとタッチイベントは根本的に異なった存在です。このことがクロスプラットフォームアプリケーションの作成を難しくしています。
 
-For example, a simple finger paint app needs plenty of work to behave correctly
-with mouse and touch:
+例えば、単純なお絵かきアプリがマウス操作とタッチ操作の両方できちんと動くようにするにはたくさんやることがあります:
 
-- Mouse events are only fired after the touch sequence ends.
-- Mouse events are not fired on elements without a click event handler. One must
-  be attached by default, or directly on the element with “onclick”.
-- Click events are not fired if the content of the page changes in a mousemove
-  or mouseover event.
-- Click events are fired 300ms after the touch sequence ends.
-- More information: [Apple Developer Documentation](http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/HandlingEvents/HandlingEvents.html).
+- マウスイベントはタッチシークエンスが終わったあとだけ発行されます
+- マウスイベントはクリックイベントハンドラを持たないエレメントでは発行されません。クリックイベントハンドラはエレメントの“onclick”に、デフォルトで、あるいは直接割り当てられる必要があります。
+- MouseMoveかMouseOverイベントによってページの内容が変更されている場合、クリックイベントは発行されません。
+- クリックイベントはタッチシークエンスが終わったあと、300ミリ秒後に発行されます。
+- より詳しい情報は: [Apple Developer Documentation](http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/HandlingEvents/HandlingEvents.html)を参照して下さい。
 
-Current platforms that implement touch events also provide mouse events for
-backward compatibility; however, only a subset of mouse events are fired and the
-semantics are changed.
+タッチイベントを実装している現在のプラットフォームでは、後方互換性のためにマウスイベントも実装されています。しかし、実装されているのはマウスイベントの一部で、動作も変更されています。
 
-Additionally, Touch events are sent only to the element that received the
-touchstart. This is fundamentally different than mouse events, which fire on the
-element that is under the mouse. To make them behave similarly, touch events
-need to be retargeted with `document.elementFromPoint`.
+さらに、タッチイベントはエレメントがtouchstartを受け取った時のみ発行されます。これはマウスイベントとは根本的に異なる振る舞いです。マウスイベントでは、マウスカーソルの下にあるエレメントにたいしてイベントが発行されます。タッチとマウスで同様の挙動を実現するには、タッチイベントは`document.elementFromPoint`を使ってターゲットの再設定をする必要があります。
 
+これらの相違点
 These incompatibilities lead to applications having to listen to 2 sets of events, mouse on
 desktop and touch on mobile.
 
