@@ -262,19 +262,15 @@ polyfill環境下では{{site.project_title}}は`<polymer-element>`内にある�
 
 ShadowDOMが実装されている環境では、スコープ付きスタイルを使ってスタイルの隠蔽を行えます。未実装のブラウザでは{{site.project_title}}のpolyfillがスコープ付きスタイルの機能の内_いくつか＿を再現しようと試みます。
 
-ShadowDOMのスタイル機能をpolyfillによって再現するのは難しいため、{{site.project_title}}では正確さよりもパフォーマンスと
-Because polyfilling the styling behaviors of Shadow DOM is difficult, {{site.project_title}}
-has opted to favor practicality and performance over correctness. For example,
-the polyfill's do not protect Shadow DOM elements against document level CSS.
+ShadowDOMのスタイル機能をpolyfillによって再現するのは難しいため、{{site.project_title}}では正確さよりもパフォーマンスと実用性を重んじています。例えば、polyfillではShadowDOMエレメントをドキュメントのCSSの適用対象から除外しません。
 
-When {{site.project_title}} processes element definitions, it looks for `<style>` elements
-and stylesheets. It removes these from the custom element's Shadow DOM `<template>`, rejiggers them according to the rules below, and appends a `<style>` element to the main document with the reformulated rules.
+{{site.project_title}} がエレメントの定義を解釈する際に、`<style>`エレメントとスタイルシートを探します。これらはエレメントのShadowDOMの`<template>`から削除され、代わりに以下のルールに従ってスタイルを改変し、メインドキュメントの`<style>`エレメントに追加します。
 
-#### Reformatting rules {#reformatrules}
+#### 改変ルール {#reformatrules}
 
-1. **Replace `:host`, including `:host(<compound selector>)` by prefixing with the element's tag name**
+1. **`:host`と`:host(<compound selector>)`をエレメントのタグ名を先頭につけて置き換える **
 
-      For example, these rules inside an `x-foo`:
+      例えば、以下の`x-foo`にあるルールは:
 
         <polymer-element name="x-foo">
           <template>
@@ -285,7 +281,7 @@ and stylesheets. It removes these from the custom element's Shadow DOM `<templat
             </style>
           ...
 
-      becomes:
+      次のようになります:
 
         <polymer-element name="x-foo">
           <template>
@@ -296,10 +292,8 @@ and stylesheets. It removes these from the custom element's Shadow DOM `<templat
             </style>
           ...
 
-1. **Prepend selectors with the element name, creating a descendant selector**.
-This ensures styling does not leak outside the element's shadowRoot (e.g. upper bound encapsulation).
-
-      For example, this rule inside an `x-foo`:
+1. **セレクタの先頭にエレメント名が追加され、セレクタがエレメント内に限定される。** これによってエレメントのShadowRoot外にスタイルが影響を及ぼすことを防ぐ。 (例: 上位方向のカプセル化).  
+      例えば、以下の`x-foo`にあるルールは:
 
         <polymer-element name="x-foo">
           <template>
@@ -308,7 +302,7 @@ This ensures styling does not leak outside the element's shadowRoot (e.g. upper 
             </style>
           ...
 
-      becomes:
+      次のようになります:
 
         <polymer-element name="x-foo">
           <template>
@@ -317,26 +311,24 @@ This ensures styling does not leak outside the element's shadowRoot (e.g. upper 
             </style>
           ...
 
-      Note, this technique does not enforce lower bound encapsulation. For that,
-      you need to [forcing strict styling](#strictstyling).
+      このテクニックは下位方向のカプセル化を保証しないことに注意して下さい。下位方向のカプセル化には [厳格なスタイルを強制する](#strictstyling)が使えます。
 
-1. **Replace `::shadow` and `/deep/`** with a `<space>` character.
+1. **`::shadow`と`/deep/`を`<space>`キャラクタで置換えます**
 
-### Forcing strict styling {#strictstyling}
+### 厳格なスタイルを強制する {#strictstyling}
 
-By default, {{site.project_title}} does not enforce lower bound styling encapsulation.
-The lower bound is the boundary between insertion points and the shadow host's children.
+デフォルトでは{{site.projet_title}}は下位方向のカプセル化を強制しません。下位方向の境界とは、挿入ポイントとShadhowHostの子要素ののあいだのことです。
 
-You can turn lower bound encapsulation by setting `Platform.ShadowCSS.strictStyling`:
+`Olatform.ShadowCSS.strictStyling`を設定することで下位方向のカプセル化を有効に出来ます:
 
     Platform.ShadowCSS.strictStyling = true;
 
-This isn't yet the default because it requires that you add the custom element's name as an attribute on all DOM nodes in the shadowRoot (e.g. `<span x-foo>`).
+これがまだデフォルトでない理由は、ShadowRootにある全てのDOMノードにエレメント名を属性として追加しなければならないからです。(例 `<span x-foo>`)
 
 
-### Manually invoking the style shimmer {#manualshim}
+### 手動でスタイルの機能補完を有効にする {#manualshim}
 
-In rare cases, you may need to shim a stylesheet yourself. {{site.project_title}}'s Shadow DOM polyfill shimmer can be run manually like so:
+まれなケースとして、スタイルシートの機能補完を手動で有効にする必要があるかもしれません。{{site.project_title}}のShadowDOM polyfillの機能は次のようにして手動で実行できます:
 
     <style id="newstyles">
      ...
@@ -348,5 +340,4 @@ In rare cases, you may need to shim a stylesheet yourself. {{site.project_title}
           style.textContent, 'my-scope');
     Platform.ShadowCSS.addCssToDocument(cssText);
 
-Running this shims the styles, scopes their rules with 'my-scope', and adds the result
-to the main document.
+'my-scope'のスタイルに機能補完を実行し、その結果をメインドキュメントのスタイルに追加しています。

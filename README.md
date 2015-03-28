@@ -54,7 +54,7 @@ jekyll 2.5.xが入っているとビルドで失敗します。2.4.0を使って
 | 完 | docs/polymer/node_bind.md |
 | 完 | docs/polymer/polymer.md |
 | 未 | docs/polymer/runtime-config.md |
-| 進 | docs/polymer/styling.md |
+| 完 | docs/polymer/styling.md |
 | 完 | docs/polymer/template.md |
 | 未 | docs/polymer/touch.md |
 | 完 | docs/start/creatingelements.md |
