@@ -24,64 +24,57 @@ subtitle: Guide
 
 さらに、タッチイベントはエレメントがtouchstartを受け取った時のみ発行されます。これはマウスイベントとは根本的に異なる振る舞いです。マウスイベントでは、マウスカーソルの下にあるエレメントにたいしてイベントが発行されます。タッチとマウスで同様の挙動を実現するには、タッチイベントは`document.elementFromPoint`を使ってターゲットの再設定をする必要があります。
 
-これらの相違点
-These incompatibilities lead to applications having to listen to 2 sets of events, mouse on
-desktop and touch on mobile.
+これらの相違点のために、アプリケーションでは、デスクトップのマウスと、モバイルのタッチスクリーンという異なった二つのイベントセットに対応しなければなりません。
 
-**This forked interaction experience is cumbersome and hard to maintain.**
+**操作体系がこのように二つに分かれていることは厄介で、メンテナンスが大変です。**
 
-To reduce the overhead involved in managing both event systems, polymer-gestures provides a set of normalized events, which behave the same no matter what the source.
+両方のイベントシステムを扱うオーバーヘッドを軽減するため、polymer-gesturesではイベントの発生元にかかわらず、同じ振る舞いをする標準化したイベントセットを提供します。
 
-**Note:** Although Pointer Events provide a wonderful model to unify these different event systems, they can be difficult to polyfill in a performant fashion. The polymer-gestures library is designed to fill the gap until the web platform provides a native solution.
-{: .alert }
+**注意:** Pointerイベント（訳者注：マイクロソフトの技術仕様を指すと思われる）はこの2つの異なったイベントシステムを統合する素晴らしい方法ですが、パフォーマンスを損なわずにpolyfillを行うことが難しい可能性があります。polymer-gesturesライブラリはWeb標準が根本的な解決法を提供するまでのギャップを埋める役割を果たします。{: .alert }
 
-## Basic Usage
+## 基本的な使い方
 
-By default, no polymer-gesture events are sent from an element. This maximizes the possibility that a browser can deliver smooth scrolling and jank-free gestures. If you want to receive events, you must set the `touch-action` property of that element. See the Web Fundamentals [guide to `touch-action`](https://developers.google.com/web/fundamentals/input/touch/touchevents/#control-gestures-using-touch-actions) for a primer. Below are a few examples:
+デフォルトでは、polymer-gesturesイベントは無効になっています。これによってブラウザは最大限スクロールをスムーズにし、おかしな挙動を避けることが出来ます。polymer-gesturesイベントを受け取りたい場合は、エレメントの`touch-action`プロパティをセットする必要があります。詳しくは[guide to `touch-action`](https://developers.google.com/web/fundamentals/input/touch/touchevents/#control-gestures-using-touch-actions)を参照して下さい。いかにいくつか例を示します:
 
-1. Set up some elements to create events with the `touch-action` attribute.
+1. `touch-action`属性を使ってイベントを発行するエレメントを作ります
   - `<div id="not-a-scroller" touch-action="none"></div>`
-      - Generates events all the time, will not scroll
+      - 常にイベントを発行し、スクロールをしません。
   - `<div id="horizontal-scroller" touch-action="pan-x">`
-      - Generates events in the y axis, scrolls in the x axis
+      - y軸方向のイベントを発行し、x軸方向にはスクロールをします。
   - `<div id="vertical-scroller" touch-action="pan-y">`
-      - Generates events in the x axis, scrolls in the y axis
+      - x軸方向のイベントを発行し、y軸方向にはスクロールします。
   - `<div id="all-axis-scroller" touch-action="pan-x pan-y">`
-      - Generates events only when tapping, scrolls otherwise
-      - Can also have the value `pan-y pan-x` or `scroll`
+      - タップされた時のみイベントを発行し、それ以外はスクロールします。
+      -  `pan-y pan-x` あるいは `scroll`を指定することも出来ます。
 
-2. Listen for the desired events
-  - `down`: a pointer is activated, or a device button held.
-  - `up`: a pointer is deactivated, or a device button released. Same target as `down`, provides the element under the pointer with the `relatedTarget` property
-  - `tap`: a pointer has quickly gone down and up. Used to denote activation.
-  - `trackstart`: denotes the beginning of a series of tracking events. Same `target` as `down`.
-  - `track`: fires for all pointer movement being tracked.
-  - `trackend`: denotes the end of a series of tracking events. Same `target` as `down`. Provides the element under the pointer with the `relatedTarget` property.
-  - `hold`: a pointer is held down for 200ms.
-  - `holdpulse`: fired every 200ms while a pointer is held down.
-  - `release`: a pointer is released or moved.
+2. 希望するイベントをlistenする
+  - `down`: 指が触れたか、マウスのボタンが押された
+  - `up`: 指が離れたか、マウスのボタンが離れた。`down`と同じターゲットで、指の下にあるエレメントに`relatedTarget`プロパティをあたえます。
+  - `tap`: 指が素早く触れて離れた。有効化を意味するのに使われます。
+  - `trackstart`: トラックイベントの開始を意味します。`down`と同じ`target`になります。
+  - `track`: 全ての指の動きがトラックされている時に起こります
+  - `trackend`: トラックイベントの終了を意味します。`down`と同じ`target`になります。指の下にあるエレメントに`relatedTarget`プロパティをあたえます。
+  - `hold`: 指が200ミリ秒押されていることを意味します。
+  - `holdpulse`: 指が押されているあいだじゅうずっと200ミリ秒ごとに発行されます。
+  - `release`: 指が離れたか移動した時に発行されます。
 
 
-1. As elements come and go, or have their `touch-action` attribute changed, they will send the proper set of polymer-gesture events.
+1. エレメントが行ったり来たりするたびに、あるいは`touch-action`属性が変更されるたびに、対応するpolymer-gesturesイベントが発行されます。
 
-## Examples
+## 例
 
 - [Simple Event Example](http://polymer.github.io/polymer-gestures/samples/simple/index.html)
 
-## Library Limitations
+## polymer-gesturesライブラリの制限
 
 ### touch-action
 
-According to the spec, the
-[touch-action](https://dvcs.w3.org/hg/pointerevents/raw-file/tip/pointerEvents.html#the-touch-action-css-property)
-css property controls whether an element will perform a "default action" such as scrolling, or receive a continuous stream of events.
 
-Due to the difficult nature of polyfilling new CSS properties, this library will
-use a touch-action *attribute* instead. In addition, run time changes involving
-the `touch-action` attribute will be monitored for maximum flexibility.
+[touch-action](https://dvcs.w3.org/hg/pointerevents/raw-file/tip/pointerEvents.html#the-touch-action-css-property)の仕様によると、CSSのプロパティが、エレメントがスクロールのような"デフォルトの振る舞い"をするか、あるいは一連のイベントを受け取るかを決定する、とあります。
 
-Touches will not generate events unless inside of an area that has a valid `touch-action` attribute defined.
-This is to maintain compositiong scrolling optimizations where possible.
+新しいCSSプロパティを補完するという難しい性質を備えているために、このライブラリではtouch-action*属性*を代わりに用いています。さらに、実行時の`touch-action`属性の変更も可能な限り監視されます。
 
-**Note:** Opera 12-14, does not support changes to `touch-action` attribute, nor added or removed elements
+タッチ操作は、適切な`touch-action`属性が定義されたエリアの外ではイベントを発生させません。これによって、スクロールに最適化された画面合成を可能な限り維持します。
+
+**注意:** Opera 12-14では`touch-action`属性の変更、追加、削除はサポートされません。
 {: .alert }
