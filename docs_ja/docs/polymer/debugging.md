@@ -2,7 +2,7 @@
 layout: default
 type: guide
 shortname: Docs
-title: Debugging tips and tricks
+title: デバッグのコツ
 subtitle: Guide
 ---
 
@@ -20,33 +20,32 @@ subtitle: Guide
 }
 </style>
 
-Since the Web Components standards are relatively new, and not implemented in all browsers, debugging web components such as Polymer elements can be a challenge.
+Webコンポーネント標準は比較的新しく、全てのブラウザで実装されているわけではないため、PolymerエレメントのようなWebコンポーネントをデバッグするのには困難を伴うことがあります。
 
-Chrome 36 and later includes native support for web components, and improved support for debugging them in Chrome DevTools. Opera 23 and later also includes native support for web components.
+Chrome36以降では、Webコンポーネントのネイティブサポートが組み込まれ、Chrome Devtoolsでのデバッグサポートが改善されました。Opera23以降でもWebコンポーネントのネイティブサポートが組み込まれています。
 
-Many of the techniques described here can be used on browsers without native web components support, with a few adjustments. For details, see [Debugging under the polyfills](#polyfills).
+ここで紹介するテクニックの多くは、少し手を加えることでWebコンポート念とをネイティブサポートしていないブラウザでも利用可能です。詳しくは[polyfill環境下でのデバッギング](#polyfills)を参照して下さい。
 
-## Inspecting HTML imports
+## HTMLインポートを調査する
 
+**Elements**パネルでHTMLインポートの中身を見るには、DOMツリービューの`<link>`タグを開きます。インポートされた内容は入れ子になった`#document`ノードに表示されます。
 To see the contents of an HTML import in the **Elements** panel, expand the `<link>` tag in the DOM tree view.
-The import contents appear as a nested `#document` node.
 
 ![HTML import link expanded in DevTools Elements panel](/images/debugging/html-import.png)
 
-To open the imported file in the **Sources** panel, click the URL in the link.
+**Sources**パネルにインポートされたファイルを開くには、リンクのURLをクリックします。
 
 ![HTML import link with URL highlighted](/images/debugging/html-import-link.png)
 
-For elements with separate script files, the script file should be alongside the HTML file in the **Sources** panel.
+スクリプトがファイルに分離されているエレメントでは、スクリプトファイルが**Sources**パネルのHTMLファイルと一緒に表示されます。
 
-You can set breakpoints in inline scripts inside an HTML import.
+HTMLインポートされたインラインスクリプトにブレイクポイントを設定できます。
 
-**Note:** For production deployment, HTML imports are usually concatenated using [vulcanize](/articles/concatenating-web-components.html). However,
-unlike JavaScript and CSS, there is no sourcemap format for HTML files, so there's no way to map vulcanized files to their non-vulcanized counterparts. As a result, it's much easier to debug non-vulcanized files.
+**注意:** 実際の運用環境では、HTMLインポートは[vulcanize](/articles/concatenating-web-components.html)を使って結合されるのが普通です。しかし、JavaScriptやCSSと違って、HTMLファイルにはソースマップ書式がありません。そのため、結合されたファイルを、結合前のファイルに対応づける方法がありません。結果として、デバッグ時には結合されていないファイルを扱うほうがはるかに用意です。
 
-## Inspecting custom elements
+## カスタムエレメントを調査する
 
-Many custom elements include shadow DOM trees. In the case of Polymer elements, anything you add to the outermost `<template>` inside the `<polymer-element>` tag is cloned into the element's shadow DOM. In DevTools, the root of the shadow tree shows up as a node named  `#shadow-root`. For example, consider the following element:
+多くのカスタムエレメントにはShadowDOMツリーが含まれます。Polymerエレメントでは、`<polymer-element>`タグ内の最初の`<template>`タグに追加された全ての要素がエレメントのShadowDOMにコピーされます。DevToolsでは、Shadowツリーのルートが`#shadow-root`という名前のノードで表示されます。例えば、次のエレメントでは:
 
     <polymer-element name="my-element" noscript>
       <template>
@@ -56,45 +55,39 @@ Many custom elements include shadow DOM trees. In the case of Polymer elements, 
 
     <my-element></my-element>
 
-In Chrome, the resulting DOM tree looks like this:
+ChromeではDOMツリーは次のようになります:
 
 ![DevTools showing DOM for custom element](/images/debugging/custom-element.png)
 
-The template contents show up inside the shadow tree, under `#shadow-root`.
+テンプレートの中身は`#shadow-root`以下のShadowツリー内に表示されます。
 
-On a browser that doesn't support shadow DOM, there is no `#shadow-root` node. The nodes that would be in the shadow tree appear as direct children of the custom element in the element or inspector view.
+ShadowDOMをサポートしていないブラウザでは、`#shadow-root`ノードはありません。Shadowツリーとして表示されるべきノードはカスタムエレメントの直接の子要素として表示されます。
 
-When inspecting any custom elements, you can access properties or methods on the element directly in the console:
+カスタムエレメントの調査では、コンソールからプロパティやメソッドに直接アクセスできます。
 
     $0.fire('my-event');
     $0.myproperty
 
-`$0` is a [console variable](https://developer.chrome.com/devtools/docs/commandline-api#0-4) that refers to the currently selected element. It's supported in most browsers.
 
-On browsers without native shadow DOM, use the `wrap` function to access methods and properties on your element:
+`$0`は[console variable](https://developer.chrome.com/devtools/docs/commandline-api#0-4)と呼ばれ、現在選択されているエレメントを指します。これはほとんどのブラウザでサポートされています。
+
+ShadowDOMのないブラウザでは、エレメントのメソッドやプロパティにアクセスするのに`wrap`関数を使います:
 
     wrap($0).fire('my-event');
     wrap($0).myproperty
 
-For more details, see [Shadow DOM polyfill](#shadowdom).
+より詳しくは[Shadow DOM polyfill](#shadowdom)を参照して下さい。
 
-## Hunting down unregistered elements {#unregistered}
+## 未登録のエレメントを見つけ出す {#unregistered}
 
-When debugging Polymer applications, one frequent problem is unregistered elements. There are two common problems that cause unregistered elements:
+Polymerアプリケーションのデバッグ時にもっともよくある問題の一つが未登録のエレメントです。未登録のエレメントを引き起こすよくある問題は2つあります:
 
--   Missing or incorrect HTML import statement for a custom element. In this case, the element
-    shows up in the DOM as a simple element, with no shadow DOM. The element may still be rendered,
-    but without the custom element's styling and behavior. The rest of the page should render normally.
+-   カスタムエレメントでHTMLインポートが間違っているか指定されていない。この場合、カスタムエレメントはDOMにShadowDOMを持たない通常のエレメントとして表示されます。エレメントは表示されるかもしれませんが、カスタムエレメントとしてのスタイル指定や振る舞いはありません。ページの他の部分は通常通り表示されます。
 
--   Missing call to `Polymer` or an incorrect tag name in the `Polymer` call. By design, Polymer waits
-    until all element definitions are complete before registering any elements. This ensures that all
-    elements have been registered before the `polymer-ready` event fires, _even if some calls to `Polymer` are
-    made in asynchronous scripts._
+-   `Polymer`コンストラクタがないか、`Polymer`メソッドの呼び出しで間違ったタグ名を使っている。Polymerは全てのエレメントの定義が終わるのを待ってから、エレメントの登録を開始する設計になっています。_たとえ`Polymer`メソッドの呼び出しが非同期スクリプトを含んでいても_、これによって全てのエレメントは`polymer-ready`イベントが発行される前に登録済みであることが確実になります。しかし、`Polymer`メソッドの呼び出しがある一つのエレメントで見つからないと、全てのPolymerエレメントが登録されないことになります。`polymer-ready`イベントは発行されず、Polymerエレメントが全く表示されないため、多くの場合画面が真っ白になります。
 
-    However, if the `Polymer` call is missing for one element, none of the Polymer elements are registered.
-    The `polymer-ready` event never fires, and the screen is frequently blank, since none of the Polymer elements render properly.
 
-For example, the mismatched tag name in the following element causes Polymer to block element registration:
+例として、次に示すエレメントでのタグ名の不一致はPolymerのエレメント登録を妨げます:
 
     <polymer-element name="broken-element">
         <template>
@@ -105,52 +98,48 @@ For example, the mismatched tag name in the following element causes Polymer to 
          </script>
      </polymer-element>
 
-There are several things you can do to reduce the amount of time you spend looking for unregistered elements.
+未登録のエレメントを探す時間を減らす方法がいくつかあります。
 
-### Avoid mismatched tag names
+### タグ名の不一致を避ける
 
-Wherever possible, omit the tag name from the `Polymer` call. Since Polymer 0.4.0, the tag name can be omitted whenever the `<script>` tag that invokes `Polymer` is inside the `<polymer-element>` tag. Removing the duplicate tag name avoids many potential errors.
+可能な限りいつでも、`Polymer`コンストラクタからタグ名を省略しましょう。Polymer0.4.0以降では`<polymer-element>`タグ内で`<script>`タグから`Polymer`メソッドを呼び出す場合、タグ名を省略できます。タグ名の繰り返しをなくすことで、エラーの可能性を減らせます。
 
-### Unregistered element bookmarklet
+### 未登録エレメント発見用ブックマークレットを使う
 
-To quickly check whether elements are registered, you can use this bookmarklet (written by [Aleks Totic](https://twitter.com/atotic) and [Eric Bidelman](https://twitter.com/ebidel)):
+エレメントが登録されているかどうかを素早くチェックするために、[Aleks Totic](https://twitter.com/atotic) と [Eric Bidelman](https://twitter.com/ebidel))によって書かれたこのブックマークレットを利用できます:
 
 <a class="bookmarklet" href="javascript:(function(){function isUnregisteredCustomElement(el){if(el.constructor==HTMLElement){console.error('Found unregistered custom element:',el);return true;}return false;}function isCustomEl(el){return el.localName.indexOf('-')!=-1||el.getAttribute('is');}var allCustomElements=document.querySelectorAll('html /deep/ *');allCustomElements=Array.prototype.slice.call(allCustomElements).filter(function(el){return isCustomEl(el);});var foundSome=false;for(var i=0,el;el=allCustomElements[i];++i){if(isUnregisteredCustomElement(el)){foundSome=true;}}if(foundSome){alert('Oops: found one or more unregistered custom elements in use! Check the console.');}else{alert('Good: All custom elements are registered :)');}})();"><core-icon icon="bookmark"></core-icon> Unregistered Elements Bookmarklet</a>
 
-The bookmarklet checks for element that look like custom elements, but have the generic `HTMLElement` constructor. An element "looks like" a custom element if it has a dash in its name or uses the `is` attribute:
+このブックマークレットはカスタムエレメントと思われるものの、`HTMLElement`コンストラクタを持つエレメントを探しだします。エレメントの名前にダッシュが含まれているか、`is`属性を持っている場合、カスタムエレメントらしいと判断されます:
 
     <paper-button>Button</paper-button>
     <form is="ajax-form"></form>
 
-Since this method doesn't use any Polymer APIs, it works for any custom element, Polymer or otherwise.
+この方法はPolymerAPIを利用しないので、Polymerを含むどのカスタムエレメントでも使えます。
 
-To add the bookmarklet to your browser, drag the <a class="bookmarklet" href="javascript:(function(){function isUnregisteredCustomElement(el){if(el.constructor==HTMLElement){console.error('Found unregistered custom element:',el);return true;}return false;}function isCustomEl(el){return el.localName.indexOf('-')!=-1||el.getAttribute('is');}var allCustomElements=document.querySelectorAll('html /deep/ *');allCustomElements=Array.prototype.slice.call(allCustomElements).filter(function(el){return isCustomEl(el);});var foundSome=false;for(var i=0,el;el=allCustomElements[i];++i){if(isUnregisteredCustomElement(el)){foundSome=true;}}if(foundSome){alert('Oops: found one or more unregistered custom elements in use! Check the console.');}else{alert('Good: All custom elements are registered :)');}})();"><core-icon icon="bookmark"></core-icon> Unregistered Elements Bookmarklet</a>
-link to the bookmarks toolbar or Favorites bar. (The bookmarks toolbar or Favorites bar must already be displayed.)
-
-
-You can see the complete code for the bookmarklet here:
-
-[https://gist.github.com/ebidel/cea24a0c4fdcda8f8af2](https://gist.github.com/ebidel/cea24a0c4fdcda8f8af2)
+ブックマークレットをブラウザに追加するには、この<a class="bookmarklet" href="javascript:(function(){function isUnregisteredCustomElement(el){if(el.constructor==HTMLElement){console.error('Found unregistered custom element:',el);return true;}return false;}function isCustomEl(el){return el.localName.indexOf('-')!=-1||el.getAttribute('is');}var allCustomElements=document.querySelectorAll('html /deep/ *');allCustomElements=Array.prototype.slice.call(allCustomElements).filter(function(el){return isCustomEl(el);});var foundSome=false;for(var i=0,el;el=allCustomElements[i];++i){if(isUnregisteredCustomElement(el)){foundSome=true;}}if(foundSome){alert('Oops: found one or more unregistered custom elements in use! Check the console.');}else{alert('Good: All custom elements are registered :)');}})();"><core-icon icon="bookmark"></core-icon> Unregistered Elements Bookmarklet</a>リンクをツールバーかお気に入りにドラッグ・アンド・ドロップしてください。
 
 
-Click the bookmark to check the current page for unregistered elements. The bookmarklet displays an alert showing the
-page status. In the case of missing imports, more detailed information is logged to the console.
+ブックマークレットのソースコードは
+[https://gist.github.com/ebidel/cea24a0c4fdcda8f8af2](https://gist.github.com/ebidel/cea24a0c4fdcda8f8af2)にあります。
 
--   In the case of a missing HTML import, the bookmarklet lists the element with a missing import.
 
--   In the case of a missing `Polymer` call, the bookmarklet lists _all_ of the Polymer elements, since none of them are registered.
-    (The next section describes how to use the new `Polymer.waitingFor` method to pinpoint exactly which element is causing the problems.)
+表示されているページのみ登録エレメントをチェックするにはブックマークレットをクリックします。ブックマークレットはページステータスを示すアラートを表示します。HTMLインポートがない場合にはより詳しい情報がコンソールに表示されます。
 
-**Note:** The bookmarklet returns false positives for tags that include a dash but _aren't_ custom elements, such as Angular directives.
+-   HTMLインポートがない場合には、ブックマークレットは該当エレメントをリスト表示します。
+
+-   `Polymer`コンストラクタがない場合は、ブックマークレットは_全ての_Polymerエレメントを表示します。なぜなら全てのエレメントが未登録だからです。(次のセクションでは、`Polymer.waitingFor`という新しいメソッドをつかて問題を起こしているエレメントをピンポイントで特定する方法を紹介します)
+
+**注意:** このブックマークはAngularディレクティブのように、名前にダッシュを含むものの、カスタムエレメントではないタグがあると、誤判定を起こします。
 {: .alert .alert-info }
 
-### Polymer waitingFor and forceReady methods
+### waitingForメソッドとforceReadyメソッド
 
-Polymer 0.4.1 introduced a pair of new methods, `Polymer.waitingFor` and `Polymer.forceReady` that you can use to help diagnose registration problems.  The `waitingFor` method returns a list of `<polymer-element>` tags that don't have a matching `Polymer` call. In the event of a blank screen, you can run it from the console:
+Polymer0.4.1で二つの新しいメソッドが追加されました。`Polymer.waitingFor`と`Polymer.forceReady`です。この二つのメソッドはエレメントの未登録問題を解決するのに役立ちます。`waitingFor`メソッドは対応する`Polymer`コンストラクタを持たない`<polymer-element>`タグのリストを返します。画面が真っ白にになる場合には、コンソールからこのメソッドを実行できます:
 
 ![DevTools console showing Polymer.waitingFor call and output](/images/debugging/waitingfor.png)
 
-Note that `waitingFor` returns a list of _elements_, not element names.
+`waitingFor`がエレメント名ではなく、_エレメントのリスト_を返すことに注して下さい。
 
 The `waitingFor` method does not report elements that are missing HTML imports, or misspelled tags.
 

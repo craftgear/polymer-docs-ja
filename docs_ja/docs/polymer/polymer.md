@@ -179,7 +179,7 @@ Polymer([ <em class="nocode">tag-name</em>, ] [<em class="nocode">prototype</em>
 
 カスタムエレメントpolyfillが認識できるようにするため、`<polymer-element>`をドキュメントに追加する必要があります。
 
-**重要:** この例では`Polymer`メソッドの呼び出しが`<polymer-element>`の外側のため、タグ名を引数に渡す必要があります。
+**重要:** この例では`Polymer`コンストラクタが`<polymer-element>`の外側のため、タグ名を引数に渡す必要があります。
 {: .alert .alert-error }
 
 ### 公開プロパティとメソッドを追加する {#propertiesmethods}
