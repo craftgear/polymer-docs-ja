@@ -2,7 +2,7 @@
 
 このプロジェクトは Polymer0.5.x対応です。
 
-*** このプロジェクトはPolymer0.8.0のリリースに伴い放棄されました。***
+** このプロジェクトはPolymer0.8.0のリリースに伴い放棄されました。**
 
 [Polymer/docs](https://github.com/Polymer/docs)の私家版翻訳です。
 
